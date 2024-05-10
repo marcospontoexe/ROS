@@ -10,3 +10,13 @@ Os serviços permitem que você desenvolva uma funcionalidade específica para s
 Os serviços são um pouco mais complexos do que os tópicos, pois são estruturados em duas partes. De um lado, você tem o **Servidor de Serviço**, que fornece a funcionalidade para qualquer pessoa que queira usá-la (chamá-la). Do outro lado, você tem o **Cliente de Serviço**, que é aquele que faz a chamada/solicitação da funcionalidade do serviço.
 
 O serviço deve estar em funcionamento antes que você possa chamá-lo. Portanto, certifique-se de ter iniciado o serviço antes de chamá-lo.
+
+## Ações
+O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
+
+Há outras diferenças, como uma ação permitindo que você forneça feedback enquanto a ação está sendo realizada.
+
+##  Launch files
+Um programa ROS é executado usando alguns arquivos especiais chamados launch files. A estrutura do comando roslaunch é a seguinte: `roslaunch <package_name> <launch_file>`.
+* package_name: Especifica o nome do pacote ROS contendo o launch files.
+* launch_file:  Especifica o nome dolaunch file a ser executado dentro do pacote especificado.
