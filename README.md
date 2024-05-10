@@ -37,3 +37,6 @@ Todos esses arquivos no pacote são organizados com a seguinte estrutura:
 * package.xml: Informações do pacote e dependências.
 
 Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**. Ao digitar: `roscd <package_name>`, ele o levará ao caminho onde o pacote package_name está localizado.
+
+
+
