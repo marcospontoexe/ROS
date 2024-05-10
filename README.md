@@ -19,4 +19,21 @@ Há outras diferenças, como uma ação permitindo que você forneça feedback e
 ##  Launch files
 Um programa ROS é executado usando alguns arquivos especiais chamados launch files. A estrutura do comando roslaunch é a seguinte: `roslaunch <package_name> <launch_file>`.
 * package_name: Especifica o nome do pacote ROS contendo o launch files.
-* launch_file:  Especifica o nome dolaunch file a ser executado dentro do pacote especificado.
+* launch_file:  E o nome do launch file em si.(que está armazenado dentro do pacote).
+
+### Pacote
+O ROS utiliza pacotes para organizar seus programas. Você pode pensar em um pacote como todos os arquivos que um programa ROS específico contém; 
+* todos os seus arquivos cpp,
+* arquivos python,
+* arquivos de configuração,
+* arquivos de compilação,
+* arquivos de lançamento
+* arquivos de parâmetros.
+
+Todos esses arquivos no pacote são organizados com a seguinte estrutura:
+* pasta launch: Contém arquivos de lançamento.
+* pasta src: Arquivos de origem (cpp, python).
+* CMakeLists.txt: Lista de regras do cmake para compilação.
+* package.xml: Informações do pacote e dependências.
+
+Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**. Ao digitar: `roscd <package_name>`, ele o levará ao caminho onde o pacote package_name está localizado.
