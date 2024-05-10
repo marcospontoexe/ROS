@@ -36,7 +36,28 @@ Todos esses arquivos no pacote são organizados com a seguinte estrutura:
 * CMakeLists.txt: Lista de regras do cmake para compilação.
 * package.xml: Informações do pacote e dependências.
 
-Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**. Ao digitar: `roscd <package_name>`, ele o levará ao caminho onde o pacote package_name está localizado.
+Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**. Ao digitar: `roscd <package_name>`, ele o levará ao diretório onde o pacote package_name está localizado.
 
+### Como a launch file funciona?
+No launch file, há algumas tags extras para definir parâmetros e redirecionamentos. A tag **param** define um parâmetro no Servidor de Parâmetros, de onde os nós obtêm parâmetros. Muitos nós utilizam parâmetros para evitar modificar o código-fonte, a baixo você pode ver como eles são adicionados.
+
+```
+<launch>
+  <!-- turtlebot_teleop_key already has its own built in velocity smoother -->
+  <node pkg="turtlebot_teleop" type="turtlebot_teleop_key.py" name="turtlebot_teleop_keyboard"  output="screen">
+    <param name="scale_linear" value="0.5" type="double"/>
+    <param name="scale_angular" value="1.5" type="double"/>
+    <remap from="turtlebot_teleop_keyboard/cmd_vel" to="/cmd_vel"/>   <!-- cmd_vel_mux/input/teleop"/-->
+  </node>
+</launch>
+```
+
+A tag **remap** redireciona mensagens de um tópico para outro. No caso a cima, o nó de teleop publica por padrão em `turtlebot_teleop_keyboard/cmd_vel`. Queremos que ele publique em `cmd_vel`, então a tag é adicionada.
+
+Todos os launch file estão contidos em uma tag **launch**. Dentro dessa tag, você pode ver uma tag **node**, onde especificamos os seguintes parâmetros:
+* pkg="nome_do_pacote": Nome do pacote que contém o código do programa ROS a ser executado.
+* type="nome_do_arquivo_python.py": Nome do arquivo do programa que queremos executar.
+* name="nome_do_nó": Nome do nó ROS que lançará nosso arquivo Python.
+* output="tipo_de_saída": Através de qual canal você imprimirá a saída do arquivo Python.
 
 
