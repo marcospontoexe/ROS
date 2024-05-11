@@ -12,7 +12,7 @@ Você pode solicitar informações sobre um tópico digitando `rostopic info nom
 * Subscribers: Se há um nó ouvindo essa informação.
 
 Alguns comando úteis:
-* Para obter uma lista de tópicos disponíveis em um sistema ROS: rostopic list.
+* Para obter uma lista de tópicos disponíveis em um sistema ROS: `rostopic list`.
 * O comando `rostopic echo /nome_do_tópico` mostra as informações que estão sendo publicadas em um tópico.
 * Para ler apenas a última mensagem publicada em um tópico com o comando: `rostopic echo nome_do_tópico -n1`.
 * Para obter informações sobre um determinado tópico: `rostopic info nome_do_tópico`.
@@ -102,10 +102,10 @@ Para verificar se nosso pacote foi criado com sucesso, podemos usar alguns coman
 * `roscd nome_do_pacote`: Leva você à localização no disco rígido do pacote chamado "nome_do_pacote".
 
 Dentro do pacote deve conter;
-* Um diretório chamado **src**: dentro desse diretório deve ficar o arquivo python. Verifique se o arquivo tem permissão de execusão.
+7. Um diretório chamado **src**: dentro desse diretório deve ficar o arquivo python. Verifique se o arquivo tem permissão de execusão.
   * A primeira linha do arquivo deve conter **#! /usr/bin/env python **.
   * Deve importar a bilioteca **rospy** (import rospy).
-* Um diretório chamado **lounch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch deve conter algo semelhante com o que foi descrito no tópico a cima; "Como a launch file funciona?".
+8. Um diretório chamado **lounch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch deve conter algo semelhante com o que foi descrito no tópico a cima; "Como a launch file funciona?".
 
 Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_pacote nome_package_launch_file.launch`.
 
@@ -113,19 +113,19 @@ Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_
 
 [Veja nesse diretório](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos) exemplo de pacotes criados.
 
-## Os nós do ROS
-Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver quais nós estão realmente em execução em um computador é: `rosnode list`.
-
-Para ver informações sobre um nó, podemos usar o comando: `rosnode info nome_do_nó`. 
-
-## Compilando um pacote
+### Compilando um pacote
 Quando você cria um pacote, geralmente precisará compilá-lo para fazê-lo funcionar. Existem diferentes métodos que podem ser usados para compilar seus pacotes ROS, o mais comum: **catkin_make**.
 
 Este comando irá compilar todo o seu diretório src, e ele precisa ser executado no seu diretório catkin_ws para funcionar (`cd ~/catkin_ws`). Se você tentar compilar a partir de outro diretório, não funcionará.
 
 Depois de compilar, também é muito importante "sourcer" (fornecer) o seu espaço de trabalho. Isso garantirá que o ROS sempre obtenha as últimas alterações feitas no seu espaço de trabalho: `source devel/setup.bash`.
 
-Às vezes (por exemplo, em projetos grandes), você não vai querer compilar todos os seus pacotes, mas apenas aquele(s) onde você fez alterações. Você pode fazer isso com o seguinte comando: `catkin_make --only-pkg-with-deps <nome_do_pacote>`.
+Às vezes (por exemplo, em projetos grandes), você não vai querer compilar todos os seus pacotes, mas apenas aquele(s) onde você fez alterações. Você pode fazer isso com o seguinte comando: `catkin_make --only-pkg-with-deps nome_do_pacote`.
+
+## Os nós do ROS
+Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver quais nós estão realmente em execução em um computador é: `rosnode list`.
+
+Para ver informações sobre um nó, podemos usar o comando: `rosnode info nome_do_nó`. 
 
 ## Parameter Server
 Um servidor de parâmetros é um dicionário que o ROS usa para armazenar parâmetros. Esses parâmetros podem ser usados pelos nós em tempo de execução e são normalmente usados para dados estáticos, como parâmetros de configuração.
