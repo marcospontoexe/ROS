@@ -103,8 +103,8 @@ Para verificar se nosso pacote foi criado com sucesso, podemos usar alguns coman
 
 Dentro do pacote deve conter;
 7. Um diretório chamado **src**: dentro desse diretório deve ficar o arquivo python. Verifique se o arquivo tem permissão de execusão.
-  * A primeira linha do arquivo deve conter **#! /usr/bin/env python **.
-  * Deve importar a bilioteca **rospy** (import rospy).
+   * A primeira linha do arquivo deve conter **#! /usr/bin/env python **.
+   * Deve importar a bilioteca **rospy** (import rospy).
 8. Um diretório chamado **lounch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch deve conter algo semelhante com o que foi descrito no tópico a cima; "Como a launch file funciona?".
 
 Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_pacote nome_package_launch_file.launch`.
