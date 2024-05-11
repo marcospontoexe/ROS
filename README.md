@@ -39,7 +39,7 @@ Todos esses arquivos no pacote são organizados com a seguinte estrutura:
 Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**. Ao digitar: `roscd <package_name>`, ele o levará ao diretório onde o pacote package_name está localizado.
 
 ### Como a launch file funciona?
-No launch file, há algumas tags extras para definir parâmetros e redirecionamentos. A tag **param** define um parâmetro no Servidor de Parâmetros, de onde os nós obtêm parâmetros. Muitos nós utilizam parâmetros para evitar modificar o código-fonte, a baixo você pode ver como eles são adicionados.
+No arqivo launch, há algumas tags extras para definir parâmetros e redirecionamentos. A tag **param** define um parâmetro no Servidor de Parâmetros, de onde os nós obtêm parâmetros. Muitos nós utilizam parâmetros para evitar modificar o código-fonte, a baixo você pode ver como eles são adicionados.
 
 ```
 <launch>
@@ -72,3 +72,7 @@ Para verificar se nosso pacote foi criado com sucesso, podemos usar alguns coman
 * `rospack list | grep nome_do_pacote`: Para filtrar, de todos os pacotes localizados no sistema ROS, o pacote chamado "nome_do_pacote".
 * `roscd nome_do_pacote`: Leva você à localização no disco rígido do pacote chamado "nome_do_pacote".
 
+Dentro do pacote deve conter;
+* Um diretório chamado **src**: dentro desse diretório deve ficar o arquivo python.
+* Um diretório chamado**lounch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch contem algo semelhante com o que foi descrito no tópico "Como a launch file funciona?".
+* 
