@@ -27,6 +27,15 @@ As mensagens são definidas em arquivos **.msg**, que estão localizados dentro 
 
 Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_mensagem`.
 
+#### Criando um tipo de mensagem
+Para criar uma nova mensagem, você precisará seguir os seguintes passos:
+1. Crie um diretório chamado **msg** dentro do seu pacote.
+2. Dentro deste diretório, crie um arquivo chamado **Nome_da_sua_mensagem.msg**.
+3. Modifique o arquivo CMakeLists.txt.
+4. Modifique o arquivo package.xml.
+5. Compile.
+6. Use no código.
+
 ### Publishers
 Um publisher é um nó que fica publicando uma mensagem em um tópico.
 
