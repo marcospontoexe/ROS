@@ -4,6 +4,9 @@
 ## Tópicos
 O ROS lida quase que inteiramente com suas comunicações por meio de tópicos. Até mesmo sistemas de comunicação mais complexos, como **serviços** ou **ações**, dependem, em última análise, de tópicos. É por isso que eles são tão importantes! Através dos tópicos do ROS, você será capaz, por exemplo, de se comunicar com seu robô para fazê-lo se mover, ler as leituras dos sensores do seu robô e muito mais.
 
+### Publishers
+
+
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
 
@@ -82,7 +85,7 @@ Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_
 
 Às vezes, o ROS não detectará um novo pacote quando você acabou de criá-lo, então você não poderá fazer um `roslaunch`. Nesse caso, você pode forçar o ROS a atualizar sua lista de pacotes com o comando: `rospack profile`.
 
-[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/catkin_ws/src) um pacote criado.
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/catkin_ws/src) um pacote criado.
 
 ## Os nós do ROS
 Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver quais nós estão realmente em execução em um computador é: `rosnode list`.
