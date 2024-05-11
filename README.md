@@ -26,12 +26,14 @@ Como você pode ter notado, os tópicos lidam com informações por meio de mens
 
 ![tipo de mensagens](https://github.com/marcospontoexe/ROS/blob/main/imagens/tipo%20de%20mensagens.png).
 
-
 As mensagens são definidas em arquivos **.msg**, que estão localizados dentro de um diretório msg de um pacote.
 
 Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_mensagem`.
 
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_publisher_example_pkg) um nó publisher que fica publicando uma menssagens do tipo **Int32*.
+
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_publisher_move_pkg) um nó publisher criado para mover um robo em circulo. O programa em Python cria um nó (move_robot_node) para publicar um objeto (Twist), através do publisher **cmd_vel** para mover o orobo em circulo.  
+
 
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
