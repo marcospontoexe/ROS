@@ -108,6 +108,7 @@ Um servidor de parâmetros é um dicionário que o ROS usa para armazenar parâm
 Para que tudo isso funcione, precisamos ter um roscore em execução. O roscore é o processo principal que gerencia todo o sistema ROS. Você sempre precisa ter um roscore em execução para trabalhar com o ROS. O comando que inicia um roscore é: `roscore`.
 
 Veja um diagrama de um Roscore.
+
 ![roscore diagrama](https://github.com/marcospontoexe/ROS/blob/main/imagens/roscore.jpg).
 
 ## Variáveis de ambiente
