@@ -4,6 +4,8 @@
 ## Tópicos
 O ROS lida quase que inteiramente com suas comunicações por meio de tópicos. Até mesmo sistemas de comunicação mais complexos, como **serviços** ou **ações**, dependem, em última análise, de tópicos. É por isso que eles são tão importantes! Através dos tópicos do ROS, você será capaz, por exemplo, de se comunicar com seu robô para fazê-lo se mover, ler as leituras dos sensores do seu robô e muito mais.
 
+Um tópico é como um canal. Os nós usam tópicos para publicar informações para outros nós para que eles possam se comunicar.
+
 ### Publishers
 
 
