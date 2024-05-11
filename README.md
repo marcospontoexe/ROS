@@ -39,7 +39,9 @@ Este comando publicará a mensagem que você especificar com o valor que você e
 ### Subscriber
 Um Subscriber é um nó que lê informações de um tópico.
 
-[Veja nesse nó do tipo subscriber]() como receber uma mensagem do tipo **Int32** pelo tópico **counter**.
+[Veja nesse nó do tipo subscriber](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_subscriber_example_pkg) como receber uma mensagem do tipo **Int32** pelo tópico **counter**.
+
+[Veja aqui]() um nó subscriber chamado de "odometry_node" que recebe uma mensagem do tipo **Odometry** pelo tópico **odom**.
 
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
@@ -103,7 +105,7 @@ Quando queremos criar pacotes, precisamos trabalhar em um espaço de trabalho RO
 2. Digitar `cd ..` para subir um diretório. Você deverá terminar aqui em `/home/user/catkin_ws`.
 3. Dentro deste espaço de trabalho, há um diretório chamado `src`. Esta pasta conterá todos os pacotes criados. Sempre que você quiser criar um novo pacote, é necessário estar neste diretório (`catkin_ws/src`). Digite no seu terminal `cd src` para mover-se para o diretório de origem.
 4. Agora estamos prontos para criar nosso primeiro pacote! Para criar um pacote, digite no seu terminal: `catkin_create_pkg nome_do_pacote package_dependencies`. O **nome_do_pacote** é o nome do pacote que você deseja criar, e o **package_dependencies** são os nomes de outros pacotes ROS dos quais seu pacote depende.
-5. Isso criará dentro do nosso diretório src um novo pacote com alguns arquivos e diretórios (launch, src, CMakeLists.txt e package.xml).
+5. Isso criará dentro do nosso diretório src um novo pacote com alguns arquivos e diretórios (src, CMakeLists.txt e package.xml).
 
 Para verificar se nosso pacote foi criado com sucesso, podemos usar alguns comandos ROS relacionados a pacotes. Por exemplo, vamos digitar:
 * `rospack list | grep nome_do_pacote`: Para filtrar, de todos os pacotes localizados no sistema ROS, o pacote chamado "nome_do_pacote".
@@ -115,7 +117,7 @@ Dentro do pacote deve conter;
    * A primeira linha do arquivo deve conter **#! /usr/bin/env python **.
    * Deve importar a bilioteca **rospy** (import rospy).
      
-8. Um diretório chamado **lounch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch deve conter algo semelhante com o que foi descrito no tópico a cima; "Como a launch file funciona?".
+8. Um diretório chamado **launch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch deve conter algo semelhante com o que foi descrito no tópico a cima; "Como a launch file funciona?".
 
 Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_pacote nome_package_launch_file.launch`.
 
