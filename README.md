@@ -27,7 +27,7 @@ O ROS utiliza pacotes para organizar seus programas. Você pode pensar em um pac
 * arquivos python,
 * arquivos de configuração,
 * arquivos de compilação,
-* arquivos de lançamento
+* arquivos de lançamento (launch files),
 * arquivos de parâmetros.
 
 Todos esses arquivos no pacote são organizados com a seguinte estrutura:
