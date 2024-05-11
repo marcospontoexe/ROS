@@ -82,4 +82,4 @@ Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_
 
 Às vezes, o ROS não detectará um novo pacote quando você acabou de criá-lo, então você não poderá fazer um `roslaunch`. Nesse caso, você pode forçar o ROS a atualizar sua lista de pacotes com o comando: `rospack profile`.
 
-[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/src) um pacote criado.
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/catkin_ws/src) um pacote criado.
