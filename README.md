@@ -39,7 +39,7 @@ Todos esses arquivos no pacote são organizados com a seguinte estrutura:
 Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**. Ao digitar: `roscd <package_name>`, ele o levará ao diretório onde o pacote package_name está localizado.
 
 ### Como a launch file funciona?
-No launch file, há algumas tags extras para definir parâmetros e redirecionamentos. A tag **param** define um parâmetro no Servidor de Parâmetros, de onde os nós obtêm parâmetros. Muitos nós utilizam parâmetros para evitar modificar o código-fonte, a baixo você pode ver como eles são adicionados.
+No arqivo launch, há algumas tags extras para definir parâmetros e redirecionamentos. A tag **param** define um parâmetro no Servidor de Parâmetros, de onde os nós obtêm parâmetros. Muitos nós utilizam parâmetros para evitar modificar o código-fonte, a baixo você pode ver como eles são adicionados.
 
 ```
 <launch>
@@ -60,4 +60,20 @@ Todos os launch file estão contidos em uma tag **launch**. Dentro dessa tag, vo
 * name="nome_do_nó": Nome do nó ROS que lançará nosso arquivo Python.
 * output="tipo_de_saída": Através de qual canal você imprimirá a saída do arquivo Python.
 
+### Criando um pacote ROS
+Quando queremos criar pacotes, precisamos trabalhar em um espaço de trabalho ROS, conhecido como espaço de trabalho Catkin (**catkin_ws**). Para fazer isso;
+1. Digite **roscd** no shell. Você verá que é direcionado para um diretório `catkin_ws/devel`.
+2. Digitar `cd ..` para subir um diretório. Você deverá terminar aqui em `/home/user/catkin_ws`.
+3. Dentro deste espaço de trabalho, há um diretório chamado `src`. Esta pasta conterá todos os pacotes criados. Sempre que você quiser criar um novo pacote, é necessário estar neste diretório (`catkin_ws/src`). Digite no seu WebShell `cd src` para mover-se para o diretório de origem.
+4. Agora estamos prontos para criar nosso primeiro pacote! Para criar um pacote, digite no seu WebShell: `catkin_create_pkg nome_do_pacote package_dependencies`. O **nome_do_pacote** é o nome do pacote que você deseja criar, e o **package_dependencies** são os nomes de outros pacotes ROS dos quais seu pacote depende.
+5. Isso criará dentro do nosso diretório src um novo pacote com alguns arquivos nele.
 
+Para verificar se nosso pacote foi criado com sucesso, podemos usar alguns comandos ROS relacionados a pacotes. Por exemplo, vamos digitar:
+* `rospack list | grep nome_do_pacote`: Para filtrar, de todos os pacotes localizados no sistema ROS, o pacote chamado "nome_do_pacote".
+* `roscd nome_do_pacote`: Leva você à localização no disco rígido do pacote chamado "nome_do_pacote".
+
+Dentro do pacote deve conter;
+* Um diretório chamado **src**: dentro desse diretório deve ficar o arquivo python. Verifique se o arquivo tem permissão de execusão.
+* Um diretório chamado**lounch**: Dentro desse diretório deve conter um arquivo de extensão **.launch**. O arquivo louch deve conter algo semelhante com o que foi descrito no tópico a cima; "Como a launch file funciona?".
+
+Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_pacote nome_package_launch_file.launch`
