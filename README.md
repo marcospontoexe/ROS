@@ -18,10 +18,7 @@ Alguns comando úteis:
 * Para obter informações sobre um determinado tópico: `rostopic info nome_do_tópico`.
 * Você pode verificar as diferentes opções que o comando rostopic possui usando o próximo comando: `rostopic -h`.
 
-### Publishers
-Um publisher é um nó que fica publicando uma mensagem em um tópico.
-
-## Mensagens
+### Mensagens
 Como você pode ter notado, os tópicos lidam com informações por meio de mensagens. Existem muitos tipos diferentes de mensagens. Você até pode criar suas próprias mensagens, mas é recomendável usar as mensagens padrão do ROS sempre que possível. Veja a baixo os tipos de menssagens padrões do ROS
 
 ![tipo de mensagens](https://github.com/marcospontoexe/ROS/blob/main/imagens/tipo%20de%20mensagens.png).
@@ -30,10 +27,19 @@ As mensagens são definidas em arquivos **.msg**, que estão localizados dentro 
 
 Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_mensagem`.
 
+### Publishers
+Um publisher é um nó que fica publicando uma mensagem em um tópico.
+
+Este comando publicará a mensagem que você especificar com o valor que você especificar, no tópico que você especificar: `rostopic pub topic_name message_type value` (por exemplo `rostopic pub /counter std_msgs/Int32 5`).
+
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_publisher_example_pkg) um nó publisher que fica publicando uma menssagens do tipo **Int32*.
 
-[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_publisher_move_pkg) um nó publisher criado para mover um robo em circulo. O programa em Python cria um nó (move_robot_node) para publicar um objeto (Twist), através do publisher **cmd_vel** para mover o orobo em circulo.  
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_publisher_move_pkg) um nó publisher criado para mover um robo em circulo. O programa em Python cria um nó (move_robot_node) para publicar uma menssagem (Twist), através do tópico **cmd_vel** para mover o robo em circulo. 
 
+### Subscriber
+Um Subscriber é um nó que lê informações de um tópico.
+
+[Veja nesse nó do tipo subscriber]() como receber uma mensagem do tipo **Int32** pelo tópico **counter**.
 
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
