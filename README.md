@@ -83,3 +83,36 @@ Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_
 Às vezes, o ROS não detectará um novo pacote quando você acabou de criá-lo, então você não poderá fazer um `roslaunch`. Nesse caso, você pode forçar o ROS a atualizar sua lista de pacotes com o comando: `rospack profile`.
 
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/catkin_ws/src) um pacote criado.
+
+## Os nós do ROS
+Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver quais nós estão realmente em execução em um computador é: `rosnode list`.
+
+Para ver informações sobre um nó, podemos usar o comando: `rosnode info nome_do_nó`.
+
+## Compilando um pacote
+Quando você cria um pacote, geralmente precisará compilá-lo para fazê-lo funcionar. Existem diferentes métodos que podem ser usados para compilar seus pacotes ROS, o mais comum: **catkin_make**.
+
+Este comando irá compilar todo o seu diretório src, e ele precisa ser executado no seu diretório catkin_ws para funcionar (`cd ~/catkin_ws`). Se você tentar compilar a partir de outro diretório, não funcionará.
+
+Depois de compilar, também é muito importante "sourcer" (fornecer) o seu espaço de trabalho. Isso garantirá que o ROS sempre obtenha as últimas alterações feitas no seu espaço de trabalho: `source devel/setup.bash`.
+
+Às vezes (por exemplo, em projetos grandes), você não vai querer compilar todos os seus pacotes, mas apenas aquele(s) onde você fez alterações. Você pode fazer isso com o seguinte comando: `catkin_make --only-pkg-with-deps <nome_do_pacote>`.
+
+## Parameter Server
+Um servidor de parâmetros é um dicionário que o ROS usa para armazenar parâmetros. Esses parâmetros podem ser usados pelos nós em tempo de execução e são normalmente usados para dados estáticos, como parâmetros de configuração.
+* Para obter uma lista desses parâmetros, você pode digitar: `rosparam list`.
+* Para obter o valor de um parâmetro específico, você pode digitar: `rosparam get nome_do_parâmetro`.
+* E para definir um valor para um parâmetro, você pode digitar: `rosparam set nome_do_parâmetro valor_do_parâmetro`.
+
+## ROS Core
+Para que tudo isso funcione, precisamos ter um roscore em execução. O roscore é o processo principal que gerencia todo o sistema ROS. Você sempre precisa ter um roscore em execução para trabalhar com o ROS. O comando que inicia um roscore é: `roscore`.
+
+Veja um diagrama de um Roscore.
+![roscore diagrama](https://github.com/marcospontoexe/ROS/blob/main/imagens/roscore.jpg).
+
+## Variáveis de ambiente
+O ROS usa um conjunto de variáveis de ambiente do sistema Linux para funcionar corretamente. Você pode verificar essas variáveis digitando: `export | grep ROS`.
+
+As variáveis mais importantes são;
+**ROS_MASTER_URI**: Contém o URL onde o ROS Core está sendo executado. Normalmente, é o próprio computador (localhost).
+**ROS_PACKAGE_PATH**: Contém os caminhos no seu disco rígido onde o ROS possui pacotes.
