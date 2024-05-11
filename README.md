@@ -2,12 +2,34 @@
 É um framework de código aberto utilizado para o desenvolvimento de software para robôs. Embora seja chamado de "sistema operacional", o ROS não é um sistema operacional no sentido tradicional, mas sim um conjunto de ferramentas, bibliotecas e convenções que visam simplificar o desenvolvimento de software para robótica. O ROS fornece funcionalidades como gerenciamento de dispositivos, controle de hardware, troca de mensagens entre processos e visualização de dados, facilitando a criação de sistemas complexos de robótica. Ele é amplamente utilizado na comunidade de pesquisa e desenvolvimento de robótica devido à sua flexibilidade e modularidade.
 
 ## Tópicos
-O ROS lida quase que inteiramente com suas comunicações por meio de tópicos. Até mesmo sistemas de comunicação mais complexos, como **serviços** ou **ações**, dependem, em última análise, de tópicos. É por isso que eles são tão importantes! Através dos tópicos do ROS, você será capaz, por exemplo, de se comunicar com seu robô para fazê-lo se mover, ler as leituras dos sensores do seu robô e muito mais.
+O ROS lida quase que inteiramente com suas comunicações (mensagens) por meio de tópicos. Até mesmo sistemas de comunicação mais complexos, como **serviços** ou **ações**, dependem, em última análise, de tópicos. É por isso que eles são tão importantes! Através dos tópicos do ROS, você será capaz, por exemplo, de se comunicar com seu robô para fazê-lo se mover, ler as leituras dos sensores do seu robô e muito mais.
 
-Um tópico é como um canal. Os nós usam tópicos para publicar informações para outros nós para que eles possam se comunicar.
+Um tópico é um canal, onde outros nós ROS podem tanto publicar quanto ler informações (mensagens) para que eles possam se comunicar.
+
+Você pode solicitar informações sobre um tópico digitando `rostopic info nome_do_tópico`. A saída indica:
+* Type: Tipo de informação publicada, 
+* Publisher: Nó que está publicando essa informação,
+* Subscribers: Se há um nó ouvindo essa informação.
+
+Alguns comando úteis:
+* Para obter uma lista de tópicos disponíveis em um sistema ROS: rostopic list.
+* O comando `rostopic echo /nome_do_tópico` mostra as informações que estão sendo publicadas em um tópico.
+* Para ler apenas a última mensagem publicada em um tópico com o comando: `rostopic echo nome_do_tópico -n1`.
+* Para obter informações sobre um determinado tópico: `rostopic info nome_do_tópico`.
+* Você pode verificar as diferentes opções que o comando rostopic possui usando o próximo comando: `rostopic -h`.
 
 ### Publishers
+Um publisher é um nó que fica publicando uma mensagem em um tópico.
 
+## Mensagens
+Como você pode ter notado, os tópicos lidam com informações por meio de mensagens. Existem muitos tipos diferentes de mensagens. Você até pode criar suas próprias mensagens, mas é recomendável usar as mensagens padrão do ROS sempre que possível. Veja a baixo os tipos de menssagens padrões do ROS
+
+![tipo de mensagens](https://github.com/marcospontoexe/ROS/blob/main/imagens/tipo%20de%20mensagens.png).
+
+
+As mensagens são definidas em arquivos **.msg**, que estão localizados dentro de um diretório msg de um pacote.
+
+Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_mensagem`.
 
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
@@ -92,7 +114,7 @@ Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_
 ## Os nós do ROS
 Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver quais nós estão realmente em execução em um computador é: `rosnode list`.
 
-Para ver informações sobre um nó, podemos usar o comando: `rosnode info nome_do_nó`.
+Para ver informações sobre um nó, podemos usar o comando: `rosnode info nome_do_nó`. 
 
 ## Compilando um pacote
 Quando você cria um pacote, geralmente precisará compilá-lo para fazê-lo funcionar. Existem diferentes métodos que podem ser usados para compilar seus pacotes ROS, o mais comum: **catkin_make**.
@@ -122,3 +144,4 @@ O ROS usa um conjunto de variáveis de ambiente do sistema Linux para funcionar 
 As variáveis mais importantes são;
 **ROS_MASTER_URI**: Contém o URL onde o ROS Core está sendo executado. Normalmente, é o próprio computador (localhost).
 **ROS_PACKAGE_PATH**: Contém os caminhos no seu disco rígido onde o ROS possui pacotes.
+
