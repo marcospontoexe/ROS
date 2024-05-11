@@ -31,6 +31,8 @@ As mensagens são definidas em arquivos **.msg**, que estão localizados dentro 
 
 Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_mensagem`.
 
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_publisher_example_pkg) um nó publisher que fica publicando uma menssagens do tipo **Int32*.
+
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
 
