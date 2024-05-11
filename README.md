@@ -17,7 +17,7 @@ O ROS também fornece ações. As ações são semelhantes aos serviços, no sen
 Há outras diferenças, como uma ação permitindo que você forneça feedback enquanto a ação está sendo realizada.
 
 ##  Launch files
-Um programa ROS é executado usando alguns arquivos especiais chamados launch files. A estrutura do comando roslaunch é a seguinte: `roslaunch <package_name> <launch_file>`.
+Um programa ROS é executado usando alguns arquivos especiais chamados launch files, que ficam dentro dos pacotes. A estrutura do comando roslaunch é a seguinte: `roslaunch <package_name> <launch_file>`.
 * package_name: Especifica o nome do pacote ROS contendo o launch files.
 * launch_file:  E o nome do launch file em si.(que está armazenado dentro do pacote).
 
