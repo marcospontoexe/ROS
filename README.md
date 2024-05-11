@@ -85,7 +85,7 @@ Para executar o programa criado no pacote, execute o comando `roslaunch nome_do_
 
 Às vezes, o ROS não detectará um novo pacote quando você acabou de criá-lo, então você não poderá fazer um `roslaunch`. Nesse caso, você pode forçar o ROS a atualizar sua lista de pacotes com o comando: `rospack profile`.
 
-[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/catkin_ws/src) um pacote criado.
+[Veja nesse diretório](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos) exemplo de pacotes criados.
 
 ## Os nós do ROS
 Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver quais nós estão realmente em execução em um computador é: `rosnode list`.
