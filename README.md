@@ -36,6 +36,16 @@ Para criar uma nova mensagem, você precisará seguir os seguintes passos:
 5. Compile.
 6. Use no código.
 
+Por exemplo, vamos criar uma mensagem que indica a idade, com anos, meses e dias.
+
+##### Criando um arquivo.msg
+Dentro do diretório "msg" crie um arquivo com extensão **.msg**, e coloque as variáveis usadas nesse arquivo, para o nosso exemplo veja a baixo:
+```
+float32 years
+float32 months
+float32 days
+```
+
 ##### Modificando o arquivo **CMakeLists.txt**
 Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
 1. find_package(): Aqui é onde todos os pacotes necessários para COMPILAR as mensagens dos tópicos, serviços e ações são inseridos. No package.xml, você precisa declará-los como build_depend.
@@ -44,13 +54,46 @@ Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
       find_package(catkin REQUIRED COMPONENTS
         rospy
         std_msgs
-        message_generation   # Add message_generation here, after the other packages
+        message_generation   # Adicione message_generation aqui, depois dos outros pacotes
       )
     ```
-2. add_message_files()
-3. generate_messages()
-4. catkin_package()
+2. add_message_files(): Essa função inclui todas as mensagens deste pacote (na pasta msg) para serem compiladas. O arquivo deve se parecer com isso.
+    ```
+    add_message_files(
+      FILES
+      Age.msg
+    ) # Não esqueça de DESCOMENTAR essa função
+    ```
+3. generate_messages(): Aqui é onde os pacotes necessários para a compilação das mensagens são importados.
+    ```
+    generate_messages(
+      DEPENDENCIES
+      std_msgs
+    ) # Não esqueça de DESCOMENTAR essa função
+    ```
+4. catkin_package(): Aqui são listados todos os pacotes que serão necessários para alguém que execute algo do seu pacote. Todos os pacotes listados aqui devem estar no package.xml como **exec_depend**.
+    ```
+    catkin_package(
+      CATKIN_DEPENDS rospy message_runtime   
+    )
+    ```
 
+##### Modificando o arquivo **package.xml**
+Basta adicionar estas 3 linhas detro da tag "package" do arquivo package.xml.
+```
+<build_depend>message_generation</build_depend> 
+
+<build_export_depend>message_runtime</build_export_depend>
+<exec_depend>message_runtime</exec_depend>
+```
+
+##### Compilando 
+Agora você precisa compilar as mensagens. Para fazer isso, digite no terminal:
+1. `roscd; cd ..`
+2. `catkin_make`
+3. `source devel/setup.bash`, Isso executa este arquivo bash que configura, entre outras coisas, as novas mensagens geradas criadas através do catkin_make. Se você não fizer isso, pode ocorrer um erro de importação em Python, dizendo que não encontra a mensagem gerada.
+
+Para verificar se sua mensagem foi criada com sucesso, digite em seu terminal `rosmsg show nome_da_mensagem criada` (para esse exemplo `rosmsg show Age`). Se a estrutura da mensagem aparecer, significa que sua mensagem foi criada com sucesso e está pronta para ser usada em seus programas ROS.
 
 ### Publishers
 Um publisher é um nó que fica publicando uma mensagem em um tópico.
