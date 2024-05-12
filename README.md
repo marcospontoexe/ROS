@@ -36,6 +36,8 @@ Para criar uma nova mensagem, você precisará seguir os seguintes passos:
 5. Compile.
 6. Use no código.
 
+**Atenção** existe um problema no ROS que pode causar problemas ao importar mensagens do diretório msg. Se o nome do seu pacote for o mesmo que o do arquivo Python que importa a mensagem, isso causará um erro dizendo que não encontra o elemento msg. Isso ocorre devido à forma como o Python funciona. Portanto, você deve ter cuidado para não nomear o arquivo Python exatamente igual ao seu pacote pai. Isso causará um erro de importação porque ele tentará importar a mensagem do arquivo my_package.py, de um diretório .msg que não existe.
+
 Por exemplo, vamos criar uma mensagem que indica a idade, com anos, meses e dias.
 
 ##### Criando um arquivo.msg
