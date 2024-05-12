@@ -39,14 +39,14 @@ Para criar uma nova mensagem, você precisará seguir os seguintes passos:
 ##### Modificando o arquivo **CMakeLists.txt**
 Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
 1. find_package(): Aqui é onde todos os pacotes necessários para COMPILAR as mensagens dos tópicos, serviços e ações são inseridos. No package.xml, você precisa declará-los como build_depend.
-  * DICA 1: Se você abrir o arquivo CMakeLists.txt no seu IDE, verá que quase todo o arquivo está comentado. Isso inclui algumas das linhas que você terá que modificar. Em vez de copiar e colar as linhas abaixo, encontre os equivalentes no arquivo e descomente-os, e depois adicione as partes que estão faltando.
-  ```
-    find_package(catkin REQUIRED COMPONENTS
-      rospy
-      std_msgs
-      message_generation   # Add message_generation here, after the other packages
-    )
-  ```
+    * DICA 1: Se você abrir o arquivo CMakeLists.txt no seu IDE, verá que quase todo o arquivo está comentado. Isso inclui algumas das linhas que você terá que modificar. Em vez de copiar e colar as linhas abaixo, encontre os equivalentes no arquivo e descomente-os, e depois adicione as partes que estão faltando.
+    ```
+      find_package(catkin REQUIRED COMPONENTS
+        rospy
+        std_msgs
+        message_generation   # Add message_generation here, after the other packages
+      )
+    ```
 2. add_message_files()
 3. generate_messages()
 4. catkin_package()
