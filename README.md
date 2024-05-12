@@ -31,10 +31,27 @@ Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_
 Para criar uma nova mensagem, você precisará seguir os seguintes passos:
 1. Crie um diretório chamado **msg** dentro do seu pacote.
 2. Dentro deste diretório, crie um arquivo chamado **Nome_da_sua_mensagem.msg**.
-3. Modifique o arquivo CMakeLists.txt.
+3. Modifique o arquivo CMakeLists.txt. 
 4. Modifique o arquivo package.xml.
 5. Compile.
 6. Use no código.
+
+##### Modificando o arquivo **CMakeLists.txt**
+Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
+* find_package(): Aqui é onde todos os pacotes necessários para COMPILAR as mensagens dos tópicos, serviços e ações são inseridos. No package.xml, você precisa declará-los como build_depend.
+  * DICA 1: Se você abrir o arquivo CMakeLists.txt no seu IDE, verá que quase todo o arquivo está comentado. Isso inclui algumas das linhas que você terá que modificar. Em vez de copiar e colar as linhas abaixo, encontre os equivalentes no arquivo e descomente-os, e depois adicione as partes que estão faltando.
+  ```
+    find_package(catkin REQUIRED COMPONENTS
+      rospy
+      std_msgs
+      message_generation   # Add message_generation here, after the other packages
+    )
+  ```
+
+* add_message_files()
+* generate_messages()
+* catkin_package()
+
 
 ### Publishers
 Um publisher é um nó que fica publicando uma mensagem em um tópico.
