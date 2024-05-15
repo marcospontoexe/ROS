@@ -97,8 +97,6 @@ Agora você precisa compilar as mensagens. Para fazer isso, digite no terminal:
 
 Para verificar se sua mensagem foi criada com sucesso, digite em seu terminal `rosmsg show nome_da_mensagem_criada` (para esse exemplo `rosmsg show Age`). Se a estrutura da mensagem aparecer, significa que sua mensagem foi criada com sucesso e está pronta para ser usada em seus programas ROS.
 
-
-
 [Veja nesse nó](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_subscriber_odometry_pkg) um mensagem do tipo float32 criada para indicar a idade, com anos, meses e dias.
 
 ### Publishers
@@ -116,6 +114,17 @@ Um Subscriber é um nó que lê informações de um tópico.
 [Veja nesse nó do tipo subscriber](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_subscriber_example_pkg) como receber uma mensagem do tipo **Int32** pelo tópico **counter**.
 
 [Veja aqui](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_subscriber_odometry_pkg) um nó subscriber chamado de "odometry_node" que recebe uma mensagem do tipo **Odometry** pelo tópico **odom**.
+
+[Veja o quiz](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/topics_quiz) proposto no módulo cinco do curso ["ROS basics in 5 dyas (python)"](https://app.theconstruct.ai/courses/55). O quiz propoem criar um nó para guiar o robo.
+1. Crie um Publisher que escreva no tópico /cmd_vel para movimentar o robô.
+2. Crie um Subscriber que leia do tópico /kobuki/laser/scan. Este é o tópico onde o laser publica seus dados.
+3. Dependendo das leituras que você receber do tópico do laser, você terá que alterar os dados que está enviando para o tópico /cmd_vel para evitar a parede. Isso significa usar os valores do laser para decidir.
+
+Seu programa deve seguir a seguinte lógica:
+1. Se a leitura do laser à frente do robô for superior a 1 metro, o robô avançará.
+2. Se a leitura do laser à frente do robô for inferior a 1 metro, o robô virará à esquerda.
+3. Se a leitura do laser ao lado direito do robô for inferior a 1 metro, o robô virará à esquerda.
+4. Se a leitura do laser ao lado esquerdo do robô for inferior a 1 metro, o robô virará à direita.
 
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
