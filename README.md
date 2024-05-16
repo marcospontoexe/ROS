@@ -160,7 +160,16 @@ Response é a parte da mensagem de serviço que define como o seu serviço respo
 
 Sempre que uma mensagem de serviço é compilada, é retornado três objetos:
 1. A própria mensagem de serviço: É usado para criar uma conexão com o servidor de serviço, como demonstrado no exemplo anterior: ``` traj_by_name_service = rospy.ServiceProxy('/trajectory_by_name', TrajByName)```.
-2. MyServiceMessageRequest: Este é o objeto usado para criar uma solicitação a ser enviada ao servidor. Assim como seu navegador da web (um cliente) se conecta a um servidor web para solicitar páginas da web, usando objetos HttpRequest. Portanto, este objeto é usado para enviar uma solicitação para o servidor de serviço, como você viu no Programa Python {5.5}:
+2. MyServiceMessageRequest: Este é o objeto usado para criar uma solicitação a ser enviada ao servidor. Portanto, este objeto é usado para enviar uma solicitação para o servidor de serviço, como demonstrado no exemplo anterior:
+    ```
+    # Create an object of type TrajByNameRequest
+    traj_by_name_object = TrajByNameRequest()
+    # Fill the variable traj_name of this object with the desired value
+    traj_by_name_object.traj_name = "release_food"
+    # Send through the connection the name of the trajectory to be executed by the robot
+    result = traj_by_name_service(traj_by_name_object)
+    ```
+3. MyServiceMessageResponse: Este é o objeto usado para enviar uma resposta do servidor de volta para o cliente, sempre que o serviço termina. 
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
