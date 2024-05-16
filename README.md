@@ -150,9 +150,17 @@ Arquivos de mensagem de serviço têm a extensão **.srv** e são definidos dent
 
 Para explorar a estrutura de uma mensagem de serviço use o comando comando `rossrv show name_of_the_package/Name_of_Service_message`. Name_of_Service_message é o Nome_do_Arquivo_onde_a_mensagem_do_Serviço_é_definida, mostrado pelo comando (`rosservice info /name_of_your_service`). Na imagens a baixo é mostrado o resutado dos dois comandos.
 
-![estrutura de uma mensagem de serviço](https://github.com/marcospontoexe/ROS/blob/main/imagens/mensagem%20de%20um%20servi%C3%A7o.png).
+![estrutura de uma mensagem de serviço](https://github.com/marcospontoexe/ROS/blob/main/imagens/mensagem%20de%20um%20servi%C3%A7o.png)
 
 As mensagens de um serviço tem duas partes **Request** e **Response**. Na figura a cima, request contém uma string chamada "traj_name" e response é composta por um booleano chamado "success" e uma string chamada "status_message".
+
+Request é a parte da mensagem que significa quais variáveis você terá que passar para o Servidor de Serviço para que ele seja capaz de concluir sua tarefa.
+
+Response é a parte da mensagem de serviço que define como o seu serviço responderá após concluir sua funcionalidade. Se, por exemplo, ele retornará uma string com uma mensagem específica dizendo que tudo correu bem, ou se não retornará nada, etc...
+
+Sempre que uma mensagem de serviço é compilada, é retornado três objetos:
+1. A própria mensagem de serviço: É usado para criar uma conexão com o servidor de serviço, como demonstrado no exemplo anterior: ``` traj_by_name_service = rospy.ServiceProxy('/trajectory_by_name', TrajByName)```.
+2. MyServiceMessageRequest: Este é o objeto usado para criar uma solicitação a ser enviada ao servidor. Assim como seu navegador da web (um cliente) se conecta a um servidor web para solicitar páginas da web, usando objetos HttpRequest. Portanto, este objeto é usado para enviar uma solicitação para o servidor de serviço, como você viu no Programa Python {5.5}:
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
