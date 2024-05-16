@@ -150,7 +150,7 @@ Arquivos de mensagem de serviço têm a extensão **.srv** e são definidos dent
 
 Para explorar a estrutura de uma mensagem de serviço use o comando comando `rossrv show name_of_the_package/Name_of_Service_message`. Name_of_Service_message é o Nome_do_Arquivo_onde_a_mensagem_do_Serviço_é_definida, mostrado pelo comando (`rosservice info /name_of_your_service`). Na imagens a baixo é mostrado o resutado dos dois comandos.
 
-1[estrutura de uma mensagem de serviço](https://github.com/marcospontoexe/ROS/blob/main/imagens/mensagem%20de%20um%20servi%C3%A7o.png).
+![estrutura de uma mensagem de serviço](https://github.com/marcospontoexe/ROS/blob/main/imagens/mensagem%20de%20um%20servi%C3%A7o.png).
 
 As mensagens de um serviço tem duas partes **Request** e **Response**. Na figura a cima, request contém uma string chamada "traj_name" e response é composta por um booleano chamado "success" e uma string chamada "status_message".
 
