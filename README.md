@@ -129,16 +129,24 @@ Seu programa deve seguir a seguinte lógica:
 ## Serviços
 Os serviços permitem que você desenvolva uma funcionalidade específica para seu robô e depois a disponibilize para que qualquer pessoa possa chamá-la. Por exemplo, você poderia criar um serviço que faça seu robô se mover por um período específico de tempo e depois parar.
 
-Os serviços são estruturados em duas partes. De um lado, você tem o **Servidor de Serviço**, que fornece a funcionalidade para qualquer pessoa que queira usá-la (chamá-la). Do outro lado, você tem o **Cliente de Serviço**, que é aquele que faz a chamada/solicitação da funcionalidade do serviço.
+Os serviços são um pouco mais complexos do que os tópicos, pois são estruturados em duas partes. De um lado, você tem o **Servidor de Serviço**, que fornece a funcionalidade para qualquer pessoa que queira usá-la (chamá-la). Do outro lado, você tem o **Cliente de Serviço**, que é aquele que faz a chamada/solicitação da funcionalidade do serviço.
 
 O serviço deve estar em funcionamento antes que você possa chamá-lo. Portanto, certifique-se de ter iniciado o serviço antes de chamá-lo.
 
-Os serviços são síncronos. Quando seu programa ROS chama um serviço, seu programa não pode continuar até receber um resultado do serviço."
+Para visualizar a lista de serviços ativos digite o comando `rosservice list`.
+
+Para ter informações sobre um serviço digite `rosservice info /name_of_your_service`. Este comando retorna quatro dados:
+* Node: Indica o nó que fornece (criou) esse serviço.
+* URI: O URI onde o serviço pode ser acessado.
+* Type: Refere-se ao tipo de mensagem usada por este serviço. Tem a mesma estrutura que os tópicos. É sempre composto por pacote_onde_a_mensagem_do_serviço_é_definida / Nome_do_Arquivo_onde_a_mensagem_do_Serviço_é_definida.
+* Args: Aqui você pode encontrar os argumentos que este serviço aceita quando é chamado (valor, path, comando). 
+
+Você pode chamar um serviço manualmente a partir do terminal. Isso é muito útil para testes e para ter uma ideia básica de como o serviço funciona: `rosservice call /the_service_name TAB+TAB`. Quando você pressiona [TAB]+[TAB] rapidamente, um elemento extra aparece (**"traj_name: ''"**), coloque o nome da função desejada a ser executada pelo serviço dentro das aspas simples.
+
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_client_example_pkg) um **cliente de serviço** criado para . Para executar o cliente de serviço, o **servidor de serviço** deve estar rodando, execute o servidor de serviço com o comando: `roslaunch trajectory_by_name start_service.launch`.
 
 ## Ações
-O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. 
-
-Ações são assíncronas. É como lançar uma nova thread. Quando seu programa ROS chama uma ação, seu programa pode realizar outras tarefas enquanto a ação está sendo executada em outra thread.
+O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
 
 Há outras diferenças, como uma ação permitindo que você forneça feedback enquanto a ação está sendo realizada.
 
