@@ -260,6 +260,8 @@ Nós do ROS são basicamente programas feitos no ROS. O comando ROS para ver qua
 
 Para ver informações sobre um nó, podemos usar o comando: `rosnode info nome_do_nó`. 
 
+**rosrun** permite executar um nó de forma simples, sem a necessidade de especificar o caminho completo para o executável. Você só precisa fornecer o nome do pacote e o nome do nó: `rosrun nome_do_pacote nome_do_nó`. É possível passar argumentos adicionais ao nó que está sendo executado. Por exemplo: `rosrun turtlesim turtle_teleop_key _param:=value`, "_param:=value" define um parâmetro ROS específico que será passado ao nó.
+
 ## Parameter Server
 Um servidor de parâmetros é um dicionário que o ROS usa para armazenar parâmetros. Esses parâmetros podem ser usados pelos nós em tempo de execução e são normalmente usados para dados estáticos, como parâmetros de configuração.
 * Para obter uma lista desses parâmetros, você pode digitar: `rosparam list`.
