@@ -145,7 +145,7 @@ Você pode chamar um serviço manualmente a partir do terminal. Isso é muito ú
 
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_client_example_pkg) um **cliente de serviço** criado para . Para executar o cliente de serviço, o **servidor de serviço** deve estar rodando, execute o servidor de serviço com o comando: `roslaunch trajectory_by_name start_service.launch`.
 
-[Esse exemplo]() inicia o serviço "execute_trajectory", que é inicializado pela launch "start_service", que está no pacote "iri_wam_reproduce_trajectory". 
+[Esse exemplo]() inicia o serviço "execute_trajectory", que é inicializado pela launch "start_service", que está no pacote "iri_wam_reproduce_trajectory". Ao iniciar o serviço cliente "execute_trajectory", o arquivo python realiza uma conexão com "execute_trajectory" e inicia uma mensagem de serviço do tipo "ExecTraj", do pacote "iri_wam_reproduce_trajectory", para fazer o braço do robô se mover seguindo uma trajetória especificada em um arquivo, que é solicitado pelo Request do serviço "execute_trajectory".
 
 ### Mensagens de um serviço
 Arquivos de mensagem de serviço têm a extensão **.srv** e são definidos dentro de um diretório chamado **srv**.
