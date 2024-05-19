@@ -1,2 +1,2 @@
-para este cliente de serviço funcionar, o servidor de serviço deve estar rodando.
-execute o servidor de serviço com o comando: roslaunch trajectory_by_name start_service.launch
+Para enviar a mensagem de serviço, o serviço deve estar em execução. 
+Execute o serviço com o comando: roslaunch trajectory_by_name start_service.launch.
