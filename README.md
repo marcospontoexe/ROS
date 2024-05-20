@@ -149,6 +149,9 @@ Você pode chamar um serviço manualmente a partir do terminal. Isso é muito ú
 
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_server_example_pkg) um servidor de serviços chamado "my_service" que recebe uma mensagem de servido *Request* do tipo "Empty", e envia uma mensagem de serviço *Response* do tipo EmptyResponse.
 
+[Nesse exemplo]() a launch "start_bb8_move_in_circle_service_server" inicia um servidor de serviço chamado "move_bb8_in_circle", que aceita uma mensagem de serviço vazia e ativa o movimento circular do robo, através da mensagem "Twist" enviada para o tópico "cmd_vel". A launch "call_bb8_move_in_circle_service_server" inicia um cliente de serviço que chama o serviço "move_bb8_in_circle" iniciado pela launch "start_bb8_move_in_circle_service_server". Para o cliente de serviço rodar é necessário ter iniado o servidor de serviço.
+
+
 ### Mensagens de um serviço
 Arquivos de mensagem de serviço têm a extensão **.srv** e são definidos dentro de um diretório chamado **srv**.
 
