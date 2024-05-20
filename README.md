@@ -143,7 +143,11 @@ Para ter informações sobre um serviço digite `rosservice info /name_of_your_s
 
 Você pode chamar um serviço manualmente a partir do terminal. Isso é muito útil para testes e para ter uma ideia básica de como o serviço funciona: `rosservice call /the_service_name TAB+TAB`. Quando você pressiona [TAB]+[TAB] rapidamente, um elemento extra aparece (**"traj_name: ''"**), coloque o nome da função desejada a ser executada pelo serviço dentro das aspas simples.
 
-[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_client_example_pkg) um **cliente de serviço** criado para . Para executar o cliente de serviço, o **servidor de serviço** deve estar rodando, execute o servidor de serviço com o comando: `roslaunch trajectory_by_name start_service.launch`.
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_client_example_pkg) como enviar um Request de um serviço do tipo cliente através de uma mensagem de serviço. Para enviar a mensagem de serviço, o serviço deve estar em execução. Execute o serviço com o comando: `roslaunch trajectory_by_name start_service.launch`.
+
+[Esse exemplo](move_arm) inicia o serviço "execute_trajectory", que é inicializado pela launch "start_service", que está no pacote "iri_wam_reproduce_trajectory". Ao iniciar o serviço cliente "execute_trajectory", o arquivo python realiza uma conexão com "execute_trajectory" e inicia uma mensagem de serviço do tipo "ExecTraj", do pacote "iri_wam_reproduce_trajectory", para fazer o braço do robô se mover seguindo uma trajetória especificada em um arquivo, que é solicitado pelo Request do serviço "execute_trajectory".
+
+[Veja nesse exemplo](my_service_server_example_pkg) um servidor de serviços chamado "my_service" que recebe uma mensagem de servido *Request* do tipo "Empty", e envia uma mensagem de serviço *Response* do tipo EmptyResponse.
 
 ### Mensagens de um serviço
 Arquivos de mensagem de serviço têm a extensão **.srv** e são definidos dentro de um diretório chamado **srv**.
