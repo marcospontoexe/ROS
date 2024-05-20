@@ -1,0 +1,8 @@
+<launch>
+  <!-- Here will go our python script that calls the execute_trajectory service -->
+  <node pkg ="move_around_server_pkg"
+        type="bb8_move_in_circle_service_server.py"
+        name="service_server_move_bb8_node"
+        output="screen">
+  </node>
+</launch>
