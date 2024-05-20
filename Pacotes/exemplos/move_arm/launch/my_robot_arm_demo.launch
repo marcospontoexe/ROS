@@ -1,0 +1,11 @@
+<launch>
+  <!-- inicia a launch "start_service.launch" localizada no pacote  "iri_wam_reproduce_trajectory"-->
+  <include file="$(find iri_wam_reproduce_trajectory)/launch/start_service.launch"/>
+
+  <!-- Here will go our python script that calls the execute_trajectory service -->
+  <node pkg ="move_arm"
+        type="moveArm.py"
+        name="service_execute_trajectory_client"
+        output="screen">
+  </node>
+</launch>
