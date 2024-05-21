@@ -390,3 +390,58 @@ As variáveis mais importantes são;
 **ROS_MASTER_URI**: Contém o URL onde o ROS Core está sendo executado. Normalmente, é o próprio computador (localhost).
 **ROS_PACKAGE_PATH**: Contém os caminhos no seu disco rígido onde o ROS possui pacotes.
 
+# NAVEGAÇÃO
+
+## Criando um mapa global
+1. Inicie o nó "slam_gmapping", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
+2. Em outro terminal use o **teleOP** para navegar pelo ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
+3. Em outro terminal abra o **RViz** (`roslaunch turtlebot_rviz_launchers view_mapping.launch`) para ver o mapa sendo criado.
+
+## Localização
+Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento. 
+
+1. Execute o comando `roslaunch turtlebot_navigation_gazebo amcl_demo.launch` para iniciar a demonstração de Localização.
+2. Execute o TeleOP em outro terminal para navegar pelo ambiente `roslaunch turtlebot_teleop keyboard_teleop.launch`.
+3. Inicie o Rviz em outro terminal para ver a localização do robo em tempo real: `roslaunch turtlebot_rviz_launchers view_localization.launch`.
+
+## Path Planning
+Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga ao robô ONDE ir, inicialmente, e COMO chegar lá, finalmente. No ROS, chamamos esse sistema de Planejamento de Trajetórias (Path Planning).
+
+O path planning basicamente recebe como entrada a localização atual do robô e a posição para onde o robô deseja ir, e nos fornece como saída o caminho melhor e mais rápido para alcançar esse ponto.
+
+1. Execute `roslaunch turtlebot_navigation_gazebo move_base_demo.launch` para iniciar um Path Planning.
+2. Execute em outro terminal o RViz `roslaunch turtlebot_rviz_launchers view_planning.launch`.
+3. Uso o botão "2D Nav Goal" do RViz para indicar o ponto de chegada do robô.
+
+## Configurando o robô
+No sistema de mapeamento, se não informarmos ao sistema ONDE o robô possui o laser montado, qual é a orientação do laser, qual é a posição das rodas no robô, etc., ele não conseguirá criar um mapa bom e preciso. 
+
+A configuração e definição do robô são feitas nos arquivos URDF do robô. URDF (Unified Robot Description Format) é um formato XML que descreve o modelo de um robô. Ele define suas diferentes partes, dimensões, cinemática, dinâmica, sensores, etc...
+
+Veja no exemplo a baixo como o laser do robô Kobuki é definido no arquivo URDF do robô:
+    ```
+    <joint name="laser_sensor_joint" type="fixed">
+        <origin xyz="0.0 0.0 0.435" rpy="0 0 0"/>
+        <parent link="base_link"/>
+        <child link="laser_sensor_link"/>
+    </joint>
+    <link name="laser_sensor_link">
+            <inertial>
+                    <mass value="1e-5"/>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+            </inertial>
+            <collision>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                    <geometry>
+                            <box size="0.1 0.1 0.1"/>
+                    </geometry>
+            </collision>
+            <visual>
+                    <origin xyz="0 0 0" rpy="0 0 0"/>
+                    <geometry>
+                            <mesh filename="package://hokuyo/meshes/hokuyo.dae"/>
+                    </geometry>
+            </visual>
+    </link>
+    ```
