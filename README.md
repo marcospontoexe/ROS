@@ -187,7 +187,7 @@ Você pode colocar quantas variáveis precisar, de qualquer tipo suportado pelo 
       int32 duration    # The time (in seconds) during which BB-8 will keep moving in circles
       ---
       bool success      # Did it achieve it?
-```
+      ```
 3. Edite o arquivo "CMakeLists.txt".
 4. Edite o arquivo "package.xml".
 
@@ -201,7 +201,6 @@ Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
       message_generation
       )
       ```
-
 2. **add_service_files()**: Esta função contém uma lista de todas as mensagens de serviço definidas neste pacote (definidas na pasta srv). Por exemplo:
       ```
       add_service_files(
@@ -209,15 +208,13 @@ Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
       MyCustomServiceMessage.srv
       )
       ```
-
 3. **generate_messages()**: Aqui é onde os pacotes necessários para a compilação das mensagens de serviço são importados.
       ```
       generate_messages(
       DEPENDENCIES
       std_msgs
       )
-      ```
-  
+      ```  
 4. **catkin_package()**: Liste aqui todos os pacotes que serão necessários para quem executar algo do seu pacote. Todos os pacotes mencionados aqui devem estar no arquivo package.xml como <exec_depend>.
       ```
       catkin_package(
