@@ -265,6 +265,10 @@ Depois de terminar de editar o arquivo, tera algo parecido com isso:
     )
     ```
 
+#### Editando o arquivo package.xml
+1. Adicione todos os pacotes necessários para compilar as mensagens. Neste caso, você só precisa adicionar o message_generation. Você terá que importar esses pacotes como <build_depend>.
+
+
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
 
