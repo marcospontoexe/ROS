@@ -178,7 +178,7 @@ Sempre que uma mensagem de serviço é compilada, é retornado três objetos:
     ```
 3. MyServiceMessageResponse: Este é o objeto usado para enviar uma resposta do servidor de volta para o cliente, sempre que o serviço termina. 
 
-#### Criando um mensagem de serviço
+### Criando um mensagem de serviço
 Você pode colocar quantas variáveis precisar, de qualquer tipo suportado pelo ROS.
 
 1. Crie uma pasta **srv** dentro do seu pacote. Em seguida, dentro dessa pasta srv, crie um arquivo chamado **MyCustomServiceMessage.srv**. 
@@ -188,6 +188,44 @@ Você pode colocar quantas variáveis precisar, de qualquer tipo suportado pelo 
       ---
       bool success      # Did it achieve it?
 ```
+3. Edite o arquivo "CMakeLists.txt".
+4. Edite o arquivo "package.xml".
+
+#### Editando o arquivo package.xml.
+Você terá que editar quatro funções dentro do arquivo CMakeLists.txt: 
+
+1. **find_package()**: Todos os pacotes necessários para COMPILAR as mensagens de tópicos, serviços e ações vão aqui. Ele está apenas obtendo seus caminhos e não realmente importando-os para serem usados na compilação. Os mesmos pacotes que você escreve aqui irão para o package.xml, declarando-os como build_depend.
+      ```
+      find_package(catkin REQUIRED COMPONENTS
+      std_msgs
+      message_generation
+      )
+      ```
+
+2. **add_service_files()**: Esta função contém uma lista de todas as mensagens de serviço definidas neste pacote (definidas na pasta srv). Por exemplo:
+      ```
+      add_service_files(
+      FILES
+      MyCustomServiceMessage.srv
+      )
+      ```
+
+3. **generate_messages()**: Aqui é onde os pacotes necessários para a compilação das mensagens de serviço são importados.
+      ```
+      generate_messages(
+      DEPENDENCIES
+      std_msgs
+      )
+      ```
+  
+4. **catkin_package()**: Liste aqui todos os pacotes que serão necessários para quem executar algo do seu pacote. Todos os pacotes mencionados aqui devem estar no arquivo package.xml como <exec_depend>.
+      ```
+      catkin_package(
+      CATKIN_DEPENDS
+      rospy
+      )
+      ```
+
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
