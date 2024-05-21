@@ -149,7 +149,7 @@ Você pode chamar um serviço manualmente a partir do terminal. Isso é muito ú
 
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_server_example_pkg) um servidor de serviços chamado "my_service" que recebe uma mensagem de servido *Request* do tipo "Empty", e envia uma mensagem de serviço *Response* do tipo EmptyResponse.
 
-[Nesse exemplo]() a launch "start_bb8_move_in_circle_service_server" inicia um servidor de serviço chamado "move_bb8_in_circle", que aceita uma mensagem de serviço vazia e ativa o movimento circular do robo, através da mensagem "Twist" enviada para o tópico "cmd_vel". A launch "call_bb8_move_in_circle_service_server" inicia um cliente de serviço que chama o serviço "move_bb8_in_circle" iniciado pela launch "start_bb8_move_in_circle_service_server". Para o cliente de serviço rodar é necessário ter iniado o servidor de serviço.
+[Nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_around_server_pkg) a launch "start_bb8_move_in_circle_service_server" inicia um servidor de serviço chamado "move_bb8_in_circle", que aceita uma mensagem de serviço vazia e ativa o movimento circular do robo, através da mensagem "Twist" enviada para o tópico "cmd_vel". A launch "call_bb8_move_in_circle_service_server" inicia um cliente de serviço que chama o serviço "move_bb8_in_circle" iniciado pela launch "start_bb8_move_in_circle_service_server". Para o cliente de serviço rodar é necessário ter iniado o servidor de serviço.
 
 
 ### Mensagens de um serviço
@@ -177,6 +177,17 @@ Sempre que uma mensagem de serviço é compilada, é retornado três objetos:
     result = traj_by_name_service(traj_by_name_object)
     ```
 3. MyServiceMessageResponse: Este é o objeto usado para enviar uma resposta do servidor de volta para o cliente, sempre que o serviço termina. 
+
+#### Criando um mensagem de serviço
+Você pode colocar quantas variáveis precisar, de qualquer tipo suportado pelo ROS.
+
+1. Crie uma pasta **srv** dentro do seu pacote. Em seguida, dentro dessa pasta srv, crie um arquivo chamado **MyCustomServiceMessage.srv**. 
+2. Dentro de MyCustomServiceMessage.srv coloque suas variáveis de Request e Response, como no exemplo a baixo:
+      ```
+      int32 duration    # The time (in seconds) during which BB-8 will keep moving in circles
+      ---
+      bool success      # Did it achieve it?
+```
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
