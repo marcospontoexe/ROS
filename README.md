@@ -425,6 +425,7 @@ Veja no exemplo a baixo como o laser do robô Kobuki é definido no arquivo URDF
         <parent link="base_link"/>
         <child link="laser_sensor_link"/>
     </joint>
+    
     <link name="laser_sensor_link">
             <inertial>
                     <mass value="1e-5"/>
