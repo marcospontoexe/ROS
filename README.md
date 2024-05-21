@@ -257,16 +257,16 @@ Para acessar qualquer pacote do ROS, o ROS oferece um comando chamado **roscd**.
 ### Como a launch file funciona?
 No arqivo launch, há algumas tags extras para definir parâmetros e redirecionamentos. A tag **param** define um parâmetro no Servidor de Parâmetros, de onde os nós obtêm parâmetros. Muitos nós utilizam parâmetros para evitar modificar o código-fonte, a baixo você pode ver como eles são adicionados.
 
-```
-<launch>
-  <!-- turtlebot_teleop_key already has its own built in velocity smoother -->
-  <node pkg="turtlebot_teleop" type="turtlebot_teleop_key.py" name="turtlebot_teleop_keyboard"  output="screen">
-    <param name="scale_linear" value="0.5" type="double"/>
-    <param name="scale_angular" value="1.5" type="double"/>
-    <remap from="turtlebot_teleop_keyboard/cmd_vel" to="/cmd_vel"/>   <!-- cmd_vel_mux/input/teleop"/-->
-  </node>
-</launch>
-```
+    ```
+    <launch>
+      <!-- turtlebot_teleop_key already has its own built in velocity smoother -->
+      <node pkg="turtlebot_teleop" type="turtlebot_teleop_key.py" name="turtlebot_teleop_keyboard"  output="screen">
+        <param name="scale_linear" value="0.5" type="double"/>
+        <param name="scale_angular" value="1.5" type="double"/>
+        <remap from="turtlebot_teleop_keyboard/cmd_vel" to="/cmd_vel"/>   <!-- cmd_vel_mux/input/teleop"/-->
+      </node>
+    </launch>
+    ```
 
 A tag **remap** redireciona mensagens de um tópico para outro. No caso a cima, o nó de teleop publica por padrão em `turtlebot_teleop_keyboard/cmd_vel`. Queremos que ele publique em `cmd_vel`, então a tag é adicionada.
 
