@@ -266,8 +266,18 @@ Depois de terminar de editar o arquivo, tera algo parecido com isso:
     ```
 
 #### Editando o arquivo package.xml
-1. Adicione todos os pacotes necessários para compilar as mensagens. Neste caso, você só precisa adicionar o message_generation. Você terá que importar esses pacotes como <build_depend>.
+Adicione todos os pacotes necessários para compilar as mensagens. Neste caso, você só precisa adicionar o **message_generation**. Você terá que importar esses pacotes como <build_depend>. Por outro lado, se você precisa de um pacote para a execução dos programas dentro do seu pacote, você terá que importar esses pacotes como <exec_depend>.
 
+Neste caso, você só precisará adicionar estas 3 linhas ao seu arquivo package.xml:
+    ```
+    <build_depend>message_generation</build_depend>
+    <build_export_depend>message_runtime</build_export_depend>
+    <exec_depend>message_runtime</exec_depend>
+    ```
+
+Depois de terminar, compile (catkin_make) seu pacote e faça o sourcement (source devel/setup.bash) das mensagens recém-geradas.
+
+Para verificar se você tem o novo serviço de mensagem no seu sistema, pronto para ser utilizado, digite o comando `rossrv list | grep MyCustomServiceMessage`.
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
