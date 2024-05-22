@@ -420,30 +420,30 @@ A configuração e definição do robô são feitas nos arquivos URDF do robô. 
 
 Veja no exemplo a baixo como o laser do robô Kobuki é definido no arquivo URDF do robô:
 
-    ```
-      <joint name="laser_sensor_joint" type="fixed">
-          <origin xyz="0.0 0.0 0.435" rpy="0 0 0"/>
-          <parent link="base_link"/>
-          <child link="laser_sensor_link"/>
-      </joint>
-      
-      <link name="laser_sensor_link">
-              <inertial>
-                      <mass value="1e-5"/>
-                      <origin xyz="0 0 0" rpy="0 0 0"/>
-                      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
-              </inertial>
-              <collision>
-                      <origin xyz="0 0 0" rpy="0 0 0"/>
-                      <geometry>
-                              <box size="0.1 0.1 0.1"/>
-                      </geometry>
-              </collision>
-              <visual>
-                      <origin xyz="0 0 0" rpy="0 0 0"/>
-                      <geometry>
-                              <mesh filename="package://hokuyo/meshes/hokuyo.dae"/>
-                      </geometry>
-              </visual>
-      </link>
-    ```
+```
+<joint name="laser_sensor_joint" type="fixed">
+    <origin xyz="0.0 0.0 0.435" rpy="0 0 0"/>
+    <parent link="base_link"/>
+    <child link="laser_sensor_link"/>
+</joint>
+
+<link name="laser_sensor_link">
+        <inertial>
+                <mass value="1e-5"/>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6"/>
+        </inertial>
+        <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                        <box size="0.1 0.1 0.1"/>
+                </geometry>
+        </collision>
+        <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                        <mesh filename="package://hokuyo/meshes/hokuyo.dae"/>
+                </geometry>
+        </visual>
+</link>
+```
