@@ -397,6 +397,22 @@ As variáveis mais importantes são;
 2. Em outro terminal use o **teleOP** para navegar pelo ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 3. Em outro terminal abra o **RViz** (`roslaunch turtlebot_rviz_launchers view_mapping.launch`) para ver o mapa sendo criado.
 
+### Criando um mapa do zero
+1. Inicie o nó "slam_gmapping", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
+2. Em outro terminal abra o **RViz** (`rosrun rviz rviz`).
+3. Adicione um LaserScan: No RViz clique em **Add** e escolha **LaserScan**, da pasta rviz, nas propriedades de exibição do Laser Scan, insira o nome do tópico onde o laser está publicando seus dados (por exemplo: **/kobuki/laser/scan**).
+4. Em Global Options (Opções Globais), mude a opção **Fixed Frame** (Quadro Fixo) para **map**.
+5. Para ver o robô no Rviz, você pode adicionar também um **RobotModel**, Isso mostrará a situação atual do robô na tela. Você também pode tentar exibir todos os quadros de referência do robô adicionando ao Rviz as exibições **TF**.
+
+O "mapa" do laser que é construído desaparecerá com o tempo, porque o Rviz só pode armazenar em buffer um número finito de varreduras a laser.
+
+6. Clique no botão Add e adicione o **Map**.
+7. Nas propriedades do Map, defina o tópico como **/map**.
+8. **Salvando** as configurações do rviz: Vá para o canto superior esquerdo da tela do RViz e abra o menu Arquivo, selecione a opção **Save Config As**. Agora você poderá carregar sua configuração salva a qualquer momento selecionando a opção **Open Config** no menu Arquivo.
+
+9. Abro o **TeleOp** para navegar com o robô e fazer a leitura do ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
+
+
 ## Localização
 Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento. 
 
