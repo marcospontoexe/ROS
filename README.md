@@ -464,7 +464,13 @@ A Navigation Stack receberá como entrada a localização atual do robô, a loca
 
 veja a baixo os blocos básicos de construção do Navigation Stack.
 
-![blocos básicos de construção do Navigation Stack]()
+![blocos básicos de construção do Navigation Stack](https://github.com/marcospontoexe/ROS/blob/main/imagens/navstack.png)
+
+De acordo com o diagrama mostrado, devemos fornecer alguns blocos funcionais para que funcionem e se comuniquem com a pilha de navegação. A seguir, estão explicações breves de todos os blocos que precisam ser fornecidos como entrada para a pilha de navegação do ROS:
+* **Odometry source**: Os dados de odometria de um robô fornecem a posição do robô em relação à sua posição inicial. As principais fontes de odometria são os codificadores de roda, IMU e câmeras 2D/3D (odometria visual). O valor da odometria deve ser publicado para a pilha de navegação, que possui um tipo de mensagem nav_msgs/Odometry. A mensagem de odometria pode conter a posição e a velocidade do robô.
+* **Sensor source**: Os sensores são utilizados em duas tarefas na navegação: uma para localizar o robô no mapa (utilizando, por exemplo, o laser) e outra para detectar obstáculos no caminho do robô (usando o laser, sonares ou nuvens de pontos).
+* **sensor transforms/tf**: Os dados capturados pelos diferentes sensores do robô devem ser referenciados a um quadro de referência comum (geralmente o base_link) para que seja possível comparar dados provenientes de diferentes sensores. O robô deve publicar a relação entre o quadro de coordenadas principal do robô e os quadros dos diferentes sensores usando transformações do ROS.
+* **base_controller**: A função principal do controlador de base é converter a saída da pilha de navegação, que é uma mensagem Twist (geometry_msgs/Twist), em velocidades de motor correspondentes para o robô.
 
 ## Requisitos de hardware
 A Navigation Stack do ROS é genérica. Isso significa que pode ser utilizada com quase qualquer tipo de robô móvel, mas existem algumas considerações de hardware que ajudarão o sistema como um todo a ter um desempenho melhor, então elas devem ser consideradas. Estes são os requisitos:
