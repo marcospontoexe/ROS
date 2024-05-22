@@ -447,3 +447,28 @@ Veja no exemplo a baixo como o laser do robô Kobuki é definido no arquivo URDF
         </visual>
 </link>
 ```
+
+Como você pode ver, ele define várias coisas em relação ao laser:
+
+  * Define a posição e orientação do laser em relação à base (“base_link”) do robô.
+  * Define valores relacionados à inércia.
+  * Ele define valores relacionados à colisão. Esses valores fornecerão a física real do laser.
+  * Ele define valores visuais. Esses valores fornecerão os elementos visuais do laser. Isso é apenas para fins de visualização.
+
+Esses arquivos geralmente são colocados em um pacote chamado **yourrobot_description**.
+
+## Navigation Stack
+A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
+
+A Navigation Stack receberá como entrada a localização atual do robô, a localização desejada para onde o robô quer ir, os dados de Odometria do Robô (codificadores de roda, IMU, GPS...) e dados de um sensor como um Laser. Em troca, ela irá produzir os comandos de velocidade necessários e enviá-los para a base móvel, a fim de mover o robô até a posição de objetivo especificada.
+
+veja a baixo os blocos básicos de construção do Navigation Stack.
+
+![blocos básicos de construção do Navigation Stack]()
+
+## Requisitos de hardware
+A Navigation Stack do ROS é genérica. Isso significa que pode ser utilizada com quase qualquer tipo de robô móvel, mas existem algumas considerações de hardware que ajudarão o sistema como um todo a ter um desempenho melhor, então elas devem ser consideradas. Estes são os requisitos:
+* O pacote de Navegação funcionará melhor em robôs de acionamento diferencial e robôs holonômicos. Além disso, o robô móvel deve ser controlado enviando comandos de velocidade na forma: **x, y (velocidade linear)** e **z (velocidade angular)**.
+* O robô deve montar um laser planar em algum lugar ao redor do robô. Ele é usado para construir o mapa do ambiente e realizar a localização.
+* Seu desempenho será melhor para bases móveis de formato quadrado e circular.
+
