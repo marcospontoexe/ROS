@@ -512,7 +512,7 @@ Como você pode ver, ele define várias coisas em relação ao laser:
 
 Esses arquivos geralmente são colocados em um pacote chamado **yourrobot_description**.
 
-### Transforms
+### Transforms (transformação)
 Para podermos utilizar as leituras do laser, precisamos definir uma transformação entre o laser e a base do robô, e adicioná-la à árvore de transformações. Para poder usar os dados do laser, precisamos informar ao robô ONDE (posição e orientação) este laser está montado no robô. Isso é o que chamamos de uma **transform between frames** (transformação entre quadros).
 
 Uma transformação especifica como dados expressos em um quadro podem ser transformados em outro quadro diferente. Por exemplo, se você detectar um obstáculo com o laser a 3 cm à frente, isso significa que está a 3 cm do laser, mas não do centro do robô (geralmente chamado de **base_link**). Para saber a distância a partir do centro do robô, é necessário transformar os 3 cm do quadro **laser_frame** para o quadro **base_link**.
@@ -521,7 +521,17 @@ Quando o laser detectar um objeto, como o robô saberá onde esse objeto está? 
 
 Primeiro, vamos definir dois quadros (quadros de coordenadas), um no centro do laser e outro no centro do robô. Para navegação, é importante que o centro do robô esteja posicionado no **centro de rotação do robô**. Vamos nomear o quadro do laser como **base_laser** e o quadro do robô como **base_link**, como mostrado na figura a seguir.
 
-![base do robô]()
+![base do robô](https://github.com/marcospontoexe/ROS/blob/main/imagens/base%20link.png)
+
+Agora, precisamos definir uma relação (em termos de posição e orientação) entre os quadros base_laser e base_link. Por exemplo, sabemos que o quadro base_laser está a uma distância de 20 cm no eixo y e 10 cm no eixo x em relação ao quadro base_link. Em seguida, precisamos fornecer esta relação ao robô. Esta relação entre a posição do laser e a base do robô é conhecida no ROS como a **TRANSFORMAÇÃO** entre o laser e o robô.
+
+Para que o nó "slam_gmapping" funcione corretamente, você precisará fornecer 2 transformações:
+* o quadro ligado ao laser -> base_link: Normalmente um valor fixo, transmitido periodicamente por um **robot_state_publisher**, ou por um **tf static_transform_publisher**.
+* base_link -> odom: Normalmente fornecido pelo sistema de Odometria.
+
+Como o robô precisa acessar essas informações a qualquer momento, iremos publicar esses dados em uma **árvore de transformações**. A árvore de transformações funciona como um banco de dados onde podemos encontrar informações sobre todas as transformações entre os diferentes quadros (elementos) do robô.
+
+Você pode visualizar a **árvore de transformações** do seu sistema em execução a qualquer momento usando o seguinte comando: `rosrun tf2_tools view_frames.py`. Este comando irá gerar um arquivo PDF contendo um gráfico com a árvore de transformações do seu sistema.
 
 
 ## Navigation Stack
