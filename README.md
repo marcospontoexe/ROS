@@ -572,7 +572,8 @@ Este nó é altamente configurável e possui muitos parâmetros que podem ser al
 * **maxRange** (float): Define o alcance máximo do laser. Defina este valor para algo ligeiramente superior ao alcance máximo real do sensor.
 * **maxUrange** (default: 80.0): Define o alcance utilizável máximo do laser. Os feixes de laser serão cortados para este valor.
 * **minimumScore** (default: 0.0): Define a pontuação mínima para considerar uma leitura do laser como boa.
-
+* 
+[Ness pacote]() chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para manipular um mapa.
 
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
