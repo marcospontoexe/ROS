@@ -555,6 +555,21 @@ Você também pode criar um arquivo launch que executa o comando acima, especifi
   </launch>
   ```
 
+A publicação das transformações também é tratada pelos arquivos **URDF**. Pelo menos, este é o uso comum. No entanto, existem alguns casos em que você precisa publicar uma transformação separadamente dos arquivos URDF. Por exemplo:
+* Se você adiciona temporariamente um sensor ao robô.
+* Para um sensor que não faz parte do robo, mas envia informações ao mesmo.
+
+#### Criando um arquivo launch para o nó slam_gmapping
+Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
+
+##### General Parameters
+* **base_frame** (default: "base_link"): Indica o nome do quadro ligado à base móvel.
+* **map_frame** (default: "map"): Indica o nome do quadro ligado ao mapa.
+* **odom_frame** (default: "odom"): Indica o nome do quadro ligado ao sistema de odometria.
+* **map_update_interval** (default: 5.0): Define o tempo (em segundos) a esperar até atualizar o mapa.
+
+
+
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
 
