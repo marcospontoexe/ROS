@@ -12,6 +12,11 @@ def call_map_service():
         height = response.map.info.height
         resolution = response.map.info.resolution
         rospy.loginfo(f"Map dimensions: {width}x{height}, Resolution: {resolution}")    # gera um Response para o serviço
+        ''' outro método:
+        get_map = GetMapRequest() # Create an object of type GetMapRequest
+        result = get_map_service(get_map) # Call the service
+        print(result) # Print the result given by the service called
+        '''
     except rospy.ServiceException as e:
         rospy.logerr(f"Service call failed: {e}")
 
