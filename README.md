@@ -562,12 +562,16 @@ A publicação das transformações também é tratada pelos arquivos **URDF**. 
 #### Criando um arquivo launch para o nó slam_gmapping
 Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
 
-##### General Parameters
+##### GENERAL PARAMETERS
 * **base_frame** (default: "base_link"): Indica o nome do quadro ligado à base móvel.
 * **map_frame** (default: "map"): Indica o nome do quadro ligado ao mapa.
 * **odom_frame** (default: "odom"): Indica o nome do quadro ligado ao sistema de odometria.
 * **map_update_interval** (default: 5.0): Define o tempo (em segundos) a esperar até atualizar o mapa.
 
+##### LASER PARAMETERS
+* **maxRange** (float): Define o alcance máximo do laser. Defina este valor para algo ligeiramente superior ao alcance máximo real do sensor.
+* **maxUrange** (default: 80.0): Define o alcance utilizável máximo do laser. Os feixes de laser serão cortados para este valor.
+* **minimumScore** (default: 0.0): Define a pontuação mínima para considerar uma leitura do laser como boa.
 
 
 ## Navigation Stack
