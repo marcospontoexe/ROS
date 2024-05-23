@@ -547,13 +547,13 @@ Existem 2 maneiras de publicar uma transformação:
 Por exemplo: `rosrun tf static_transform_publisher 0 0 0 0 0 0 map odom 100`.
 
 Você também pode criar um arquivo launch que executa o comando acima, especificando os diferentes valores da seguinte maneira:
-    ```
-    <launch>
-        <node pkg="tf" type="static_transform_publisher" name="name_of_node" 
-              args="x y z yaw pitch roll frame_id child_frame_id period_in_ms">
-        </node>
-    </launch>
-    ```
+  ```
+  <launch>
+      <node pkg="tf" type="static_transform_publisher" name="name_of_node" 
+            args="x y z yaw pitch roll frame_id child_frame_id period_in_ms">
+      </node>
+  </launch>
+  ```
 
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
