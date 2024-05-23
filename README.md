@@ -593,6 +593,8 @@ Os parâmetros podem ser alterados diretamente no arquivo de inicialização. Ma
 Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **`<node>`**: 
 `<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
 
+[Nesse pacote]() chamado "parametros_iniciais" a launch "parametros_iniciais_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping", e inicia o arquivo "gmapping_params.yaml" que contem os parâmetros necessário para a árvore de transformação. Nesse exemplo os parâmetros são iniciados pelo arquivo .YAML, ao invés de ser iniciado pela launch.
+
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
 
