@@ -393,12 +393,12 @@ As variáveis mais importantes são;
 # NAVEGAÇÃO
 
 ## Criando um mapa global
-1. Inicie o nó "slam_gmapping", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
+1. Inicie o nó "**slam_gmapping**", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
 2. Em outro terminal use o **teleOP** para navegar pelo ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 3. Em outro terminal abra o **RViz** (`roslaunch turtlebot_rviz_launchers view_mapping.launch`) para ver o mapa sendo criado.
 
 ### Criando um mapa do zero
-1. Inicie o nó "slam_gmapping", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
+1. Inicie o nó "**slam_gmapping**", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
 2. Em outro terminal abra o **RViz** (`rosrun rviz rviz`).
 3. Adicione um LaserScan: No RViz clique em **Add** e escolha **LaserScan**, da pasta rviz, nas propriedades de exibição do Laser Scan, insira o nome do tópico onde o laser está publicando seus dados (por exemplo: **/kobuki/laser/scan**).
 4. Em Global Options (Opções Globais), mude a opção **Fixed Frame** (Quadro Fixo) para **map**.
