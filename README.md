@@ -512,6 +512,18 @@ Como você pode ver, ele define várias coisas em relação ao laser:
 
 Esses arquivos geralmente são colocados em um pacote chamado **yourrobot_description**.
 
+### Transforms
+Para podermos utilizar as leituras do laser, precisamos definir uma transformação entre o laser e a base do robô, e adicioná-la à árvore de transformações. Para poder usar os dados do laser, precisamos informar ao robô ONDE (posição e orientação) este laser está montado no robô. Isso é o que chamamos de uma **transform between frames** (transformação entre quadros).
+
+Uma transformação especifica como dados expressos em um quadro podem ser transformados em outro quadro diferente. Por exemplo, se você detectar um obstáculo com o laser a 3 cm à frente, isso significa que está a 3 cm do laser, mas não do centro do robô (geralmente chamado de **base_link**). Para saber a distância a partir do centro do robô, é necessário transformar os 3 cm do quadro **laser_frame** para o quadro **base_link**.
+
+Quando o laser detectar um objeto, como o robô saberá onde esse objeto está? Está na frente do robô? Está atrás? Está à direita? Não há como o robô saber se não dissermos a ele a POSIÇÃO e a ORIENTAÇÃO do laser em relação ao centro do robô. Para fazer isso, precisamos seguir o seguinte:
+
+Primeiro, vamos definir dois quadros (quadros de coordenadas), um no centro do laser e outro no centro do robô. Para navegação, é importante que o centro do robô esteja posicionado no **centro de rotação do robô**. Vamos nomear o quadro do laser como **base_laser** e o quadro do robô como **base_link**, como mostrado na figura a seguir.
+
+![base do robô]()
+
+
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
 
