@@ -572,8 +572,26 @@ Este nó é altamente configurável e possui muitos parâmetros que podem ser al
 * **maxRange** (float): Define o alcance máximo do laser. Defina este valor para algo ligeiramente superior ao alcance máximo real do sensor.
 * **maxUrange** (default: 80.0): Define o alcance utilizável máximo do laser. Os feixes de laser serão cortados para este valor.
 * **minimumScore** (default: 0.0): Define a pontuação mínima para considerar uma leitura do laser como boa.
-* 
-[Ness pacote]() chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para manipular um mapa.
+
+##### DIMENSÕES INICIAIS E RESOLUÇÃO DO MAPA
+* **xmin** (default: -100.0): Tamanho inicial do mapa.
+* **ymin** (default: -100.0): Tamanho inicial do mapa.
+* **xmax** (default: 100.0): Tamanho inicial do mapa.
+* **ymax** (default: 100.0): Tamanho inicial do mapa.
+* **delta** (default: 0.05): Resolução do mapa.
+
+##### OUTROS PARÂMETROS
+* **linearUpdate** (default: 1.0): Define a distância linear que o robô deve se mover para processar uma leitura do laser.
+* **angularUpdate** (default: 0.5): Define a distância angular que o robô deve se mover para processar uma leitura do laser.
+* **temporalUpdate** (default: -1.0): Define o tempo (em segundos) de espera entre as leituras do laser. Se este valor for definido como -1,0, esta função será desativada.
+* **particles** (default: 30): Número de partículas no filtro.
+
+[Nesse pacote]() chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para a **árvore de transformação**.
+
+Os parâmetros podem ser alterados diretamente no arquivo de inicialização. Mas esta não é a única maneira de carregar parâmetros. Na verdade, os parâmetros geralmente são carregados de um arquivo externo. Este arquivo que contém os parâmetros geralmente é um arquivo **YAML**.
+
+Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **<node>**: 
+`<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
 
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
