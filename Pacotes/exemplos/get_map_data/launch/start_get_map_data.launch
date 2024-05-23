@@ -1,0 +1,5 @@
+<!-- Arquivo: start_get_map_data.launch -->
+<launch>
+    <!-- Iniciar o cliente de serviço -->
+    <node name="map_service_client_node" pkg="get_map_data" type="call_map_service.py" output="screen" />
+</launch>
