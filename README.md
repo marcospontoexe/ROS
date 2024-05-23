@@ -333,7 +333,7 @@ Quando queremos criar pacotes, precisamos trabalhar em um espaço de trabalho RO
 1. Digite **roscd** no terminal. Você verá que é direcionado para um diretório `catkin_ws/devel`.
 2. Digitar `cd ..` para subir um diretório. Você deverá terminar aqui em `/home/user/catkin_ws`.
 3. Dentro deste espaço de trabalho, há um diretório chamado `src`. Esta pasta conterá todos os pacotes criados. Sempre que você quiser criar um novo pacote, é necessário estar neste diretório (`catkin_ws/src`). Digite no seu terminal `cd src` para mover-se para o diretório de origem.
-4. Agora estamos prontos para criar nosso primeiro pacote! Para criar um pacote, digite no seu terminal: `catkin_create_pkg nome_do_pacote package_dependencies`. O **nome_do_pacote** é o nome do pacote que você deseja criar, e o **package_dependencies** são os nomes de outros pacotes ROS dos quais seu pacote depende.
+4. Agora estamos prontos para criar nosso primeiro pacote! Para criar um pacote, digite no seu terminal: `catkin_create_pkg nome_do_pacote package_dependencies`. O **nome_do_pacote** é o nome do pacote que você deseja criar, e o **package_dependencies** são os nomes de outros pacotes ROS dos quais seu pacote depende (rospy, std_msgs...).
 5. Isso criará dentro do nosso diretório src um novo pacote com alguns arquivos e diretórios (src, CMakeLists.txt e package.xml).
 
 Para verificar se nosso pacote foi criado com sucesso, podemos usar alguns comandos ROS relacionados a pacotes. Por exemplo, vamos digitar:
@@ -402,7 +402,7 @@ As variáveis mais importantes são;
 2. Em outro terminal abra o **RViz** (`rosrun rviz rviz`).
 3. Adicione um LaserScan: No RViz clique em **Add** e escolha **LaserScan**, da pasta rviz, nas propriedades de exibição do Laser Scan, insira o nome do tópico onde o laser está publicando seus dados (por exemplo: **/kobuki/laser/scan**).
 4. Em Global Options (Opções Globais), mude a opção **Fixed Frame** (Quadro Fixo) para **map**.
-5. Para ver o robô no Rviz, você pode adicionar também um **RobotModel**, Isso mostrará a situação atual do robô na tela. Você também pode tentar exibir todos os quadros de referência do robô adicionando ao Rviz as exibições **TF**.
+5. Para ver o robô no Rviz, você pode adicionar também um **RobotModel**, Isso mostrará a situação atual do robô na tela. Você também pode tentar exibir todos os quadros de referência do robô adicionando ao Rviz as exibições **TF** (Transform Topics).
 
 O "mapa" do laser que é construído desaparecerá com o tempo, porque o Rviz só pode armazenar em buffer um número finito de varreduras a laser.
 
@@ -412,6 +412,43 @@ O "mapa" do laser que é construído desaparecerá com o tempo, porque o Rviz s�
 
 9. Abro o **TeleOp** para navegar com o robô e fazer a leitura do ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 
+### Salvando o map
+Outro dos pacotes disponíveis no ROS Navigation Stack é o pacote **map_server**. Este pacote fornece o nó **map_saver**, que nos permite acessar os dados do mapa de um serviço ROS e salvá-los em um arquivo.
+
+Quando você solicita ao map_saver para salvar o mapa atual, os dados do mapa são salvos em dois arquivos: um é o arquivo **YAML**, que contém os metadados do mapa e o nome da imagem, e o segundo é a própria imagem, que contém os dados codificados do mapa de grade de ocupação.
+
+Podemos **salvar o mapa construído** a qualquer momento usando o seguinte comando: `rosrun map_server map_saver -f nome_do_mapa`. Este comando obterá os dados do mapa do tópico "map" e os gravará em 2 arquivos, **nome_do_mapa.pgm** e **nome_do_mapa.yaml**. Os arquivos serão salvos inicialmente no diretório onde você executar o comando.
+
+#### O arquivo YAML
+O arquivo YAML gerado conterá os 6 campos a seguir:
+1. **Image**: Nome do arquivo que contém a imagem do Mapa gerado.
+2. **Resolution**: Resolução do mapa (em metros/pixel). 
+2. **origin**: Coordenadas do pixel inferior esquerdo no mapa. Essas coordenadas são fornecidas em 2D (x,y). O terceiro valor indica a rotação. Se não houver rotação, o valor será 0.
+2. **occupied_thresh**: Os pixels que possuírem um valor superior a este valor serão considerados como uma zona completamente ocupada.
+2. **free_thresh**: Pixels que tenham um valor menor que este valor serão considerados como uma zona completamente livre.
+3. **negate**: Inverte as cores do Mapa. Por padrão, branco significa completamente livre e preto significa completamente ocupado.
+
+#### O arquivo de imagem (PGM - Portable Gray Map) 
+Para visualizar o arquivo PGM você pode fazer o seguinte:
+* Abra-o através do IDE. Para poder fazer isso, o arquivo deve estar no diretório catkin_ws/src.
+* Abra-o através do Web Shell. Você pode usar, por exemplo, o editor **vi** digitando o comando `vi nome_do_mapa.pgm`.
+* Baixe o arquivo e visualize-o no seu computador local com o seu próprio editor de texto.
+
+### Fornecendo o mapa
+Além do nó map_saver, o pacote map_server também fornece o nó **map_server**. Este nó lê um arquivo de mapa do disco e fornece o mapa para qualquer outro nó que o solicite através de um Serviço ROS.
+
+O serviço a ser chamado para obter o mapa é `/static_map` (nav_msgs/GetMap): Fornece os dados de ocupação do mapa através deste serviço.
+
+Além de solicitar o mapa através do serviço "static_map", existem dois tópicos latched aos quais você pode se conectar para receber uma mensagem ROS com o mapa. Os tópicos nos quais este nó escreve os dados do mapa são:
+* **map_metadata (nav_msgs/MapMetaData)**: Fornece os metadados do mapa por meio deste tópico.
+* **map (nav_msgs/OccupancyGrid)**: Fornece os dados de ocupação do mapa por meio deste tópico.
+
+**NOTA**: Quando um **tópico é latched**, significa que a última mensagem publicada nesse tópico será armazenada. Isso significa que qualquer nó que escute este tópico no futuro receberá esta última mensagem, mesmo que ninguém esteja mais publicando neste tópico. Para especificar que um tópico será latched, basta definir o atributo latch como verdadeiro ao criar o tópico.
+
+Para lançar o nó **map_server** e fornecer informações de um mapa a partir de um arquivo de mapa, use o seguinte comando: `rosrun map_server map_server nome_do_mapa.yaml`. Se você lançar o comando a partir do diretório onde o arquivo de mapa está salvo, não precisa especificar o caminho completo para o arquivo. Caso contrário, se estiver em um diretório diferente, lembre-se de que será necessário especificar o caminho completo para o arquivo.
+
+[Nesse pacote criado]() a launch "start_ provide_map" inicia o nó "map_server" do pacote "map_server", que fornece informações do arquivo ".yaml" para os tópicos "map_metadata", "map" e também para o serviço "static_map". Para verificar se o mapa está sendo fornecido corretamente, 
+você pode usar o seguinte comando para listar os tópicos que o nó map_server está publicando: `rostopic list | grep map`. E `rosservice list | grep map` para verificar se o serviço "static_map" foi iniciado.
 
 ## Localização
 Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento. 

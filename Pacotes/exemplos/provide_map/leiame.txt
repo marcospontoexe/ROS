@@ -1,0 +1,8 @@
+pacote criado com dependencia rospy
+
+Executar o arquivo de lançamento: roslaunch provide_map provide_map.launch rospy
+
+Para verificar se o mapa está sendo fornecido corretamente, 
+você pode usar o seguinte comando para listar os tópicos 
+que o nó map_server está publicando: "rostopic list | grep map"
+
