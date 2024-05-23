@@ -450,6 +450,8 @@ Para lançar o nó **map_server** e fornecer informações de um mapa a partir d
 [Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/provide_map) a launch "start_ provide_map" inicia o nó "map_server" do pacote "map_server", que fornece informações do arquivo ".yaml" para os tópicos "map_metadata", "map" e também para o serviço "static_map". Para verificar se o mapa está sendo fornecido corretamente, 
 você pode usar o seguinte comando para listar os tópicos que o nó map_server está publicando: `rostopic list | grep map`. E `rosservice list | grep map` para verificar se o serviço "static_map" foi iniciado.
 
+[Nesse cliente de serviço](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_map_data) criado, o nó "call_map_service.py" chama o serviço "static_map", que foi iniciado no exemplo a cima, e mostra algumas informações do mapa como, dimensão e resolução.
+
 ## Localização
 Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento. 
 
