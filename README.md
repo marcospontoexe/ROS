@@ -555,7 +555,7 @@ Você também pode criar um arquivo launch que executa o comando acima, especifi
   </launch>
   ```
 
-[Nesse pacote]() chamado "transform_tree_kinect" a launch "tranform_kinect.launch" inicia o nó "static_transform_publisher". O nó publica a transformação entre a câmera Kinect montada no robô e o "base link" do robô.
+[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/transform_tree_kinect) chamado "transform_tree_kinect" a launch "tranform_kinect.launch" inicia o nó "static_transform_publisher". O nó publica a transformação entre a câmera Kinect montada no robô e o "base link" do robô.
 
 A publicação das transformações também é tratada pelos arquivos **URDF**. Pelo menos, este é o uso comum. No entanto, existem alguns casos em que você precisa publicar uma transformação separadamente dos arquivos URDF. Por exemplo:
 * Se você adiciona temporariamente um sensor ao robô.
