@@ -590,7 +590,7 @@ Este nó é altamente configurável e possui muitos parâmetros que podem ser al
 
 Os parâmetros podem ser alterados diretamente no arquivo de inicialização. Mas esta não é a única maneira de carregar parâmetros. Na verdade, os parâmetros geralmente são carregados de um arquivo externo. Este arquivo que contém os parâmetros geralmente é um arquivo **YAML**.
 
-Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **<node>**: 
+Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **`<node>`**: 
 `<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
 
 ## Navigation Stack
