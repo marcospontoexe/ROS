@@ -459,6 +459,21 @@ Para realizar uma navegação adequada, seu robô precisa saber em qual posiçã
 2. Execute o TeleOP em outro terminal para navegar pelo ambiente `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 3. Inicie o Rviz em outro terminal para ver a localização do robo em tempo real: `roslaunch turtlebot_rviz_launchers view_localization.launch`.
 
+[No pacote]() "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
+
+### Usando o Rviz para localização
+Precisamos adicionar trê telas de vizualização **LaserScan**, **Map Display** e **PoseArray**.
+1. Inicie o nó **amcl**  (Adaptive Monte Carlo Localization) para visualizar os **Pose Arrays**: `roslaunch husky_navigation amcl_demo.launch`.
+2. Em outro terminal inicio o **Rviz**: `rosrun rviz rviz`.
+3. Visualize **Pose Array** (Nuvens de Partículas): Clique no botão Adicionar em "displays" e escolha a exibição **PoseArray**. Nas propriedades da exibição, insira o nome do **tópico** onde a nuvem de partículas está sendo publicada (geralmente **/particlecloud**).
+
+Para ver a posição do robô, você também pode escolher adicionar as exibições RobotModel ou TF.
+
+4. Nas propriedades gerais mude o **Fixed Frame** para **map**.
+5. Adicione um **LaserScan**: No RViz clique em Add e escolha LaserScan, da pasta rviz, nas propriedades de exibição do Laser Scan, insira o nome do tópico onde o laser está publicando seus dados (por exemplo: /scan).
+6. Clique no botão Add e adicione o **Map**, nas propriedades do Map, defina o tópico como /map.
+7. Salce as configurações do rviz.
+
 ## Path Planning
 Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga ao robô ONDE ir, inicialmente, e COMO chegar lá, finalmente. No ROS, chamamos esse sistema de Planejamento de Trajetórias (Path Planning).
 
@@ -588,14 +603,14 @@ Este nó é altamente configurável e possui muitos parâmetros que podem ser al
 * **temporalUpdate** (default: -1.0): Define o tempo (em segundos) de espera entre as leituras do laser. Se este valor for definido como -1,0, esta função será desativada.
 * **particles** (default: 30): Número de partículas no filtro.
 
-[Nesse pacote]() chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para a **árvore de transformação**.
+[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_mapping_launcher) chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para a **árvore de transformação**.
 
 Os parâmetros podem ser alterados diretamente no arquivo de inicialização. Mas esta não é a única maneira de carregar parâmetros. Na verdade, os parâmetros geralmente são carregados de um arquivo externo. Este arquivo que contém os parâmetros geralmente é um arquivo **YAML**.
 
 Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **`<node>`**: 
 `<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
 
-[Nesse pacote]() chamado "parametros_iniciais" a launch "parametros_iniciais_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping", e inicia o arquivo "gmapping_params.yaml" que contem os parâmetros necessário para a árvore de transformação. Nesse exemplo os parâmetros são iniciados pelo arquivo .YAML, ao invés de ser iniciado pela launch.
+[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/parametros_iniciais) chamado "parametros_iniciais" a launch "parametros_iniciais_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping", e inicia o arquivo "gmapping_params.yaml" que contem os parâmetros necessário para a árvore de transformação. Nesse exemplo os parâmetros são iniciados pelo arquivo .YAML, ao invés de ser iniciado pela launch.
 
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
