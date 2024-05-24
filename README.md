@@ -459,8 +459,6 @@ Para realizar uma navegação adequada, seu robô precisa saber em qual posiçã
 2. Execute o TeleOP em outro terminal para navegar pelo ambiente `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 3. Inicie o Rviz em outro terminal para ver a localização do robo em tempo real: `roslaunch turtlebot_rviz_launchers view_localization.launch`.
 
-[No pacote]() "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
-
 ### Usando o Rviz para localização
 Precisamos adicionar trê telas de vizualização **LaserScan**, **Map Display** e **PoseArray**.
 1. Inicie o nó **amcl**  (Adaptive Monte Carlo Localization) para visualizar os **Pose Arrays**: `roslaunch husky_navigation amcl_demo.launch`.
@@ -473,6 +471,8 @@ Para ver a posição do robô, você também pode escolher adicionar as exibiç�
 5. Adicione um **LaserScan**: No RViz clique em Add e escolha LaserScan, da pasta rviz, nas propriedades de exibição do Laser Scan, insira o nome do tópico onde o laser está publicando seus dados (por exemplo: /scan).
 6. Clique no botão Add e adicione o **Map**, nas propriedades do Map, defina o tópico como /map.
 7. Salce as configurações do rviz.
+
+[No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
 
 ## Path Planning
 Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga ao robô ONDE ir, inicialmente, e COMO chegar lá, finalmente. No ROS, chamamos esse sistema de Planejamento de Trajetórias (Path Planning).
