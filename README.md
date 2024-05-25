@@ -591,6 +591,11 @@ Veja alguns tópicos fornecidos pelo servidor de ações do move base:
 
 [No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo yaml.
 
+### Global Planner
+Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, não **levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
+
+
+
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
 
