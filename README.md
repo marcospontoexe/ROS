@@ -475,7 +475,8 @@ Para ver a posição do robô, você também pode escolher adicionar as exibiç�
 [No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server, e o nó "amcl" com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
 
 O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use o comando `rostopic echo -n1 /amcl_pose` para vizualizar.
- 
+
+[o pacote "get_position"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_position) inicia o nó "service_server" através da launch "start_get_position.launch". O nó cria um servidor de serviço chamado "get_pose_service" que fica publicando a posição do robô no tópico "amcl_pose". Para vizualizar a posição publicada pelo serviço get_pose_service use o comando `rosservice call get_pose_service "{}"` en um terminal separado, e veja a posição sendo impressa no terminal do pacote get_position.
 
 ## Path Planning
 Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga ao robô ONDE ir, inicialmente, e COMO chegar lá, finalmente. No ROS, chamamos esse sistema de Planejamento de Trajetórias (Path Planning).
@@ -614,6 +615,40 @@ Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e,
 `<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
 
 [Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/parametros_iniciais) chamado "parametros_iniciais" a launch "parametros_iniciais_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping", e inicia o arquivo "gmapping_params.yaml" que contem os parâmetros necessário para a árvore de transformação. Nesse exemplo os parâmetros são iniciados pelo arquivo .YAML, ao invés de ser iniciado pela launch.
+
+#### Criando um arquivo launch para o nó amcl
+Este nó é altamente personalizável e podemos configurar muitos parâmetros para melhorar seu desempenho. Esses parâmetros podem ser definidos diretamente no arquivo launch ou em um arquivo de parâmetros separado (arquivo YAML). 
+
+##### GENERAL PARAMETERS
+* **odom_model_type** (default: "diff"): Ele coloca o modelo de odometria em uso. Pode ser "diff," "omni," "diff-corrected" ou "omni-corrected."
+* **odom_frame_id** (default: "odom"): Indica o frame associado à odometria.
+* **base_frame_id** (default: "base_link"): Indica o frame associado à base do robô.
+* **global_frame_id** (default: "map"): Indica o nome do frame de coordenadas publicado pelo sistema de localização.
+* **use_map_topic** (default: false): Indica se o nó obtém os dados do mapa a partir do tópico ou de uma chamada de serviço.
+
+###### FILTER PARAMETERS
+Esses parâmetros permitem configurar a forma como o filtro de partículas opera.
+
+* **min_particles** (default: 100): Define o número mínimo de partículas permitidas para o filtro.
+* **max_particles** (default: 5000): Define o número máximo de partículas permitidas para o filtro.
+* **kld_err** (default: 0.01): Define o erro máximo permitido entre a distribuição verdadeira e a distribuição estimada.
+* **update_min_d** (default: 0.2): Define a distância linear (em metros) que o robô precisa mover para realizar uma atualização do filtro.
+* **update_min_a** (default: π/6.0): Define a distância angular (em radianos) que o robô precisa mover para realizar uma atualização do filtro.
+* **resample_interval** (default: 2): Define o número de atualizações do filtro necessárias antes da reamostragem.
+* **transform_tolerance** (default: 0.1): Tempo (em segundos) com o qual a transformação publicada deve ser pós-datada, para indicar que essa transformação é válida no futuro.
+* **gui_publish_rate** (default: -1.0): Taxa máxima (em Hz) na qual as varreduras e caminhos são publicados para visualização. Se esse valor for -1.0, essa função está desativada.
+
+##### LASER PARAMETERS
+Esses parâmetros permitem configurar a forma como o nó amcl interage com o laser.
+
+* **laser_min_range** (default: -1.0): Alcance mínimo da varredura a ser considerado; -1,0 fará com que o alcance mínimo relatado pelo laser seja usado.
+* **laser_max_range** (default: -1.0): Alcance máximo da varredura a ser considerado; -1,0 fará com que o alcance máximo relatado pelo laser seja usado.
+* **laser_max_beams** (default: 30): Quantos feixes uniformemente espaçados em cada varredura serão usados ao atualizar o filtro.
+* **laser_z_hit** (default: 0.95): Peso da mistura para a parte z_hit do modelo.
+* **laser_z_short** (default: 0.1): Peso da mistura para a parte z_short do modelo.
+* **laser_z_max** (default: 0.05): Peso da mistura para a parte z_max do modelo.
+* **laser_z_rand** (default: 0.05): Peso da mistura para a parte z_rand do modelo.
+
 
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
