@@ -1,0 +1,19 @@
+<launch>
+
+    <arg name="map_file" default="$(find initialize_particles)/maps/lanchonete.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+    <arg name="scan_topic" default="scan" />
+    <node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <rosparam file="$(find initialize_particles)/params/my_amcl_params.yaml" command="load" />
+        <remap from="scan" to="$(arg scan_topic)"/>
+    </node>
+
+    <node pkg="initialize_particles" type="init_particles_caller.py" name="service_client" output="screen">
+        
+    </node>
+
+    <node pkg="initialize_particles" type="square_move.py" name="move_husky_node" output="screen">
+        
+    </node>
+</launch>

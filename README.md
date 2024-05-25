@@ -499,11 +499,12 @@ O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use 
 
 [o pacote "get_position"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_position) inicia o nó "service_server" através da launch "start_get_position.launch". O nó cria um servidor de serviço chamado "get_pose_service" que fica publicando a posição do robô no tópico "amcl_pose". Para vizualizar a posição publicada pelo serviço get_pose_service use o comando `rosservice call get_pose_service "{}"` en um terminal separado, e veja a posição sendo impressa no terminal do pacote get_position.
 
-### Serviços fornecidos pelo nó amcl
-**global_localization** (std_srvs/Empty): Inicia a localização global, onde todas as partículas são dispersas aleatoriamente por todo o espaço livre no mapa.
+### Serviços do nó amcl 
+* Fornecidos pelo nó amcl: **global_localization** (std_srvs/Empty): Inicia a localização global, onde todas as partículas são dispersas aleatoriamente por todo o espaço livre no mapa.
 
-### Serviços solicitados pelo nó amcl
-**static_map** (nav_msgs/GetMap): amcl chama este serviço para recuperar o mapa que é usado para a localização baseada em laser.
+* Solicitados pelo nó amcl: **static_map** (nav_msgs/GetMap): amcl chama este serviço para recuperar o mapa que é usado para a localização baseada em laser, reiniciando a posição das partículas periodicamente.
+
+[Nesse exemplo]() o cliente de serviço "init_particles_caller.py" inicio o serviço "global_localization" para disperçar as partículas, que são publicadas no tópico "particlecloud". O nó "square_move.py" faz o robô realizar um movimento em quadrado, se a covariância for menor que 0,65, significa que o robô se localizou corretamente e o programa terminará. Se a covariância for maior que 0,65, repetirá todo o processo (dispersar as partículas, realizar o movimento, verificar a covariância...). A covariancia é publicada no tópico "amcl_pose", e retorna um vetor com várias posições, os únicos valores aos quais você precisa prestar atenção são o primeiro (que é a covariância em x), o oitavo (que é a covariância em y) e o último (que é a covariância em z).
 
 ### Usando o Rviz para localização
 Precisamos adicionar trê telas de vizualização **LaserScan**, **Map Display** e **PoseArray**.
