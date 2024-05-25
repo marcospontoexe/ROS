@@ -565,12 +565,29 @@ Para ver um path plannig no rviz você precisará de três elementos **Map Displ
 3. Configure o **Visualize Costmaps** no **rviz**: 
     1. Clique no botão **Add** em Displays e escolha o elemento **Map**.
     2. Defina o tópico para /move_base/global_costmap/costmap para visualizar o mapa de **costmaps global**.
-    3. Ou altere o tópico para /move_base/local_costmap/costmap para visualizar o mapa de **costmaps local**.
+    3. Altere o tópico para /move_base/local_costmap/costmap para visualizar o mapa de **costmaps local**.
 4. Configure o **Visualize Plans** no **rviz**: 
     1. Clique no botão **Add** em Displays e escolha o elemeto **Path**.
     2. Defina o tópico para **/move_base/NavfnROS/plan** para visualizar o **plano global**.
-    3. ou altere o tópico para **/move_base/DWAPlannerROS/local_plan** para visualizar o **plano local**.
-5. Use a ferramenta de Estimativa de Pose 2D para fornecer uma pose inicial para o robô.
+    3. Altere o tópico para **/move_base/DWAPlannerROS/local_plan** para visualizar o **plano local**.
+5. Para que as ferramentas 2D funcionem, o **Fixed Frame** no Rviz deve estar configurado como **map**.
+6. **Salve** as configurações para usar futuramente.
+7. Use a ferramenta **2D Pose Estimate** para fornecer uma pose inicial para o robô.
+8. Use a ferramenta **2D Nav Goal** para enviar uma pose de objetivo para o robô.
+
+### O pacote Move_Base
+A função principal do nó move_base é mover o robô de sua posição atual para uma posição de objetivo. Basicamente, este nó é uma implementação de um **SimpleActionServer**, que recebe uma pose de objetivo com o tipo de mensagem geometry_msgs/PoseStamped. Portanto, podemos enviar metas de posição para este nó utilizando um SimpleActionClient.
+
+Este **Action Server** fornece o tópico **move_base/goal**, que é a entrada da Pilha de Navegação (nav stack). Este tópico é utilizado para **fornecer a pose de objetivo**.
+
+Veja alguns tópicos fornecidos pelo servidor de ações do move base:
+* move_base/goal (move_base_msgs/MoveBaseActionGoal)
+* move_base/cancel (actionlib_msgs/GoalID)
+* move_base/feedback (move_base_msgs/MoveBaseActionFeedback)
+* move_base/status (actionlib_msgs/GoalStatusArray)
+* move_base/result (move_base_msgs/MoveBaseActionResult)
+
+
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
