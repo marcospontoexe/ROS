@@ -489,7 +489,9 @@ você pode usar o seguinte comando para listar os tópicos que o nó map_server 
 [Nesse cliente de serviço](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_map_data) criado, o nó "call_map_service.py" chama o serviço "static_map", que foi iniciado no exemplo a cima, e mostra algumas informações do mapa como, dimensão e resolução.
 
 ## Localização
-Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento. 
+Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento.
+
+O nó **amcl** obtém **dados do laser** e da **odometria** do robô, bem como do **mapa do ambiente**, e fornece uma estimativa da pose do robô. Quanto mais o robô se movimenta pelo ambiente, mais dados o sistema de localização obterá, e mais precisa será a pose estimada que ele retornará.
 
 [No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server, e o nó "amcl" com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
 
