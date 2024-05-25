@@ -491,6 +491,14 @@ você pode usar o seguinte comando para listar os tópicos que o nó map_server 
 ## Localização
 Para realizar uma navegação adequada, seu robô precisa saber em qual posição do mapa ele está localizado e com qual orientação a cada momento. 
 
+[No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server, e o nó "amcl" com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
+
+[]
+
+O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use o comando `rostopic echo -n1 /amcl_pose` para vizualizar.
+
+[o pacote "get_position"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_position) inicia o nó "service_server" através da launch "start_get_position.launch". O nó cria um servidor de serviço chamado "get_pose_service" que fica publicando a posição do robô no tópico "amcl_pose". Para vizualizar a posição publicada pelo serviço get_pose_service use o comando `rosservice call get_pose_service "{}"` en um terminal separado, e veja a posição sendo impressa no terminal do pacote get_position.
+
 1. Execute o comando `roslaunch turtlebot_navigation_gazebo amcl_demo.launch` para iniciar a demonstração de Localização.
 2. Execute o TeleOP em outro terminal para navegar pelo ambiente `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 3. Inicie o Rviz em outro terminal para ver a localização do robo em tempo real: `roslaunch turtlebot_rviz_launchers view_localization.launch`.
@@ -508,12 +516,6 @@ Para ver a posição do robô, você também pode escolher adicionar as exibiç�
 6. Clique no botão Add e adicione o **Map**, nas propriedades do Map, defina o tópico como /map.
 7. Salce as configurações do rviz.
 
-[No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server, e o nó "amcl" com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
-
-O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use o comando `rostopic echo -n1 /amcl_pose` para vizualizar.
-
-[o pacote "get_position"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_position) inicia o nó "service_server" através da launch "start_get_position.launch". O nó cria um servidor de serviço chamado "get_pose_service" que fica publicando a posição do robô no tópico "amcl_pose". Para vizualizar a posição publicada pelo serviço get_pose_service use o comando `rosservice call get_pose_service "{}"` en um terminal separado, e veja a posição sendo impressa no terminal do pacote get_position.
-
 ### Criando um arquivo launch para o nó amcl
 Este nó é altamente personalizável e podemos configurar muitos parâmetros para melhorar seu desempenho. Esses parâmetros podem ser definidos diretamente no arquivo launch ou em um arquivo de parâmetros separado (arquivo YAML). 
 
@@ -524,7 +526,7 @@ Este nó é altamente personalizável e podemos configurar muitos parâmetros pa
 * **global_frame_id** (default: "map"): Indica o nome do frame de coordenadas publicado pelo sistema de localização.
 * **use_map_topic** (default: false): Indica se o nó obtém os dados do mapa a partir do tópico ou de uma chamada de serviço.
 
-##### Filter Parameters
+#### Filter Parameters
 Esses parâmetros permitem configurar a forma como o filtro de partículas opera.
 
 * **min_particles** (default: 100): Define o número mínimo de partículas permitidas para o filtro.
