@@ -412,6 +412,42 @@ O "mapa" do laser que é construído desaparecerá com o tempo, porque o Rviz s�
 
 9. Abro o **TeleOp** para navegar com o robô e fazer a leitura do ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 
+### Criando um arquivo launch para o nó slam_gmapping
+Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
+
+#### General Parameters
+* **base_frame** (default: "base_link"): Indica o nome do quadro ligado à base móvel.
+* **map_frame** (default: "map"): Indica o nome do quadro ligado ao mapa.
+* **odom_frame** (default: "odom"): Indica o nome do quadro ligado ao sistema de odometria.
+* **map_update_interval** (default: 5.0): Define o tempo (em segundos) a esperar até atualizar o mapa.
+
+#### Laser Parameters
+* **maxRange** (float): Define o alcance máximo do laser. Defina este valor para algo ligeiramente superior ao alcance máximo real do sensor.
+* **maxUrange** (default: 80.0): Define o alcance utilizável máximo do laser. Os feixes de laser serão cortados para este valor.
+* **minimumScore** (default: 0.0): Define a pontuação mínima para considerar uma leitura do laser como boa.
+
+#### Dimensões iniciais e resolução do mapa
+* **xmin** (default: -100.0): Tamanho inicial do mapa.
+* **ymin** (default: -100.0): Tamanho inicial do mapa.
+* **xmax** (default: 100.0): Tamanho inicial do mapa.
+* **ymax** (default: 100.0): Tamanho inicial do mapa.
+* **delta** (default: 0.05): Resolução do mapa.
+
+#### Outros parâmetros
+* **linearUpdate** (default: 1.0): Define a distância linear que o robô deve se mover para processar uma leitura do laser.
+* **angularUpdate** (default: 0.5): Define a distância angular que o robô deve se mover para processar uma leitura do laser.
+* **temporalUpdate** (default: -1.0): Define o tempo (em segundos) de espera entre as leituras do laser. Se este valor for definido como -1,0, esta função será desativada.
+* **particles** (default: 30): Número de partículas no filtro.
+
+[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_mapping_launcher) chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para a **árvore de transformação**.
+
+Os parâmetros podem ser alterados diretamente no arquivo de inicialização. Mas esta não é a única maneira de carregar parâmetros. Na verdade, os parâmetros geralmente são carregados de um arquivo externo. Este arquivo que contém os parâmetros geralmente é um arquivo **YAML**.
+
+Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **`<node>`**: 
+`<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
+
+[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/parametros_iniciais) chamado "parametros_iniciais" a launch "parametros_iniciais_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping", e inicia o arquivo "gmapping_params.yaml" que contem os parâmetros necessário para a árvore de transformação. Nesse exemplo os parâmetros são iniciados pelo arquivo .YAML, ao invés de ser iniciado pela launch.
+
 ### Salvando o map
 Outro dos pacotes disponíveis no ROS Navigation Stack é o pacote **map_server**. Este pacote fornece o nó **map_saver**, que nos permite acessar os dados do mapa de um serviço ROS e salvá-los em um arquivo.
 
@@ -477,6 +513,39 @@ Para ver a posição do robô, você também pode escolher adicionar as exibiç�
 O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use o comando `rostopic echo -n1 /amcl_pose` para vizualizar.
 
 [o pacote "get_position"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_position) inicia o nó "service_server" através da launch "start_get_position.launch". O nó cria um servidor de serviço chamado "get_pose_service" que fica publicando a posição do robô no tópico "amcl_pose". Para vizualizar a posição publicada pelo serviço get_pose_service use o comando `rosservice call get_pose_service "{}"` en um terminal separado, e veja a posição sendo impressa no terminal do pacote get_position.
+
+### Criando um arquivo launch para o nó amcl
+Este nó é altamente personalizável e podemos configurar muitos parâmetros para melhorar seu desempenho. Esses parâmetros podem ser definidos diretamente no arquivo launch ou em um arquivo de parâmetros separado (arquivo YAML). 
+
+#### General Parameters
+* **odom_model_type** (default: "diff"): Ele coloca o modelo de odometria em uso. Pode ser "diff," "omni," "diff-corrected" ou "omni-corrected."
+* **odom_frame_id** (default: "odom"): Indica o frame associado à odometria.
+* **base_frame_id** (default: "base_link"): Indica o frame associado à base do robô.
+* **global_frame_id** (default: "map"): Indica o nome do frame de coordenadas publicado pelo sistema de localização.
+* **use_map_topic** (default: false): Indica se o nó obtém os dados do mapa a partir do tópico ou de uma chamada de serviço.
+
+##### Filter Parameters
+Esses parâmetros permitem configurar a forma como o filtro de partículas opera.
+
+* **min_particles** (default: 100): Define o número mínimo de partículas permitidas para o filtro.
+* **max_particles** (default: 5000): Define o número máximo de partículas permitidas para o filtro.
+* **kld_err** (default: 0.01): Define o erro máximo permitido entre a distribuição verdadeira e a distribuição estimada.
+* **update_min_d** (default: 0.2): Define a distância linear (em metros) que o robô precisa mover para realizar uma atualização do filtro.
+* **update_min_a** (default: π/6.0): Define a distância angular (em radianos) que o robô precisa mover para realizar uma atualização do filtro.
+* **resample_interval** (default: 2): Define o número de atualizações do filtro necessárias antes da reamostragem.
+* **transform_tolerance** (default: 0.1): Tempo (em segundos) com o qual a transformação publicada deve ser pós-datada, para indicar que essa transformação é válida no futuro.
+* **gui_publish_rate** (default: -1.0): Taxa máxima (em Hz) na qual as varreduras e caminhos são publicados para visualização. Se esse valor for -1.0, essa função está desativada.
+
+#### Laser Parameters
+Esses parâmetros permitem configurar a forma como o nó amcl interage com o laser.
+
+* **laser_min_range** (default: -1.0): Alcance mínimo da varredura a ser considerado; -1,0 fará com que o alcance mínimo relatado pelo laser seja usado.
+* **laser_max_range** (default: -1.0): Alcance máximo da varredura a ser considerado; -1,0 fará com que o alcance máximo relatado pelo laser seja usado.
+* **laser_max_beams** (default: 30): Quantos feixes uniformemente espaçados em cada varredura serão usados ao atualizar o filtro.
+* **laser_z_hit** (default: 0.95): Peso da mistura para a parte z_hit do modelo.
+* **laser_z_short** (default: 0.1): Peso da mistura para a parte z_short do modelo.
+* **laser_z_max** (default: 0.05): Peso da mistura para a parte z_max do modelo.
+* **laser_z_rand** (default: 0.05): Peso da mistura para a parte z_rand do modelo.
 
 ## Path Planning
 Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga ao robô ONDE ir, inicialmente, e COMO chegar lá, finalmente. No ROS, chamamos esse sistema de Planejamento de Trajetórias (Path Planning).
@@ -579,76 +648,6 @@ Você também pode criar um arquivo launch que executa o comando acima, especifi
 A publicação das transformações também é tratada pelos arquivos **URDF**. Pelo menos, este é o uso comum. No entanto, existem alguns casos em que você precisa publicar uma transformação separadamente dos arquivos URDF. Por exemplo:
 * Se você adiciona temporariamente um sensor ao robô.
 * Para um sensor que não faz parte do robo, mas envia informações ao mesmo.
-
-#### Criando um arquivo launch para o nó slam_gmapping
-Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
-
-##### GENERAL PARAMETERS
-* **base_frame** (default: "base_link"): Indica o nome do quadro ligado à base móvel.
-* **map_frame** (default: "map"): Indica o nome do quadro ligado ao mapa.
-* **odom_frame** (default: "odom"): Indica o nome do quadro ligado ao sistema de odometria.
-* **map_update_interval** (default: 5.0): Define o tempo (em segundos) a esperar até atualizar o mapa.
-
-##### LASER PARAMETERS
-* **maxRange** (float): Define o alcance máximo do laser. Defina este valor para algo ligeiramente superior ao alcance máximo real do sensor.
-* **maxUrange** (default: 80.0): Define o alcance utilizável máximo do laser. Os feixes de laser serão cortados para este valor.
-* **minimumScore** (default: 0.0): Define a pontuação mínima para considerar uma leitura do laser como boa.
-
-##### DIMENSÕES INICIAIS E RESOLUÇÃO DO MAPA
-* **xmin** (default: -100.0): Tamanho inicial do mapa.
-* **ymin** (default: -100.0): Tamanho inicial do mapa.
-* **xmax** (default: 100.0): Tamanho inicial do mapa.
-* **ymax** (default: 100.0): Tamanho inicial do mapa.
-* **delta** (default: 0.05): Resolução do mapa.
-
-##### OUTROS PARÂMETROS
-* **linearUpdate** (default: 1.0): Define a distância linear que o robô deve se mover para processar uma leitura do laser.
-* **angularUpdate** (default: 0.5): Define a distância angular que o robô deve se mover para processar uma leitura do laser.
-* **temporalUpdate** (default: -1.0): Define o tempo (em segundos) de espera entre as leituras do laser. Se este valor for definido como -1,0, esta função será desativada.
-* **particles** (default: 30): Número de partículas no filtro.
-
-[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_mapping_launcher) chamado "my_mapping_launcher", a launch "my_gmapping_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping" passando os parâmetros iniciais para a **árvore de transformação**.
-
-Os parâmetros podem ser alterados diretamente no arquivo de inicialização. Mas esta não é a única maneira de carregar parâmetros. Na verdade, os parâmetros geralmente são carregados de um arquivo externo. Este arquivo que contém os parâmetros geralmente é um arquivo **YAML**.
-
-Portanto, você também pode escrever todos os parâmetros em um arquivo YAML e, em seguida, carregar esse arquivo (e os parâmetros) no arquivo de inicialização apenas adicionando a seguinte linha dentro da tag **`<node>`**: 
-`<rosparam file="$(find my_mapping_launcher)/params/gmapping_params.yaml" command="load" />`.
-
-[Nesse pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/parametros_iniciais) chamado "parametros_iniciais" a launch "parametros_iniciais_launch.launch" inicia o nó "slam_gmapping" do pacote "gmapping", e inicia o arquivo "gmapping_params.yaml" que contem os parâmetros necessário para a árvore de transformação. Nesse exemplo os parâmetros são iniciados pelo arquivo .YAML, ao invés de ser iniciado pela launch.
-
-#### Criando um arquivo launch para o nó amcl
-Este nó é altamente personalizável e podemos configurar muitos parâmetros para melhorar seu desempenho. Esses parâmetros podem ser definidos diretamente no arquivo launch ou em um arquivo de parâmetros separado (arquivo YAML). 
-
-##### GENERAL PARAMETERS
-* **odom_model_type** (default: "diff"): Ele coloca o modelo de odometria em uso. Pode ser "diff," "omni," "diff-corrected" ou "omni-corrected."
-* **odom_frame_id** (default: "odom"): Indica o frame associado à odometria.
-* **base_frame_id** (default: "base_link"): Indica o frame associado à base do robô.
-* **global_frame_id** (default: "map"): Indica o nome do frame de coordenadas publicado pelo sistema de localização.
-* **use_map_topic** (default: false): Indica se o nó obtém os dados do mapa a partir do tópico ou de uma chamada de serviço.
-
-###### FILTER PARAMETERS
-Esses parâmetros permitem configurar a forma como o filtro de partículas opera.
-
-* **min_particles** (default: 100): Define o número mínimo de partículas permitidas para o filtro.
-* **max_particles** (default: 5000): Define o número máximo de partículas permitidas para o filtro.
-* **kld_err** (default: 0.01): Define o erro máximo permitido entre a distribuição verdadeira e a distribuição estimada.
-* **update_min_d** (default: 0.2): Define a distância linear (em metros) que o robô precisa mover para realizar uma atualização do filtro.
-* **update_min_a** (default: π/6.0): Define a distância angular (em radianos) que o robô precisa mover para realizar uma atualização do filtro.
-* **resample_interval** (default: 2): Define o número de atualizações do filtro necessárias antes da reamostragem.
-* **transform_tolerance** (default: 0.1): Tempo (em segundos) com o qual a transformação publicada deve ser pós-datada, para indicar que essa transformação é válida no futuro.
-* **gui_publish_rate** (default: -1.0): Taxa máxima (em Hz) na qual as varreduras e caminhos são publicados para visualização. Se esse valor for -1.0, essa função está desativada.
-
-##### LASER PARAMETERS
-Esses parâmetros permitem configurar a forma como o nó amcl interage com o laser.
-
-* **laser_min_range** (default: -1.0): Alcance mínimo da varredura a ser considerado; -1,0 fará com que o alcance mínimo relatado pelo laser seja usado.
-* **laser_max_range** (default: -1.0): Alcance máximo da varredura a ser considerado; -1,0 fará com que o alcance máximo relatado pelo laser seja usado.
-* **laser_max_beams** (default: 30): Quantos feixes uniformemente espaçados em cada varredura serão usados ao atualizar o filtro.
-* **laser_z_hit** (default: 0.95): Peso da mistura para a parte z_hit do modelo.
-* **laser_z_short** (default: 0.1): Peso da mistura para a parte z_short do modelo.
-* **laser_z_max** (default: 0.05): Peso da mistura para a parte z_max do modelo.
-* **laser_z_rand** (default: 0.05): Peso da mistura para a parte z_rand do modelo.
-
 
 ## Navigation Stack
 A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
