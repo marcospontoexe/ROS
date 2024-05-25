@@ -392,12 +392,7 @@ As variáveis mais importantes são;
 
 # NAVEGAÇÃO
 
-## Criando um mapa global
-1. Inicie o nó "**slam_gmapping**", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
-2. Em outro terminal use o **teleOP** para navegar pelo ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
-3. Em outro terminal abra o **RViz** (`roslaunch turtlebot_rviz_launchers view_mapping.launch`) para ver o mapa sendo criado.
-
-### Criando um mapa do zero
+## Criando um mapa do zero
 1. Inicie o nó "**slam_gmapping**", do pacote "gmapping", com o comando `roslaunch turtlebot_navigation_gazebo gmapping_demo.launch`.
 2. Em outro terminal abra o **RViz** (`rosrun rviz rviz`).
 3. Adicione um LaserScan: No RViz clique em **Add** e escolha **LaserScan**, da pasta rviz, nas propriedades de exibição do Laser Scan, insira o nome do tópico onde o laser está publicando seus dados (por exemplo: **/kobuki/laser/scan**).
@@ -562,6 +557,20 @@ O path planning basicamente recebe como entrada a localização atual do robô e
 1. Execute `roslaunch turtlebot_navigation_gazebo move_base_demo.launch` para iniciar um Path Planning.
 2. Execute em outro terminal o RViz `roslaunch turtlebot_rviz_launchers view_planning.launch`.
 3. Uso o botão "2D Nav Goal" do RViz para indicar o ponto de chegada do robô.
+
+### Visuzalizando um Path Planning com o Rviz 
+Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
+1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
+2. Em outro termial conabra o **Rviz**: `rosrun rviz rviz`.
+3. Configure o **Visualize Costmaps** no **rviz**: 
+    1. Clique no botão **Add** em Displays e escolha o elemento **Map**.
+    2. Defina o tópico para /move_base/global_costmap/costmap para visualizar o mapa de **costmaps global**.
+    3. Ou altere o tópico para /move_base/local_costmap/costmap para visualizar o mapa de **costmaps local**.
+4. Configure o **Visualize Plans** no **rviz**: 
+    1. Clique no botão **Add** em Displays e escolha o elemeto **Path**.
+    2. Defina o tópico para **/move_base/NavfnROS/plan** para visualizar o **plano global**.
+    3. ou altere o tópico para **/move_base/DWAPlannerROS/local_plan** para visualizar o **plano local**.
+5. Use a ferramenta de Estimativa de Pose 2D para fornecer uma pose inicial para o robô.
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
