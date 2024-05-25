@@ -493,7 +493,7 @@ Para realizar uma navegação adequada, seu robô precisa saber em qual posiçã
 
 [No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server, e o nó "amcl" com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
 
-[]
+[o pacote "amcl_params"]() inicia o nó "map_server" e o nó "amcl", poéem dessa vez os parametros de navegação são passados para o amcl através de um arquivo **yaml** chamado "my_amcl_params".
 
 O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use o comando `rostopic echo -n1 /amcl_pose` para vizualizar.
 
