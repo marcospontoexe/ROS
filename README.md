@@ -589,7 +589,7 @@ Veja alguns tópicos fornecidos pelo servidor de ações do move base:
 
 [Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/send_goals) o cliente de ações "send_goal_client.py" envia mensagem para o nó "move_base " através do tópico **/move_base/goal** para enviar a robô até um ponto determinado.
 
-[No pacote "move_base_parametros"]() os **parametros do nó move_base são modificados** pelo arquivo yaml.
+[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo yaml.
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
