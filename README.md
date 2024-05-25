@@ -493,15 +493,17 @@ Para realizar uma navegação adequada, seu robô precisa saber em qual posiçã
 
 [No pacote](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_amcl_launcher) "my_amcl_launcher" a launch "change_map.launch" inicia o nó map_server, e o nó "amcl" com os parâmetros definidos na launch. Os arquivos de mapa estão localizados em um diretório chamado "maps" do pacote husky_navigation. 
 
-[o pacote "amcl_params"]() inicia o nó "map_server" e o nó "amcl", poéem dessa vez os parametros de navegação são passados para o amcl através de um arquivo **yaml** chamado "my_amcl_params".
+[o pacote "amcl_params"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/params_amcl) inicia o nó "map_server" e o nó "amcl", poéem dessa vez os parametros de navegação são passados para o amcl através de um arquivo **yaml** chamado "my_amcl_params".
 
 O nó **amcl** publica a posição atual do robô no tópico **amcl_pose**, use o comando `rostopic echo -n1 /amcl_pose` para vizualizar.
 
 [o pacote "get_position"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/get_position) inicia o nó "service_server" através da launch "start_get_position.launch". O nó cria um servidor de serviço chamado "get_pose_service" que fica publicando a posição do robô no tópico "amcl_pose". Para vizualizar a posição publicada pelo serviço get_pose_service use o comando `rosservice call get_pose_service "{}"` en um terminal separado, e veja a posição sendo impressa no terminal do pacote get_position.
 
-1. Execute o comando `roslaunch turtlebot_navigation_gazebo amcl_demo.launch` para iniciar a demonstração de Localização.
-2. Execute o TeleOP em outro terminal para navegar pelo ambiente `roslaunch turtlebot_teleop keyboard_teleop.launch`.
-3. Inicie o Rviz em outro terminal para ver a localização do robo em tempo real: `roslaunch turtlebot_rviz_launchers view_localization.launch`.
+### Serviços fornecidos pelo nó amcl
+**global_localization** (std_srvs/Empty): Inicia a localização global, onde todas as partículas são dispersas aleatoriamente por todo o espaço livre no mapa.
+
+### Serviços solicitados pelo nó amcl
+**static_map** (nav_msgs/GetMap): amcl chama este serviço para recuperar o mapa que é usado para a localização baseada em laser.
 
 ### Usando o Rviz para localização
 Precisamos adicionar trê telas de vizualização **LaserScan**, **Map Display** e **PoseArray**.
