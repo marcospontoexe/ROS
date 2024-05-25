@@ -445,7 +445,7 @@ Além de solicitar o mapa através do serviço "static_map", existem dois tópic
 
 **NOTA**: Quando um **tópico é latched**, significa que a última mensagem publicada nesse tópico será armazenada. Isso significa que qualquer nó que escute este tópico no futuro receberá esta última mensagem, mesmo que ninguém esteja mais publicando neste tópico. Para especificar que um tópico será latched, basta definir o atributo latch como verdadeiro ao criar o tópico.
 
-Para lançar o nó **map_server** e fornecer informações de um mapa a partir de um arquivo de mapa, use o seguinte comando: `rosrun map_server map_server nome_do_mapa.yaml`. Se você lançar o comando a partir do diretório onde o arquivo de mapa está salvo, não precisa especificar o caminho completo para o arquivo. Caso contrário, se estiver em um diretório diferente, lembre-se de que será necessário especificar o caminho completo para o arquivo.
+Para lançar o nó **map_server** e fornecer informações de um mapa a partir de um arquivo de mapa, use o seguinte comando: `rosrun map_server map_server nome_do_mapa.yaml`. Se você lançar o comando a partir do diretório onde o arquivo de mapa está salvo, não precisa especificar o caminho completo para o arquivo. Caso contrário, se estiver em um diretório diferente, lembre-se de que será necessário **especificar o caminho completo para o arquivo**.
 
 [Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/provide_map) a launch "start_ provide_map" inicia o nó "map_server" do pacote "map_server", que fornece informações do arquivo ".yaml" para os tópicos "map_metadata", "map" e também para o serviço "static_map". Para verificar se o mapa está sendo fornecido corretamente, 
 você pode usar o seguinte comando para listar os tópicos que o nó map_server está publicando: `rostopic list | grep map`. E `rosservice list | grep map` para verificar se o serviço "static_map" foi iniciado.
@@ -488,9 +488,9 @@ O path planning basicamente recebe como entrada a localização atual do robô e
 3. Uso o botão "2D Nav Goal" do RViz para indicar o ponto de chegada do robô.
 
 ## Configurando o robô
-No sistema de mapeamento, se não informarmos ao sistema ONDE o robô possui o laser montado, qual é a orientação do laser, qual é a posição das rodas no robô, etc., ele não conseguirá criar um mapa bom e preciso. 
+No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
 
-A configuração e definição do robô são feitas nos arquivos URDF do robô. URDF (Unified Robot Description Format) é um formato XML que descreve o modelo de um robô. Ele define suas diferentes partes, dimensões, cinemática, dinâmica, sensores, etc...
+A configuração e definição do robô são feitas nos arquivos **URDF** do robô. URDF (Unified Robot Description Format) é um formato XML que descreve o modelo de um robô. Ele define suas diferentes partes, dimensões, cinemática, dinâmica, sensores, etc...
 
 Veja no exemplo a baixo como o laser do robô Kobuki é definido no arquivo URDF do robô:
 
@@ -532,7 +532,7 @@ Como você pode ver, ele define várias coisas em relação ao laser:
 Esses arquivos geralmente são colocados em um pacote chamado **yourrobot_description**.
 
 ### Transforms (transformação)
-Para podermos utilizar as leituras do laser, precisamos definir uma transformação entre o laser e a base do robô, e adicioná-la à árvore de transformações. Para poder usar os dados do laser, precisamos informar ao robô ONDE (posição e orientação) este laser está montado no robô. Isso é o que chamamos de uma **transform between frames** (transformação entre quadros).
+Para podermos **utilizar as leituras do laser**, precisamos definir uma transformação entre o laser e a base do robô, e adicioná-la à **árvore de transformações**. Para poder usar os dados do laser, precisamos informar ao robô ONDE (posição e orientação) este laser está montado no robô. Isso é o que chamamos de uma **transform between frames** (transformação entre quadros).
 
 Uma transformação especifica como dados expressos em um quadro podem ser transformados em outro quadro diferente. Por exemplo, se você detectar um obstáculo com o laser a 3 cm à frente, isso significa que está a 3 cm do laser, mas não do centro do robô (geralmente chamado de **base_link**). Para saber a distância a partir do centro do robô, é necessário transformar os 3 cm do quadro **laser_frame** para o quadro **base_link**.
 
