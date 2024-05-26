@@ -554,9 +554,34 @@ Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga a
 
 O path planning basicamente recebe como entrada a localização atual do robô e a posição para onde o robô deseja ir, e nos fornece como saída o caminho melhor e mais rápido para alcançar esse ponto.
 
-1. Execute `roslaunch turtlebot_navigation_gazebo move_base_demo.launch` para iniciar um Path Planning.
-2. Execute em outro terminal o RViz `roslaunch turtlebot_rviz_launchers view_planning.launch`.
-3. Uso o botão "2D Nav Goal" do RViz para indicar o ponto de chegada do robô.
+### Costmaps
+Um costmap é um mapa que representa os lugares onde é seguro para o robô estar em uma grade de células. Geralmente, os valores no costmap são binários, representando espaço livre ou lugares onde o robô estaria em colisão.
+
+Cada célula em um costmap possui um valor inteiro no intervalo de {0, 255}; 
+* 255 (NO_INFORMATION)
+* 254 (LETHAL_OBSTACLE) 
+* 253 (INSCRIBED_INFLATED_OBSTACLE)
+* 0 (FREE_SPACE)
+
+Existem dois tipos de costmaps: **costmap global** e **costmap local**. A principal diferença entre eles reside basicamente na maneira como são construídos:
+* O **costmap global** é criado a partir de um mapa estático.
+* O **costmap local** é criado a partir das leituras dos sensores do robô.
+
+O Global Planner **utiliza o costmap global** para calcular o caminho a seguir.
+
+#### Global Costmap
+O costmap global é criado a partir de um mapa estático gerado pelo usuário (como aquele que criamos no capítulo de Mapeamento). Neste caso, o costmap é inicializado para corresponder à largura, altura e informações de obstáculos fornecidas pelo mapa estático. Esta configuração é normalmente utilizada em conjunto com um sistema de localização, como o amcl. Este é o método que você utilizará para inicializar um costmap global.
+
+O costmap global também possui seus próprios parâmetros, que são definidos em um arquivo YAML. A seguir, você pode ver um exemplo de arquivo de parâmetros para o costmap global.
+
+```
+global_frame: map
+rolling_window: false
+
+plugins:
+  - {name: static, type: "costmap_2d::StaticLayer"}
+  - {name: inflation, type: "costmap_2d::InflationLayer"}
+```
 
 ### Visuzalizando um Path Planning com o Rviz 
 Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
@@ -621,9 +646,9 @@ Veja alguns dos parâmetros mais importantes para o planejador Navfn:
 * /allow_unknown (default: true): Especifica se o Navfn deve ou não permitir a criação de planos que atravessam espaços desconhecidos.       
     * NOTA: se você estiver usando um costmap de camadas costmap_2d com uma camada de voxel ou obstáculos, você também deve definir o parâmetro track_unknown_space para essa camada como verdadeiro, caso contrário, ele converterá todo o seu espaço desconhecido em espaço livre (pelo qual o Navfn passará sem problemas).
 * /planner_window_x (default: 0.0): Especifica o tamanho em x de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
-* /planner_window_y (default: 0.0): Specifies the y size of an optional window to restrict the planner to. This can be useful for restricting NavFn to work in a small window of a large costmap.
-* /default_tolerance (default: 0.0): A tolerance on the goal point for the planner. NavFn will attempt to create a plan that is as close to the specified goal as possible, but no farther away than the default tolerance.
-* /visualize_potential (default: false): Specifies whether or not to visualize the potential area computed by navfn via a PointCloud2.
+* /planner_window_y (default: 0.0): Especifica o tamanho em y de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
+* /default_tolerance (default: 0.0): Uma tolerância no ponto de destino para o planejador. O NavFn tentará criar um plano que esteja o mais próximo possível do objetivo especificado, mas não mais distante do que a tolerância padrão.
+* /visualize_potential (default: false): Especifica se a área potencial calculada pelo Navfn será visualizada ou não através de um PointCloud2.
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
