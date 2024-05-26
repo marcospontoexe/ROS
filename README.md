@@ -597,11 +597,11 @@ Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediat
 #### Mudando o Global Planner
 O Global Planner usado pelo nó **move_base** é especificado no parâmetro **base_global_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
 
-    ```
-    base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
-    base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
-    base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
-    ```
+  ```
+  base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
+  base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
+  base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
+  ```
 
 Ou pode ser configurado diretamente no arquivo launch, na tag:
 `<arg name="base_global_planner" default="navfn/NavfnROS"/>`
