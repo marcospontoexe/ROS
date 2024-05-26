@@ -583,6 +583,14 @@ plugins:
   - {name: inflation, type: "costmap_2d::InflationLayer"}
 ```
 
+Veja alguns dos principais parâmetros do Global Costmap:
+* global_frame (default: "map"): O quadro global no qual o costmap opera.
+* robot_base_frame (default: "base_link"): O nome do quadro para o elo base do robô.
+* rolling_window (default: false):  Se deve ou não usar uma versão de janela rolante do costmap.
+* plugins: Sequência de especificações de plugins, uma por camada. Cada especificação é um dicionário com campos nome e tipo. O nome é usado para definir o namespace de parâmetros para o plugin. Este nome será então definido no arquivo common_costmap_parameters.yaml. O campo type  realmente define o plugin (código-fonte) que será utilizado.
+
+Ao definir o parâmetro **rolling_window** como **false**, inicializaremos o costmap obtendo os dados de um mapa estático. Este é o método que você deseja utilizar para inicializar um costmap global.
+
 ### Visuzalizando um Path Planning com o Rviz 
 Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
 1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
@@ -614,7 +622,7 @@ Veja alguns tópicos fornecidos pelo servidor de ações do move base:
 
 [Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/send_goals) o cliente de ações "send_goal_client.py" envia mensagem para o nó "move_base " através do tópico **/move_base/goal** para enviar a robô até um ponto determinado.
 
-[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo yaml.
+[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo "my_move_base_params.yaml", e os parâmetros do costmap global são modificados pelo arquivo "my_global_costmap_params.yaml".
 
 ### Global Planner
 Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, não **levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
