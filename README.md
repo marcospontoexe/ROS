@@ -602,6 +602,15 @@ plugins:
     - {name: static_map,       type: "costmap_2d::StaticLayer"}
 ```
 
+Dessa forma você está adicionando à configuração do seu costmap uma camada chamada **static_map**, que utilizará o plugin **costmap_2d::StaticLayer**. Você pode adicionar quantas camadas desejar:
+
+```
+plugins: 
+    - {name: static_map,       type: "costmap_2d::StaticLayer"}
+    - {name: inflation,        type: "costmap_2d::InflationLayer"}
+```
+
+Você pode ter notado que as camadas são apenas adicionadas ao arquivo de parâmetros. Isso é verdade. Tanto no arquivo de parâmetros do costmap global quanto no local, as camadas são apenas adicionadas. Os parâmetros específicos dessas camadas são definidos no arquivo de parâmetros comuns do costmap.
 
 ### Visuzalizando um Path Planning com o Rviz 
 Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
