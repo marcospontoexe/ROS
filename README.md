@@ -554,6 +554,38 @@ Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga a
 
 O path planning basicamente recebe como entrada a localização atual do robô e a posição para onde o robô deseja ir, e nos fornece como saída o caminho melhor e mais rápido para alcançar esse ponto.
 
+### Visuzalizando um Path Planning com o Rviz 
+Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
+1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
+2. Em outro termial conabra o **Rviz**: `rosrun rviz rviz`.
+3. Configure o **Visualize Costmaps** no **rviz**: 
+    1. Clique no botão **Add** em Displays e escolha o elemento **Map**.
+    2. Defina o tópico para /move_base/global_costmap/costmap para visualizar o mapa de **costmaps global**.
+    3. Altere o tópico para /move_base/local_costmap/costmap para visualizar o mapa de **costmaps local**.
+4. Configure o **Visualize Plans** no **rviz**: 
+    1. Clique no botão **Add** em Displays e escolha o elemeto **Path**.
+    2. Defina o tópico para **/move_base/NavfnROS/plan** para visualizar o **plano global**.
+    3. Altere o tópico para **/move_base/DWAPlannerROS/local_plan** para visualizar o **plano local**.
+5. Para que as ferramentas 2D funcionem, o **Fixed Frame** no Rviz deve estar configurado como **map**.
+6. **Salve** as configurações para usar futuramente.
+7. Use a ferramenta **2D Pose Estimate** para fornecer uma pose inicial para o robô.
+8. Use a ferramenta **2D Nav Goal** para enviar uma pose de objetivo para o robô.
+
+### Navigation Stack
+A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
+
+A Navigation Stack receberá como entrada a localização atual do robô, a localização desejada para onde o robô quer ir, os dados de Odometria do Robô (codificadores de roda, IMU, GPS...) e dados de um sensor como um Laser. Em troca, ela irá produzir os comandos de velocidade necessários e enviá-los para a base móvel, a fim de mover o robô até a posição de objetivo especificada.
+
+veja a baixo os blocos básicos de construção do Navigation Stack.
+
+![blocos básicos de construção do Navigation Stack](https://github.com/marcospontoexe/ROS/blob/main/imagens/navstack.png)
+
+De acordo com o diagrama mostrado, devemos fornecer alguns blocos funcionais para que funcionem e se comuniquem com a pilha de navegação. A seguir, estão explicações breves de todos os blocos que precisam ser fornecidos como entrada para a pilha de navegação do ROS:
+* **Odometry source**: Os dados de odometria de um robô fornecem a posição do robô em relação à sua posição inicial. As principais fontes de odometria são os codificadores de roda, IMU e câmeras 2D/3D (odometria visual). O valor da odometria deve ser publicado para a pilha de navegação, que possui um tipo de mensagem nav_msgs/Odometry. A mensagem de odometria pode conter a posição e a velocidade do robô.
+* **Sensor source**: Os sensores são utilizados em duas tarefas na navegação: uma para localizar o robô no mapa (utilizando, por exemplo, o laser) e outra para detectar obstáculos no caminho do robô (usando o laser, sonares ou nuvens de pontos).
+* **sensor transforms/tf**: Os dados capturados pelos diferentes sensores do robô devem ser referenciados a um quadro de referência comum (geralmente o base_link) para que seja possível comparar dados provenientes de diferentes sensores. O robô deve publicar a relação entre o quadro de coordenadas principal do robô e os quadros dos diferentes sensores usando transformações do ROS.
+* **base_controller**: A função principal do controlador de base é converter a saída da pilha de navegação, que é uma mensagem Twist (geometry_msgs/Twist), em velocidades de motor correspondentes para o robô.
+
 ### Costmaps
 Um costmap é um mapa que representa os lugares onde é seguro para o robô estar em uma grade de células. Geralmente, os valores no costmap são binários, representando espaço livre ou lugares onde o robô estaria em colisão.
 
@@ -612,22 +644,19 @@ plugins:
 
 Você pode ter notado que as camadas são apenas adicionadas ao arquivo de parâmetros. Isso é verdade. Tanto no arquivo de parâmetros do costmap global quanto no local, as camadas são apenas adicionadas. Os parâmetros específicos dessas camadas são definidos no arquivo de parâmetros comuns do costmap.
 
-### Visuzalizando um Path Planning com o Rviz 
-Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
-1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
-2. Em outro termial conabra o **Rviz**: `rosrun rviz rviz`.
-3. Configure o **Visualize Costmaps** no **rviz**: 
-    1. Clique no botão **Add** em Displays e escolha o elemento **Map**.
-    2. Defina o tópico para /move_base/global_costmap/costmap para visualizar o mapa de **costmaps global**.
-    3. Altere o tópico para /move_base/local_costmap/costmap para visualizar o mapa de **costmaps local**.
-4. Configure o **Visualize Plans** no **rviz**: 
-    1. Clique no botão **Add** em Displays e escolha o elemeto **Path**.
-    2. Defina o tópico para **/move_base/NavfnROS/plan** para visualizar o **plano global**.
-    3. Altere o tópico para **/move_base/DWAPlannerROS/local_plan** para visualizar o **plano local**.
-5. Para que as ferramentas 2D funcionem, o **Fixed Frame** no Rviz deve estar configurado como **map**.
-6. **Salve** as configurações para usar futuramente.
-7. Use a ferramenta **2D Pose Estimate** para fornecer uma pose inicial para o robô.
-8. Use a ferramenta **2D Nav Goal** para enviar uma pose de objetivo para o robô.
+#### Local Costmap
+A primeira coisa que você precisa saber é que o planejador local utiliza o costmap local para calcular os planos locais.
+
+Ao contrário do costmap global, o costmap local é **criado diretamente a partir das leituras dos sensores do robô**. Dado uma largura e altura para o costmap (definidas pelo usuário), ele mantém o robô no centro do costmap enquanto se move pelo ambiente, atualizando as informações de obstáculos no mapa conforme o robô se move.
+
+Veja alguns dos principais parâmetros do Local Costmap:
+* global_frame: O quadro global no qual o costmap opera. No costmap local, este parâmetro deve ser definido como "/odom".
+* robot_base_frame: O nome do quadro para o base link do robô.
+* rolling_window: Se deve ou não usar uma versão de janela rolante do costmap. Se o parâmetro static_map estiver definido como true, este parâmetro deve ser definido como false. No costmap local, este parâmetro deve ser definido como "true".
+* update_frequency (default: 5.0): A frequência em Hz para atualização do mapa.
+* width (default: 10): A largura do costmap.
+heigth (default: 10): A altura do costmap.
+plugins: Sequência de especificações de plugins, uma por camada. Cada especificação é um dicionário com campos name e type. O "name" é usado para definir o namespace de parâmetros para o plugin.
 
 ### O pacote Move_Base
 A função principal do nó move_base é mover o robô de sua posição atual para uma posição de objetivo. Basicamente, este nó é uma implementação de um **SimpleActionServer**, que recebe uma pose de objetivo com o tipo de mensagem geometry_msgs/PoseStamped. Portanto, podemos enviar metas de posição para este nó utilizando um SimpleActionClient.
@@ -717,6 +746,19 @@ Se você verificar o arquivo **my_move_base_params.yaml**, você verá os parâm
     * /yaw_goal_tolerance (double, default: 0.05): A tolerância, em radianos, para o controlador de yaw/rotação ao alcançar seu objetivo.
     * /xy_goal_tolerance (double, default: 0.10): A tolerância, em metros, para o controlador na distância x e y ao alcançar um objetivo.
     * /latch_xy_goal_tolerance (bool, default: false): Se a tolerância do objetivo é fixada (latched), se o robô atingir a localização xy do objetivo, ele simplesmente girará no lugar, mesmo que acabe fora da tolerância do objetivo enquanto faz isso.
+
+Outros parâmetros do arquivo de configuração de parâmetros:
+1. Forward Simulation Parameters:
+    * /sim_time (default: 1.7): A quantidade de tempo para simular antecipadamente trajetórias em segundos. Quanto maior o parâmetro, mais longo será o plano local calculado. No entanto, também aumentará os recursos computacionais utilizados.
+    * /sim_granularity (default: 0.025): O tamanho do passo, em metros, a ser utilizado entre pontos em uma trajetória dada
+    * /vx_samples (default: 3): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em x
+    * /vy_samples (default: 10): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em y
+    * /vtheta_samples (default: 20): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em theta
+2. Trajectory Scoring Parameters:
+    * /path_distance_bias (default: 32.0): O peso para quanto o controlador deve permanecer próximo ao caminho que lhe foi dado.
+    * /goal_distance_bias (default: 24.0): O peso para quanto o controlador deve tentar alcançar seu objetivo local; também controla a velocidade.
+    * /occdist_scale (default: 0.01):  O peso para quanto o controlador deve tentar evitar obstáculos.
+
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
@@ -810,21 +852,6 @@ Você também pode criar um arquivo launch que executa o comando acima, especifi
 A publicação das transformações também é tratada pelos arquivos **URDF**. Pelo menos, este é o uso comum. No entanto, existem alguns casos em que você precisa publicar uma transformação separadamente dos arquivos URDF. Por exemplo:
 * Se você adiciona temporariamente um sensor ao robô.
 * Para um sensor que não faz parte do robo, mas envia informações ao mesmo.
-
-## Navigation Stack
-A Navigation Stack (Pilha de Navegação) é um conjunto de nós e algoritmos ROS que são usados para mover autonomamente um robô de um ponto a outro, evitando todos os obstáculos que o robô possa encontrar em seu caminho. O ROS Navigation Stack vem com uma implementação de vários algoritmos relacionados à navegação que podem ajudá-lo a realizar navegação autônoma em seus robôs móveis.
-
-A Navigation Stack receberá como entrada a localização atual do robô, a localização desejada para onde o robô quer ir, os dados de Odometria do Robô (codificadores de roda, IMU, GPS...) e dados de um sensor como um Laser. Em troca, ela irá produzir os comandos de velocidade necessários e enviá-los para a base móvel, a fim de mover o robô até a posição de objetivo especificada.
-
-veja a baixo os blocos básicos de construção do Navigation Stack.
-
-![blocos básicos de construção do Navigation Stack](https://github.com/marcospontoexe/ROS/blob/main/imagens/navstack.png)
-
-De acordo com o diagrama mostrado, devemos fornecer alguns blocos funcionais para que funcionem e se comuniquem com a pilha de navegação. A seguir, estão explicações breves de todos os blocos que precisam ser fornecidos como entrada para a pilha de navegação do ROS:
-* **Odometry source**: Os dados de odometria de um robô fornecem a posição do robô em relação à sua posição inicial. As principais fontes de odometria são os codificadores de roda, IMU e câmeras 2D/3D (odometria visual). O valor da odometria deve ser publicado para a pilha de navegação, que possui um tipo de mensagem nav_msgs/Odometry. A mensagem de odometria pode conter a posição e a velocidade do robô.
-* **Sensor source**: Os sensores são utilizados em duas tarefas na navegação: uma para localizar o robô no mapa (utilizando, por exemplo, o laser) e outra para detectar obstáculos no caminho do robô (usando o laser, sonares ou nuvens de pontos).
-* **sensor transforms/tf**: Os dados capturados pelos diferentes sensores do robô devem ser referenciados a um quadro de referência comum (geralmente o base_link) para que seja possível comparar dados provenientes de diferentes sensores. O robô deve publicar a relação entre o quadro de coordenadas principal do robô e os quadros dos diferentes sensores usando transformações do ROS.
-* **base_controller**: A função principal do controlador de base é converter a saída da pilha de navegação, que é uma mensagem Twist (geometry_msgs/Twist), em velocidades de motor correspondentes para o robô.
 
 ## Requisitos de hardware
 A Navigation Stack do ROS é genérica. Isso significa que pode ser utilizada com quase qualquer tipo de robô móvel, mas existem algumas considerações de hardware que ajudarão o sistema como um todo a ter um desempenho melhor, então elas devem ser consideradas. Estes são os requisitos:
