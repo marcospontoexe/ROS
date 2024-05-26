@@ -591,6 +591,18 @@ Veja alguns dos principais parâmetros do Global Costmap:
 
 Ao definir o parâmetro **rolling_window** como **false**, inicializaremos o costmap obtendo os dados de um mapa estático. Este é o método que você deseja utilizar para inicializar um costmap global.
 
+Para configurar a **área de plugins**, adicionaremos camadas à configuração do costmap. 
+
+Para simplificar (e esclarecer) a configuração dos costmaps, o ROS utiliza camadas. Camadas são como "blocos" de parâmetros relacionados. Por exemplo, o mapa estático, os obstáculos detectados e a inflação são separados em diferentes camadas. Essas camadas são definidas no arquivo **common_costmap_parameters.yam**l e depois adicionadas aos arquivos **local_costmap_params.yaml** e **global_costmap_params.yaml**.
+
+Para adicionar uma camada a um arquivo de configuração de um costmap, você irá especificá-la na área de plugins:
+
+```
+plugins: 
+    - {name: static_map,       type: "costmap_2d::StaticLayer"}
+```
+
+
 ### Visuzalizando um Path Planning com o Rviz 
 Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
 1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
