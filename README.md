@@ -619,6 +619,7 @@ NavfnROS:
 
 Veja alguns dos parâmetros mais importantes para o planejador Navfn:
 * /allow_unknown (default: true): Especifica se o Navfn deve ou não permitir a criação de planos que atravessam espaços desconhecidos. 
+      
       NOTA: se você estiver usando um costmap de camadas costmap_2d com uma camada de voxel ou obstáculos, você também deve definir o parâmetro track_unknown_space para essa camada como verdadeiro, caso contrário, ele converterá todo o seu espaço desconhecido em espaço livre (pelo qual o Navfn passará sem problemas).
 
 * /planner_window_x (default: 0.0): Specifies the x size of an optional window to restrict the planner to. This can be useful for restricting NavFn to work in a small window of a large costmap.
