@@ -11,6 +11,12 @@
   <arg name="no_static_map" default="false"/>
 
   <arg name="base_global_planner" default="navfn/NavfnROS"/>
+  <!---
+  * base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
+  * base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
+  * base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
+  -->
+
   <arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>
   <!-- <arg name="base_local_planner" default="base_local_planner/TrajectoryPlannerROS"/> -->
 
