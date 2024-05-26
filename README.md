@@ -554,6 +554,14 @@ Para uma navegação autônoma, precisaremos de algum tipo de sistema que diga a
 
 O path planning basicamente recebe como entrada a localização atual do robô e a posição para onde o robô deseja ir, e nos fornece como saída o caminho melhor e mais rápido para alcançar esse ponto.
 
+Como existem muitos nós diferentes trabalhando juntos, o número de parâmetros disponíveis para configurar esses nós também é muito grande. Acho que seria uma ótima ideia se resumíssemos os diferentes arquivos de parâmetros que precisaremos configurar para o Path Planning. Os arquivos de parâmetros necessários são os seguintes:
+* move_base_params.yaml
+* global_planner_params.yaml
+* local_planner_params.yaml
+* common_costmap_params.yaml
+* global_costmap_params.yaml
+* local_costmap_params.yaml
+
 ### Visuzalizando um Path Planning com o Rviz 
 Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
 1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
@@ -585,6 +593,109 @@ De acordo com o diagrama mostrado, devemos fornecer alguns blocos funcionais par
 * **Sensor source**: Os sensores são utilizados em duas tarefas na navegação: uma para localizar o robô no mapa (utilizando, por exemplo, o laser) e outra para detectar obstáculos no caminho do robô (usando o laser, sonares ou nuvens de pontos).
 * **sensor transforms/tf**: Os dados capturados pelos diferentes sensores do robô devem ser referenciados a um quadro de referência comum (geralmente o base_link) para que seja possível comparar dados provenientes de diferentes sensores. O robô deve publicar a relação entre o quadro de coordenadas principal do robô e os quadros dos diferentes sensores usando transformações do ROS.
 * **base_controller**: A função principal do controlador de base é converter a saída da pilha de navegação, que é uma mensagem Twist (geometry_msgs/Twist), em velocidades de motor correspondentes para o robô.
+
+### O pacote Move_Base
+A função principal do nó move_base é mover o robô de sua posição atual para uma posição de objetivo. Basicamente, este nó é uma implementação de um **SimpleActionServer**, que recebe uma pose de objetivo com o tipo de mensagem geometry_msgs/PoseStamped. Portanto, podemos enviar metas de posição para este nó utilizando um SimpleActionClient.
+
+Este **Action Server** fornece o tópico **move_base/goal**, que é a entrada da Pilha de Navegação (nav stack). Este tópico é utilizado para **fornecer a pose de objetivo**.
+
+Veja alguns tópicos fornecidos pelo servidor de ações do move base:
+* move_base/goal (move_base_msgs/MoveBaseActionGoal)
+* move_base/cancel (actionlib_msgs/GoalID)
+* move_base/feedback (move_base_msgs/MoveBaseActionFeedback)
+* move_base/status (actionlib_msgs/GoalStatusArray)
+* move_base/result (move_base_msgs/MoveBaseActionResult)
+
+[Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/send_goals) o cliente de ações "send_goal_client.py" envia mensagem para o nó "move_base " através do tópico **/move_base/goal** para enviar a robô até um ponto determinado.
+
+[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo "my_move_base_params.yaml", os parâmetros do costmap global são modificados pelo arquivo "my_global_costmap_params.yaml", os parâmetros do costmap local são modificados pelo arquivo "my_local_costmap_params.yaml", e os parâmetros do costmap comum pelo arquivo "my_common_costmap_params.yaml".
+
+### Global Planner
+Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, **não levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
+
+#### Mudando o Global Planner
+O Global Planner usado pelo nó **move_base** é especificado no parâmetro **base_global_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
+
+  ```
+  base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
+  base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
+  base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
+  ```
+
+Ou pode ser configurado diretamente no arquivo launch, na tag:
+
+`<arg name="base_global_planner" default="navfn/NavfnROS"/>`
+
+Para garantir que você alterou corretamente o Global Planner, você pode usar o seguinte comando: `rosparam get /move_base/base_global_planner`.
+
+##### Parâmetros do Navfn 
+Se você verificar o arquivo de parâmetros **.yaml**, verá os parâmetros definidos para o planejador Navfn:
+```
+NavfnROS:
+  allow_unknown: true # Specifies whether or not to allow navfn to create plans that traverse unknown space.
+  default_tolerance: 0.1 # A tolerance on the goal point for the planner.
+```
+
+Veja alguns dos parâmetros mais importantes para o planejador Navfn:
+* /allow_unknown (default: true): Especifica se o Navfn deve ou não permitir a criação de planos que atravessam espaços desconhecidos.       
+    * NOTA: se você estiver usando um costmap de camadas costmap_2d com uma camada de voxel ou obstáculos, você também deve definir o parâmetro track_unknown_space para essa camada como verdadeiro, caso contrário, ele converterá todo o seu espaço desconhecido em espaço livre (pelo qual o Navfn passará sem problemas).
+* /planner_window_x (default: 0.0): Especifica o tamanho em x de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
+* /planner_window_y (default: 0.0): Especifica o tamanho em y de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
+* /default_tolerance (default: 0.0): Uma tolerância no ponto de destino para o planejador. O NavFn tentará criar um plano que esteja o mais próximo possível do objetivo especificado, mas não mais distante do que a tolerância padrão.
+* /visualize_potential (default: false): Especifica se a área potencial calculada pelo Navfn será visualizada ou não através de um PointCloud2.
+
+### Local Planner
+Depois que o Global Planner calcula o caminho a seguir, esse caminho é enviado para o Local Planner (planejador local). O Local Planner, então, executará cada segmento do Global Planner (vamos imaginar o Local Planner como uma parte menor do Global Planner). Portanto, dado um plano a 
+seguir (fornecido pelo planejador global) e um mapa, o planejador local fornecerá comandos de velocidade para mover o robô.
+
+Ao contrário do planejador global, o planejador local **monitora a odometria e os dados do laser**, e escolhe um plano local livre de colisões para o robô. Assim, o planejador local pode recalcular o caminho do robô dinamicamente para evitar que ele colida com objetos, ao mesmo tempo permitindo que ele alcance seu destino.
+
+Uma vez que o plano local é calculado, ele é publicado em um tópico chamado **/local_plan**. O planejador local também publica a porção do plano global que está tentando seguir no tópico **/global_plan**.
+
+#### Mudando o Local Planner
+O planejador local usado pelo nó move_base é especificado no parâmetro **base_local_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
+
+```
+base_local_planner: "base_local_planner/TrajectoryPlannerROS" # Sets the Trajectory Rollout algorithm from base local planner
+base_local_planner: "dwa_local_planner/DWAPlannerROS" # Sets the dwa local planner
+base_local_planner: "eband_local_planner/EBandPlannerROS" # Sets the eband local planner
+base_local_planner: "teb_local_planner/TebLocalPlannerROS" # Sets the teb local planner
+```
+
+Ou pode ser configurado diretamente no arquivo launch:
+
+`<arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>`.
+
+Para garantir que você tenha alterado corretamente o planejador global, você pode usar o seguinte comando: `rosparam get /move_base/base_local_planner`.
+
+Se você verificar o arquivo **my_move_base_params.yaml**, você verá os parâmetros definidos para o planejador DWAPlannerROS. A baixo os parâmetros mais importantes:
+1. Robot Configuration Parameters
+    * /acc_lim_x (default: 2.5): O limite de aceleração em x do robô em metros/seg^2
+    * /acc_lim_th (default: 3.2): O limite de aceleração rotacional do robô em radianos/seg^2
+    * /max_vel_trans (default: 0.55): O valor absoluto da velocidade translacional máxima para o robô em m/s
+    * /min_vel_trans (default: 0.1): O valor absoluto da velocidade translacional mínima para o robô em m/s
+    * /max_vel_x (default: 0.55): A velocidade máxima em x para o robô em m/s
+    * /min_vel_x (default: 0.0): A velocidade mínima em x para o robô em m/s, negativa para movimento reverso
+    * /max_vel_theta (default: 1.0): O valor absoluto da velocidade rotacional máxima para o robô em rad/s
+    * /min_vel_theta (default: 0.4): O valor absoluto da velocidade rotacional mínima para o robô em rad/s
+2. Goal Tolerance Parameters:
+    * /yaw_goal_tolerance (double, default: 0.05): A tolerância, em radianos, para o controlador de yaw/rotação ao alcançar seu objetivo.
+    * /xy_goal_tolerance (double, default: 0.10): A tolerância, em metros, para o controlador na distância x e y ao alcançar um objetivo.
+    * /latch_xy_goal_tolerance (bool, default: false): Se a tolerância do objetivo é fixada (latched), se o robô atingir a localização xy do objetivo, ele simplesmente girará no lugar, mesmo que acabe fora da tolerância do objetivo enquanto faz isso.
+
+Outros parâmetros do arquivo de configuração de parâmetros:
+1. Forward Simulation Parameters:
+    * /sim_time (default: 1.7): A quantidade de tempo para simular antecipadamente trajetórias em segundos. Quanto maior o parâmetro, mais longo será o plano local calculado. No entanto, também aumentará os recursos computacionais utilizados.
+    * /sim_granularity (default: 0.025): O tamanho do passo, em metros, a ser utilizado entre pontos em uma trajetória dada
+    * /vx_samples (default: 3): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em x
+    * /vy_samples (default: 10): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em y
+    * /vtheta_samples (default: 20): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em theta
+2. Trajectory Scoring Parameters:
+    * /path_distance_bias (default: 32.0): O peso para quanto o controlador deve permanecer próximo ao caminho que lhe foi dado.
+    * /goal_distance_bias (default: 24.0): O peso para quanto o controlador deve tentar alcançar seu objetivo local; também controla a velocidade.
+    * /occdist_scale (default: 0.01):  O peso para quanto o controlador deve tentar evitar obstáculos.
+
+
 
 ### Costmaps
 Um costmap é um mapa que representa os lugares onde é seguro para o robô estar em uma grade de células. Geralmente, os valores no costmap são binários, representando espaço livre ou lugares onde o robô estaria em colisão.
@@ -679,7 +790,7 @@ plugins:
 
 **MUITO IMPORTANTE:** Note que a **camada de obstáculos** usa plugins diferentes para o **costmap local** e o **costmap global**. Para o costmap local, ela usa a **costmap_2d::ObstacleLayer**, e para o costmap global, ela usa a **costmap_2d::VoxelLayer**. Isso é muito importante porque é um erro comum na Navegação usar o plugin errado para as camadas de obstáculos.
 
-### Common Costmap Parameters
+#### Common Costmap Parameters
 Esses parâmetros afetarão tanto o costmap global quanto o costmap local.
 * footprint: O contorno da base móvel. No ROS, é representado por um array bidimensional na forma [x0, y0], [x1, y1], [x2, y2], ...]. Este contorno será usado para calcular o raio dos círculos inscritos e circunscritos, que são usados para inflar obstáculos de maneira que se ajustem a este robô. Normalmente, por segurança, queremos que o contorno seja ligeiramente maior do que o contorno real do robô.
 * robot_radius: Caso o robô seja circular, especificaremos este parâmetro em vez do contorno.
@@ -692,109 +803,50 @@ Veja algumas layes:
     obstacles_laser: # Name of the layer
         observation_sources: laser # We define 1 observation_source named laser
     ```
+Agora podemos definir os parâmetros específicos para esta source_name. Cada source_name em observation_sources (laser para esse exemplo) define um namespace no qual os parâmetros podem ser configurados:
+* /source_name/topic (padrão: source_name): O tópico no qual os dados do sensor chegam para esta fonte.
+* /source_name/data_type (padrão: "PointCloud"): O tipo de dados associado ao tópico; atualmente, apenas "PointCloud", "PointCloud2" e "LaserScan" são suportados.
+* /source_name/clearing (padrão: false): Se esta observação deve ser usada para limpar o espaço livre.
+* /source_name/marking (padrão: true): Se esta observação deve ser usada para marcar obstáculos.
+* /source_name/inf_is_valid (padrão: false): Permite valores Inf em mensagens de observação "LaserScan". Os valores Inf são convertidos para a máxima distância do laser.
+* /source_name/max_obstacle_height (padrão: 2.0): A altura máxima de qualquer obstáculo a ser inserido no costmap, em metros. Este parâmetro deve ser definido ligeiramente maior que a altura do seu robô.
+* /source_name/obstacle_range (padrão: 2.5): A distância máxima padrão do robô na qual um obstáculo será inserido no costmap, em metros. Isso pode ser substituído com base em cada sensor.
+* /source_name/raytrace_range (padrão: 3.0): A faixa padrão em metros para traçar raios para fora do mapa usando dados do sensor. Isso pode ser substituído com base em cada sensor.
 
+um exemplo: `laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, obstacle_range: 5.5}`.
 
-### O pacote Move_Base
-A função principal do nó move_base é mover o robô de sua posição atual para uma posição de objetivo. Basicamente, este nó é uma implementação de um **SimpleActionServer**, que recebe uma pose de objetivo com o tipo de mensagem geometry_msgs/PoseStamped. Portanto, podemos enviar metas de posição para este nó utilizando um SimpleActionClient.
+A **Inflation Layer** (camada de Inflação)  é responsável por realizar a inflação em cada célula com um obstáculo:
+* inflation_radius (default: 0.55): O raio em metros até o qual o mapa infla os valores de custo dos obstáculos.
+* cost_scaling_factor (default: 10.0): Um fator de escala a ser aplicado aos valores de custo durante a inflação.
 
-Este **Action Server** fornece o tópico **move_base/goal**, que é a entrada da Pilha de Navegação (nav stack). Este tópico é utilizado para **fornecer a pose de objetivo**.
+A **static layer** (camada estática) é responsável por fornecer o mapa estático aos costmaps que o requerem (costmap global).
+* map_topic (string, padrão: "map"): O tópico ao qual o costmap se inscreve para receber o mapa estático.
 
-Veja alguns tópicos fornecidos pelo servidor de ações do move base:
-* move_base/goal (move_base_msgs/MoveBaseActionGoal)
-* move_base/cancel (actionlib_msgs/GoalID)
-* move_base/feedback (move_base_msgs/MoveBaseActionFeedback)
-* move_base/status (actionlib_msgs/GoalStatusArray)
-* move_base/result (move_base_msgs/MoveBaseActionResult)
+### Recovery Behaviors (comportamentos de recuperação)
+Pode acontecer que, ao tentar executar uma trajetória, o robô fique preso por algum motivo. Felizmente, se isso ocorrer, o ROS Navigation Stack fornece métodos que podem ajudar seu robô a se desvencilhar e continuar navegando. Esses são os comportamentos de recuperação.
 
-[Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/send_goals) o cliente de ações "send_goal_client.py" envia mensagem para o nó "move_base " através do tópico **/move_base/goal** para enviar a robô até um ponto determinado.
+O ROS Navigation Stack fornece 2 comportamentos de recuperação: **Clear Costmap** (limpar o costmap) e **Rotate Recovery** (recuperação por rotação).
 
-[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo "my_move_base_params.yaml", os parâmetros do costmap global são modificados pelo arquivo "my_global_costmap_params.yaml", e os parâmetros do costmap local são modificados pelo arquivo "my_local_costmap_params.yaml".
+Para **habilitar os comportamentos de recuperação**, precisamos definir o seguinte parâmetro no arquivo de parâmetros do **move_base**:
+* recovery_behavior_enabled (padrão: true): Habilita ou desabilita os comportamentos de recuperação.
 
-### Global Planner
-Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, **não levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
+#### Rotate Recovery
+Basicamente, o comportamento de recuperação por rotação é um comportamento simples que tenta liberar espaço girando o robô 360 graus. Dessa forma, o robô pode ser capaz de encontrar um caminho livre de obstáculos para continuar navegando.
 
-#### Mudando o Global Planner
-O Global Planner usado pelo nó **move_base** é especificado no parâmetro **base_global_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
+Ele possui alguns parâmetros que podem ser personalizados para modificar ou melhorar seu comportamento.
+1. Parâmetros de Recuperação por Rotação:
+    * /sim_granularity (padrão: 0.017): A distância, em radianos, entre verificações de obstáculos ao verificar se uma rotação no lugar é segura. Padrão é 1 grau.
+    * /frequency (padrão: 20.0): A frequência, em Hertz, na qual enviar comandos de velocidade para a base móvel.
+2. Outros Parâmetros:
+    * /yaw_goal_tolerance (double, padrão: 0.05): A tolerância, em radianos, para o controlador de orientação/rotação ao alcançar seu objetivo.
+    * /acc_lim_th (double, padrão: 3.2): O limite de aceleração rotacional do robô, em radianos/segundo².
+    * /max_rotational_vel (double, padrão: 1.0): A velocidade rotacional máxima permitida para a base, em radianos/segundo.
+    * /min_in_place_rotational_vel (double, padrão: 0.4): A velocidade rotacional mínima permitida para a base durante rotações no lugar, em radianos/segundo.
 
-  ```
-  base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
-  base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
-  base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
-  ```
+#### Clear Costmap
+A recuperação de limpeza do costmap é um comportamento simples de recuperação que limpa o espaço ao remover obstáculos fora de uma região específica do mapa do robô. Basicamente, o costmap local reverte ao mesmo estado do costmap global.
 
-Ou pode ser configurado diretamente no arquivo launch, na tag:
-
-`<arg name="base_global_planner" default="navfn/NavfnROS"/>`
-
-Para garantir que você alterou corretamente o Global Planner, você pode usar o seguinte comando: `rosparam get /move_base/base_global_planner`.
-
-##### Parâmetros do Navfn 
-Se você verificar o arquivo de parâmetros **.yaml**, verá os parâmetros definidos para o planejador Navfn:
-```
-NavfnROS:
-  allow_unknown: true # Specifies whether or not to allow navfn to create plans that traverse unknown space.
-  default_tolerance: 0.1 # A tolerance on the goal point for the planner.
-```
-
-Veja alguns dos parâmetros mais importantes para o planejador Navfn:
-* /allow_unknown (default: true): Especifica se o Navfn deve ou não permitir a criação de planos que atravessam espaços desconhecidos.       
-    * NOTA: se você estiver usando um costmap de camadas costmap_2d com uma camada de voxel ou obstáculos, você também deve definir o parâmetro track_unknown_space para essa camada como verdadeiro, caso contrário, ele converterá todo o seu espaço desconhecido em espaço livre (pelo qual o Navfn passará sem problemas).
-* /planner_window_x (default: 0.0): Especifica o tamanho em x de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
-* /planner_window_y (default: 0.0): Especifica o tamanho em y de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
-* /default_tolerance (default: 0.0): Uma tolerância no ponto de destino para o planejador. O NavFn tentará criar um plano que esteja o mais próximo possível do objetivo especificado, mas não mais distante do que a tolerância padrão.
-* /visualize_potential (default: false): Especifica se a área potencial calculada pelo Navfn será visualizada ou não através de um PointCloud2.
-
-### Local Planner
-Depois que o Global Planner calcula o caminho a seguir, esse caminho é enviado para o Local Planner (planejador local). O Local Planner, então, executará cada segmento do Global Planner (vamos imaginar o Local Planner como uma parte menor do Global Planner). Portanto, dado um plano a 
-seguir (fornecido pelo planejador global) e um mapa, o planejador local fornecerá comandos de velocidade para mover o robô.
-
-Ao contrário do planejador global, o planejador local **monitora a odometria e os dados do laser**, e escolhe um plano local livre de colisões para o robô. Assim, o planejador local pode recalcular o caminho do robô dinamicamente para evitar que ele colida com objetos, ao mesmo tempo permitindo que ele alcance seu destino.
-
-Uma vez que o plano local é calculado, ele é publicado em um tópico chamado **/local_plan**. O planejador local também publica a porção do plano global que está tentando seguir no tópico **/global_plan**.
-
-#### Mudando o Local Planner
-O planejador local usado pelo nó move_base é especificado no parâmetro **base_local_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
-
-```
-base_local_planner: "base_local_planner/TrajectoryPlannerROS" # Sets the Trajectory Rollout algorithm from base local planner
-base_local_planner: "dwa_local_planner/DWAPlannerROS" # Sets the dwa local planner
-base_local_planner: "eband_local_planner/EBandPlannerROS" # Sets the eband local planner
-base_local_planner: "teb_local_planner/TebLocalPlannerROS" # Sets the teb local planner
-```
-
-Ou pode ser configurado diretamente no arquivo launch:
-
-`<arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>`.
-
-Para garantir que você tenha alterado corretamente o planejador global, você pode usar o seguinte comando: `rosparam get /move_base/base_local_planner`.
-
-Se você verificar o arquivo **my_move_base_params.yaml**, você verá os parâmetros definidos para o planejador DWAPlannerROS. A baixo os parâmetros mais importantes:
-1. Robot Configuration Parameters
-    * /acc_lim_x (default: 2.5): O limite de aceleração em x do robô em metros/seg^2
-    * /acc_lim_th (default: 3.2): O limite de aceleração rotacional do robô em radianos/seg^2
-    * /max_vel_trans (default: 0.55): O valor absoluto da velocidade translacional máxima para o robô em m/s
-    * /min_vel_trans (default: 0.1): O valor absoluto da velocidade translacional mínima para o robô em m/s
-    * /max_vel_x (default: 0.55): A velocidade máxima em x para o robô em m/s
-    * /min_vel_x (default: 0.0): A velocidade mínima em x para o robô em m/s, negativa para movimento reverso
-    * /max_vel_theta (default: 1.0): O valor absoluto da velocidade rotacional máxima para o robô em rad/s
-    * /min_vel_theta (default: 0.4): O valor absoluto da velocidade rotacional mínima para o robô em rad/s
-2. Goal Tolerance Parameters:
-    * /yaw_goal_tolerance (double, default: 0.05): A tolerância, em radianos, para o controlador de yaw/rotação ao alcançar seu objetivo.
-    * /xy_goal_tolerance (double, default: 0.10): A tolerância, em metros, para o controlador na distância x e y ao alcançar um objetivo.
-    * /latch_xy_goal_tolerance (bool, default: false): Se a tolerância do objetivo é fixada (latched), se o robô atingir a localização xy do objetivo, ele simplesmente girará no lugar, mesmo que acabe fora da tolerância do objetivo enquanto faz isso.
-
-Outros parâmetros do arquivo de configuração de parâmetros:
-1. Forward Simulation Parameters:
-    * /sim_time (default: 1.7): A quantidade de tempo para simular antecipadamente trajetórias em segundos. Quanto maior o parâmetro, mais longo será o plano local calculado. No entanto, também aumentará os recursos computacionais utilizados.
-    * /sim_granularity (default: 0.025): O tamanho do passo, em metros, a ser utilizado entre pontos em uma trajetória dada
-    * /vx_samples (default: 3): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em x
-    * /vy_samples (default: 10): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em y
-    * /vtheta_samples (default: 20): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em theta
-2. Trajectory Scoring Parameters:
-    * /path_distance_bias (default: 32.0): O peso para quanto o controlador deve permanecer próximo ao caminho que lhe foi dado.
-    * /goal_distance_bias (default: 24.0): O peso para quanto o controlador deve tentar alcançar seu objetivo local; também controla a velocidade.
-    * /occdist_scale (default: 0.01):  O peso para quanto o controlador deve tentar evitar obstáculos.
-
+Quando você limpa obstáculos de um costmap, você torna esses **obstáculos invisíveis para o robô**. Portanto, tenha cuidado ao chamar este serviço, pois isso poderia fazer com que o robô começasse a **colidir com obstáculos**.
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
@@ -839,6 +891,12 @@ Como você pode ver, ele define várias coisas em relação ao laser:
   * Ele define valores visuais. Esses valores fornecerão os elementos visuais do laser. Isso é apenas para fins de visualização.
 
 Esses arquivos geralmente são colocados em um pacote chamado **yourrobot_description**.
+
+### Configuração dinâmica
+Até agora, vimos como alterar parâmetros modificando-os nos arquivos de parâmetros (YAML). Mas, adivinhe... essa não é a única maneira de alterar parâmetros! Você também pode modificar parâmetros dinâmicos usando a ferramenta **rqt_reconfigure**:
+1. Execute o seguinte comando para abrir a ferramenta rqt_reconfigure: `rosrun rqt_reconfigure rqt_reconfigure`.
+2. Abra o grupo **move_base**.
+3. Selecione o grupo de parâmetros para fazer as devidas alterações de parâmetros de cada grupo.
 
 ### Transforms (transformação)
 Para podermos **utilizar as leituras do laser**, precisamos definir uma transformação entre o laser e a base do robô, e adicioná-la à **árvore de transformações**. Para poder usar os dados do laser, precisamos informar ao robô ONDE (posição e orientação) este laser está montado no robô. Isso é o que chamamos de uma **transform between frames** (transformação entre quadros).
