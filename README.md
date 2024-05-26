@@ -594,7 +594,26 @@ Veja alguns tópicos fornecidos pelo servidor de ações do move base:
 ### Global Planner
 Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, não **levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
 
+#### Mudando o Global Planner
+O Global Planner usado pelo nó **move_base** é especificado no parâmetro **base_global_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
+    ```
+    base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
+    base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
+    base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
+    ```
 
+Ou pode ser configurado diretamente no arquivo launch, na tag:
+`<arg name="base_global_planner" default="navfn/NavfnROS"/>`
+
+Para garantir que você alterou corretamente o Global Planner, você pode usar o seguinte comando: `rosparam get /move_base/base_global_planner`.
+
+##### Parâmetros do Navfn 
+Se você verificar o arquivo de parâmetros **.yaml**, verá os parâmetros definidos para o planejador Navfn:
+```
+NavfnROS:
+  allow_unknown: true # Specifies whether or not to allow navfn to create plans that traverse unknown space.
+  default_tolerance: 0.1 # A tolerance on the goal point for the planner.
+```
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
