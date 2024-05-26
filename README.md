@@ -658,6 +658,20 @@ Veja alguns dos principais parâmetros do Local Costmap:
 heigth (default: 10): A altura do costmap.
 plugins: Sequência de especificações de plugins, uma por camada. Cada especificação é um dicionário com campos name e type. O "name" é usado para definir o namespace de parâmetros para o plugin.
 
+Para o costmap local, o parâmetro **rolling_window** será definido como **true**. Desta forma, estamos indicando que não queremos que o costmap seja inicializado a partir de um mapa estático (como fizemos com o costmap global), mas que seja construído a partir das leituras dos sensores do robô. Além disso, como não teremos nenhum mapa estático, o parâmetro **global_frame** precisa ser definido como **odom**.
+
+As camadas também podem ser adicionadas ao costmap local. No caso do costmap local, você geralmente adicionará estas 2 camadas:
+* costmap_2d::ObstacleLayer: Usada para evitar obstáculos.
+* costmap_2d::InflationLayer: Usada para inflar obstáculos.
+
+Então, você terá algo assim:
+
+```
+plugins:
+    - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
+    - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
+```
+
 ### O pacote Move_Base
 A função principal do nó move_base é mover o robô de sua posição atual para uma posição de objetivo. Basicamente, este nó é uma implementação de um **SimpleActionServer**, que recebe uma pose de objetivo com o tipo de mensagem geometry_msgs/PoseStamped. Portanto, podemos enviar metas de posição para este nó utilizando um SimpleActionClient.
 
@@ -672,7 +686,7 @@ Veja alguns tópicos fornecidos pelo servidor de ações do move base:
 
 [Nesse pacote criado](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/send_goals) o cliente de ações "send_goal_client.py" envia mensagem para o nó "move_base " através do tópico **/move_base/goal** para enviar a robô até um ponto determinado.
 
-[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo "my_move_base_params.yaml", e os parâmetros do costmap global são modificados pelo arquivo "my_global_costmap_params.yaml".
+[No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo "my_move_base_params.yaml", os parâmetros do costmap global são modificados pelo arquivo "my_global_costmap_params.yaml", e os parâmetros do costmap local são modificados pelo arquivo "my_local_costmap_params.yaml".
 
 ### Global Planner
 Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, **não levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
