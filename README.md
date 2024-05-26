@@ -646,7 +646,7 @@ Veja alguns tópicos fornecidos pelo servidor de ações do move base:
 [No pacote "move_base_parametros"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_base_parametros) os **parametros do nó move_base são modificados** pelo arquivo "my_move_base_params.yaml", e os parâmetros do costmap global são modificados pelo arquivo "my_global_costmap_params.yaml".
 
 ### Global Planner
-Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, não **levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
+Quando um novo objetivo é recebido pelo nó move_base, esse objetivo é imediatamente enviado para o Global Planner (planejador global). Em seguida, o planejador global é responsável por calcular um caminho seguro para chegar àquela **posição de objetivo**. Este caminho é calculado antes do robô começar a se mover, portanto, **não levará em consideração as leituras que os sensores do robô estão fazendo enquanto ele se move**. Cada vez que um novo caminho é planejado pelo planejador global, este caminho é publicado no tópico **/plan**.
 
 #### Mudando o Global Planner
 O Global Planner usado pelo nó **move_base** é especificado no parâmetro **base_global_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
@@ -678,6 +678,45 @@ Veja alguns dos parâmetros mais importantes para o planejador Navfn:
 * /planner_window_y (default: 0.0): Especifica o tamanho em y de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande.
 * /default_tolerance (default: 0.0): Uma tolerância no ponto de destino para o planejador. O NavFn tentará criar um plano que esteja o mais próximo possível do objetivo especificado, mas não mais distante do que a tolerância padrão.
 * /visualize_potential (default: false): Especifica se a área potencial calculada pelo Navfn será visualizada ou não através de um PointCloud2.
+
+### Local Planner
+Depois que o Global Planner calcula o caminho a seguir, esse caminho é enviado para o Local Planner (planejador local). O Local Planner, então, executará cada segmento do Global Planner (vamos imaginar o Local Planner como uma parte menor do Global Planner). Portanto, dado um plano a 
+seguir (fornecido pelo planejador global) e um mapa, o planejador local fornecerá comandos de velocidade para mover o robô.
+
+Ao contrário do planejador global, o planejador local **monitora a odometria e os dados do laser**, e escolhe um plano local livre de colisões para o robô. Assim, o planejador local pode recalcular o caminho do robô dinamicamente para evitar que ele colida com objetos, ao mesmo tempo permitindo que ele alcance seu destino.
+
+Uma vez que o plano local é calculado, ele é publicado em um tópico chamado **/local_plan**. O planejador local também publica a porção do plano global que está tentando seguir no tópico **/global_plan**.
+
+#### Mudando o Local Planner
+O planejador local usado pelo nó move_base é especificado no parâmetro **base_local_planner**. Ele pode ser configurado em um arquivo de parâmetros, como no exemplo abaixo:
+
+```
+base_local_planner: "base_local_planner/TrajectoryPlannerROS" # Sets the Trajectory Rollout algorithm from base local planner
+base_local_planner: "dwa_local_planner/DWAPlannerROS" # Sets the dwa local planner
+base_local_planner: "eband_local_planner/EBandPlannerROS" # Sets the eband local planner
+base_local_planner: "teb_local_planner/TebLocalPlannerROS" # Sets the teb local planner
+```
+
+Ou pode ser configurado diretamente no arquivo launch:
+
+`<arg name="base_local_planner" default="dwa_local_planner/DWAPlannerROS"/>`.
+
+Para garantir que você tenha alterado corretamente o planejador global, você pode usar o seguinte comando: `rosparam get /move_base/base_local_planner`.
+
+Se você verificar o arquivo **my_move_base_params.yaml**, você verá os parâmetros definidos para o planejador DWAPlannerROS. A baixo os parâmetros mais importantes:
+1. Robot Configuration Parameters
+    * /acc_lim_x (default: 2.5): O limite de aceleração em x do robô em metros/seg^2
+    * /acc_lim_th (default: 3.2): O limite de aceleração rotacional do robô em radianos/seg^2
+    * /max_vel_trans (default: 0.55): O valor absoluto da velocidade translacional máxima para o robô em m/s
+    * /min_vel_trans (default: 0.1): O valor absoluto da velocidade translacional mínima para o robô em m/s
+    * /max_vel_x (default: 0.55): A velocidade máxima em x para o robô em m/s
+    * /min_vel_x (default: 0.0): A velocidade mínima em x para o robô em m/s, negativa para movimento reverso
+    * /max_vel_theta (default: 1.0): O valor absoluto da velocidade rotacional máxima para o robô em rad/s
+    * /min_vel_theta (default: 0.4): O valor absoluto da velocidade rotacional mínima para o robô em rad/s
+2. Goal Tolerance Parameters:
+    * /yaw_goal_tolerance (double, default: 0.05): A tolerância, em radianos, para o controlador de yaw/rotação ao alcançar seu objetivo.
+    * /xy_goal_tolerance (double, default: 0.10): A tolerância, em metros, para o controlador na distância x e y ao alcançar um objetivo.
+    * /latch_xy_goal_tolerance (bool, default: false): Se a tolerância do objetivo é fixada (latched), se o robô atingir a localização xy do objetivo, ele simplesmente girará no lugar, mesmo que acabe fora da tolerância do objetivo enquanto faz isso.
 
 ## Configurando o robô
 No sistema de mapeamento, se não informarmos ao sistema **ONDE o robô possui o laser montado**, qual é a **orientação do laser**, qual é a **posição das rodas no robô**, etc., ele não conseguirá criar um mapa bom e preciso. 
