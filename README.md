@@ -686,14 +686,12 @@ Esses parâmetros afetarão tanto o costmap global quanto o costmap local.
 * layers parameters: Aqui definiremos os parâmetros para cada camada. Cada camada possui seus próprios parâmetros.
 
 Veja algumas layes:
-1. Obstacle Layer: A camada de obstáculos é responsável pelas operações de marcação e limpeza.
-
-Para configurar a camada de obstáculos, primeiro precisamos definir um nome para a camada e, em seguida, configurar o parâmetro **observation_sources**.
-* observation_sources (padrão: ""): Uma lista de nomes de fontes de observação separados por espaços. Isso define cada um dos namespaces source_name definidos abaixo.
-```
-obstacles_laser: # Name of the layer
-    observation_sources: laser # We define 1 observation_source named laser
-```
+1. Obstacle Layer: A camada de obstáculos é responsável pelas operações de marcação e limpeza. Para configurar a camada de obstáculos, primeiro precisamos definir um nome para a camada e, em seguida, configurar o parâmetro **observation_sources**.
+    * observation_sources (padrão: ""): Uma lista de nomes de fontes de observação separados por espaços. Isso define cada um dos namespaces source_name definidos abaixo.
+    ```
+    obstacles_laser: # Name of the layer
+        observation_sources: laser # We define 1 observation_source named laser
+    ```
 
 
 ### O pacote Move_Base
