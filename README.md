@@ -601,6 +601,11 @@ Existem dois tipos de costmaps: **costmap global** e **costmap local**. A princi
 
 O Global Planner **utiliza o costmap global** para calcular o caminho a seguir.
 
+O costmap se inscreve automaticamente nos tópicos dos sensores e se atualiza de acordo com os dados que recebe deles. Cada sensor é usado para **marcar** (inserir informações de obstáculos no costmap), **limpar** (remover informações de obstáculos do costmap) ou ambos.
+
+Uma **operação de marcação** é apenas um índice em uma matriz para alterar o custo de uma célula.
+Uma **operação de limpeza**, no entanto, consiste em traçar raios através de uma grade a partir da origem do sensor para fora para cada observação relatada. As operações de marcação e limpeza podem ser definidas na camada de obstáculos.
+
 #### Global Costmap
 O costmap global é criado a partir de um mapa estático gerado pelo usuário (como aquele que criamos no capítulo de Mapeamento). Neste caso, o costmap é inicializado para corresponder à largura, altura e informações de obstáculos fornecidas pelo mapa estático. Esta configuração é normalmente utilizada em conjunto com um sistema de localização, como o amcl. Este é o método que você utilizará para inicializar um costmap global.
 
@@ -655,8 +660,8 @@ Veja alguns dos principais parâmetros do Local Costmap:
 * rolling_window: Se deve ou não usar uma versão de janela rolante do costmap. Se o parâmetro static_map estiver definido como true, este parâmetro deve ser definido como false. No costmap local, este parâmetro deve ser definido como "true".
 * update_frequency (default: 5.0): A frequência em Hz para atualização do mapa.
 * width (default: 10): A largura do costmap.
-heigth (default: 10): A altura do costmap.
-plugins: Sequência de especificações de plugins, uma por camada. Cada especificação é um dicionário com campos name e type. O "name" é usado para definir o namespace de parâmetros para o plugin.
+* heigth (default: 10): A altura do costmap.
+* plugins: Sequência de especificações de plugins, uma por camada. Cada especificação é um dicionário com campos name e type. O "name" é usado para definir o namespace de parâmetros para o plugin.
 
 Para o costmap local, o parâmetro **rolling_window** será definido como **true**. Desta forma, estamos indicando que não queremos que o costmap seja inicializado a partir de um mapa estático (como fizemos com o costmap global), mas que seja construído a partir das leituras dos sensores do robô. Além disso, como não teremos nenhum mapa estático, o parâmetro **global_frame** precisa ser definido como **odom**.
 
@@ -671,6 +676,25 @@ plugins:
     - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
     - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
 ```
+
+**MUITO IMPORTANTE:** Note que a **camada de obstáculos** usa plugins diferentes para o **costmap local** e o **costmap global**. Para o costmap local, ela usa a **costmap_2d::ObstacleLayer**, e para o costmap global, ela usa a **costmap_2d::VoxelLayer**. Isso é muito importante porque é um erro comum na Navegação usar o plugin errado para as camadas de obstáculos.
+
+### Common Costmap Parameters
+Esses parâmetros afetarão tanto o costmap global quanto o costmap local.
+* footprint: O contorno da base móvel. No ROS, é representado por um array bidimensional na forma [x0, y0], [x1, y1], [x2, y2], ...]. Este contorno será usado para calcular o raio dos círculos inscritos e circunscritos, que são usados para inflar obstáculos de maneira que se ajustem a este robô. Normalmente, por segurança, queremos que o contorno seja ligeiramente maior do que o contorno real do robô.
+* robot_radius: Caso o robô seja circular, especificaremos este parâmetro em vez do contorno.
+* layers parameters: Aqui definiremos os parâmetros para cada camada. Cada camada possui seus próprios parâmetros.
+
+Veja algumas layes:
+1. Obstacle Layer: A camada de obstáculos é responsável pelas operações de marcação e limpeza.
+
+Para configurar a camada de obstáculos, primeiro precisamos definir um nome para a camada e, em seguida, configurar o parâmetro **observation_sources**.
+* observation_sources (padrão: ""): Uma lista de nomes de fontes de observação separados por espaços. Isso define cada um dos namespaces source_name definidos abaixo.
+```
+obstacles_laser: # Name of the layer
+    observation_sources: laser # We define 1 observation_source named laser
+```
+
 
 ### O pacote Move_Base
 A função principal do nó move_base é mover o robô de sua posição atual para uma posição de objetivo. Basicamente, este nó é uma implementação de um **SimpleActionServer**, que recebe uma pose de objetivo com o tipo de mensagem geometry_msgs/PoseStamped. Portanto, podemos enviar metas de posição para este nó utilizando um SimpleActionClient.
