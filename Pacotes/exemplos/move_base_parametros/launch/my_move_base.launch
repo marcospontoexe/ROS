@@ -29,9 +29,12 @@
         <!--- carrega o arquivo de parâmetros do move base --> 
         <rosparam file="$(find move_base_parametros)/params/my_move_base_params.yaml" command="load"/>
 
+        <!--- carrega o arquivo de parâmetros do costmap comum -->
         <!-- observation sources located in costmap_common.yaml -->
-        <rosparam file="$(find husky_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find husky_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap" />
+        <!--- <rosparam file="$(find husky_navigation)/config/costmap_common.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find husky_navigation)/config/costmap_common.yaml" command="load" ns="local_costmap" /> -->
+        <rosparam file="$(find move_base_parametros)/params/my_common_costmap_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find move_base_parametros)/params/my_common_costmap_params.yaml" command="load" ns="local_costmap" />
 
         <!--- carrega o arquivo de parâmetros do costmap local -->
         <!-- local costmap, needs size -->
