@@ -604,6 +604,7 @@ O Global Planner usado pelo nó **move_base** é especificado no parâmetro **ba
   ```
 
 Ou pode ser configurado diretamente no arquivo launch, na tag:
+
 `<arg name="base_global_planner" default="navfn/NavfnROS"/>`
 
 Para garantir que você alterou corretamente o Global Planner, você pode usar o seguinte comando: `rosparam get /move_base/base_global_planner`.
