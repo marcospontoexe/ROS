@@ -21,9 +21,9 @@ Alguns comando úteis:
 ### Mensagens
 Como você pode ter notado, os tópicos lidam com informações por meio de mensagens. Existem muitos tipos diferentes de mensagens. Você até pode criar suas próprias mensagens, mas é recomendável usar as mensagens padrão do ROS sempre que possível. Veja a baixo os tipos de menssagens padrões do ROS
 
-![tipo de mensagens](https://github.com/marcospontoexe/ROS/blob/main/imagens/tipo%20de%20mensagens.png).
+![tipo de mensagens](https://github.com/marcospontoexe/ROS/blob/main/imagens/tipo%20de%20mensagens.png)
 
-As mensagens são definidas em arquivos **.msg**, que estão localizados dentro de um diretório msg de um pacote.
+As mensagens são definidas em arquivos **.msg**, que estão localizados dentro de um diretório chamado **msg** de um pacote.
 
 Para obter informações sobre uma mensagem, use o comando `rosmsg show tipo_da_mensagem`.
 
@@ -41,7 +41,7 @@ Para criar uma nova mensagem, você precisará seguir os seguintes passos:
 Por exemplo, vamos criar uma mensagem que indica a idade, com anos, meses e dias.
 
 ##### Criando um arquivo.msg
-Dentro do diretório "msg" crie um arquivo com extensão **.msg**, e coloque as variáveis usadas nesse arquivo, para o nosso exemplo veja a baixo:
+Dentro do diretório "msg" crie um arquivo com extensão **.msg** (para este exemplo: Age.msg), e coloque as variáveis usadas nesse arquivo, para o nosso exemplo veja a baixo:
 ```
 float32 years
 float32 months
@@ -97,7 +97,7 @@ Agora você precisa compilar as mensagens. Para fazer isso, digite no terminal:
 
 Para verificar se sua mensagem foi criada com sucesso, digite em seu terminal `rosmsg show nome_da_mensagem_criada` (para esse exemplo `rosmsg show Age`). Se a estrutura da mensagem aparecer, significa que sua mensagem foi criada com sucesso e está pronta para ser usada em seus programas ROS.
 
-[Veja nesse nó](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_subscriber_odometry_pkg) um mensagem do tipo float32 criada para indicar a idade, com anos, meses e dias.
+[Veja nesse nó]() um mensagem do tipo float32 criada para indicar a idade, com anos, meses e dias.
 
 ### Publishers
 Um publisher é um nó que fica publicando uma mensagem em um tópico.
