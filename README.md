@@ -97,7 +97,7 @@ Agora você precisa compilar as mensagens. Para fazer isso, digite no terminal:
 
 Para verificar se sua mensagem foi criada com sucesso, digite em seu terminal `rosmsg show nome_da_mensagem_criada` (para esse exemplo `rosmsg show Age`). Se a estrutura da mensagem aparecer, significa que sua mensagem foi criada com sucesso e está pronta para ser usada em seus programas ROS.
 
-[Veja nesse nó]() um mensagem do tipo float32 criada para indicar a idade, com anos, meses e dias.
+[Veja nesse nó](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/message) um mensagem do tipo float32 criada para indicar a idade, com anos, meses e dias.
 
 ### Publishers
 Um publisher é um nó que fica publicando uma mensagem em um tópico.
@@ -166,7 +166,7 @@ Request é a parte da mensagem que significa quais variáveis você terá que pa
 Response é a parte da mensagem de serviço que define como o seu serviço responderá após concluir sua funcionalidade. Se, por exemplo, ele retornará uma string com uma mensagem específica dizendo que tudo correu bem, ou se não retornará nada, etc...
 
 Sempre que uma mensagem de serviço é compilada, é retornado três objetos:
-1. A própria mensagem de serviço: É usado para criar uma conexão com o servidor de serviço, como demonstrado no exemplo anterior: ``` traj_by_name_service = rospy.ServiceProxy('/trajectory_by_name', TrajByName)```.
+1. A própria mensagem de serviço: É usado para criar uma conexão com o servidor de serviço, como demonstrado no exemplo anterior: ` traj_by_name_service = rospy.ServiceProxy('/trajectory_by_name', TrajByName)`.
 2. MyServiceMessageRequest: Este é o objeto usado para criar uma solicitação a ser enviada ao servidor. Portanto, este objeto é usado para enviar uma solicitação para o servidor de serviço, como demonstrado no exemplo anterior:
     ```
     # Create an object of type TrajByNameRequest
