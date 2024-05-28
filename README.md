@@ -270,6 +270,7 @@ include_directories(
 Adicione todos os pacotes necessários para compilar as mensagens. Neste caso, você só precisa adicionar o **message_generation**. Você terá que importar esses pacotes como <build_depend>. Por outro lado, se você precisa de um pacote para a execução dos programas dentro do seu pacote, você terá que importar esses pacotes como <exec_depend>.
 
 Neste caso, você só precisará adicionar estas 3 linhas ao seu arquivo package.xml:
+
     ```
     <build_depend>message_generation</build_depend>
     <build_export_depend>message_runtime</build_export_depend>
