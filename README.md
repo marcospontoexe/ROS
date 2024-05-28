@@ -237,6 +237,10 @@ Os serviços permitem que você desenvolva uma funcionalidade específica para s
 
 Os serviços são um pouco mais complexos do que os tópicos, pois são estruturados em duas partes. De um lado, você tem o **Servidor de Serviço**, que fornece a funcionalidade para qualquer pessoa que queira usá-la (chamá-la). Do outro lado, você tem o **Cliente de Serviço**, que é aquele que faz a chamada/solicitação da funcionalidade do serviço.
 
+O **servidor** de serviço cria um serviço para enviar uma mensagem de Response através desse um serviço.
+
+O **cliente** de serviço, ao conectar-se a um servidor de serviço, envia uma menssagem de Resquest para o serviço conectado.
+
 O serviço deve estar em funcionamento antes que você possa chamá-lo. Portanto, certifique-se de ter iniciado o serviço antes de chamá-lo. 
 
 Para visualizar a lista de serviços ativos digite o comando `rosservice list`.
@@ -253,7 +257,7 @@ Você pode chamar um serviço manualmente a partir do terminal. Isso é muito ú
 
 [Esse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_arm) inicia o serviço "execute_trajectory", que é inicializado pela launch "start_service", que está no pacote "iri_wam_reproduce_trajectory". Ao iniciar o serviço cliente "execute_trajectory", o arquivo python realiza uma conexão com "execute_trajectory" e inicia uma mensagem de serviço do tipo "ExecTraj", do pacote "iri_wam_reproduce_trajectory", para fazer o braço do robô se mover seguindo uma trajetória especificada em um arquivo, que é solicitado pelo Request do serviço "execute_trajectory".
 
-[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_server_example_pkg) um servidor de serviços chamado "my_service" que recebe uma mensagem de servido *Request* do tipo "Empty", e envia uma mensagem de serviço *Response* do tipo EmptyResponse.
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_server_example_pkg) um **servidor de serviços** chamado "my_service" que recebe uma mensagem de serviço *Request* do tipo "Empty", e envia uma mensagem de serviço *Response* do tipo EmptyResponse. Para ver o Response do servidor de serviços, digite o comando `rosservice call /my_service "{}"` em outro terminal.
 
 [Nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/move_around_server_pkg) a launch "start_bb8_move_in_circle_service_server" inicia um servidor de serviço chamado "move_bb8_in_circle", que aceita uma mensagem de serviço vazia e ativa o movimento circular do robo, através da mensagem "Twist" enviada para o tópico "cmd_vel". A launch "call_bb8_move_in_circle_service_server" inicia um cliente de serviço que chama o serviço "move_bb8_in_circle" iniciado pela launch "start_bb8_move_in_circle_service_server". Para o cliente de serviço rodar é necessário ter iniado o servidor de serviço.
 
@@ -386,6 +390,9 @@ Neste caso, você só precisará adicionar estas 3 linhas ao seu arquivo package
 Depois de terminar, compile (catkin_make) seu pacote e faça o sourcement (source devel/setup.bash) das mensagens recém-geradas.
 
 Para verificar se você tem o novo serviço de mensagem no seu sistema, pronto para ser utilizado, digite o comando `rossrv list | grep MyCustomServiceMessage`.
+
+### Servidor de serviços
+
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
