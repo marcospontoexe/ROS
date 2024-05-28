@@ -271,11 +271,11 @@ Adicione todos os pacotes necessários para compilar as mensagens. Neste caso, v
 
 Neste caso, você só precisará adicionar estas 3 linhas ao seu arquivo package.xml:
 
-    ```
-    <build_depend>message_generation</build_depend>
-    <build_export_depend>message_runtime</build_export_depend>
-    <exec_depend>message_runtime</exec_depend>
-    ```
+  ```
+  <build_depend>message_generation</build_depend>
+  <build_export_depend>message_runtime</build_export_depend>
+  <exec_depend>message_runtime</exec_depend>
+  ```
 
 Depois de terminar, compile (catkin_make) seu pacote e faça o sourcement (source devel/setup.bash) das mensagens recém-geradas.
 
