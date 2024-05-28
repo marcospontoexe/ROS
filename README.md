@@ -224,46 +224,47 @@ Você terá que editar quatro funções dentro do arquivo CMakeLists.txt:
       ```
 
 Depois de terminar de editar o arquivo, tera algo parecido com isso:
-    ```
-    cmake_minimum_required(VERSION 2.8.3)
-    project(my_custom_srv_msg_pkg)
 
-    ## Here is where all the packages needed to COMPILE the messages of topics, services and actions go.
-    ## It's only getting its paths, and not really importing them to be used in the compilation.
-    ## It's only for further functions in CMakeLists.txt to be able to find those packages.
-    ## In package.xml you have to state them as build
-    find_package(catkin REQUIRED COMPONENTS
-      std_msgs
-      message_generation
-    )
+```
+cmake_minimum_required(VERSION 2.8.3)
+project(my_custom_srv_msg_pkg)
 
-    ## Generate services in the 'srv' folder
-    ## In this function will be all the action messages of this package ( in the action folder ) to be compiled.
-    ## You can state that it gets all the actions inside the action directory: DIRECTORY action
-    ## Or just the action messages stated explicitly: FILES my_custom_action.action
-    ## In your case you only need to do one of two things, as you wish.
-    add_service_files(
-      FILES
-      MyCustomServiceMessage.srv
-    )
+## Here is where all the packages needed to COMPILE the messages of topics, services and actions go.
+## It's only getting its paths, and not really importing them to be used in the compilation.
+## It's only for further functions in CMakeLists.txt to be able to find those packages.
+## In package.xml you have to state them as build
+find_package(catkin REQUIRED COMPONENTS
+  std_msgs
+  message_generation
+)
 
-    ## Here is where the packages needed for the action messages compilation are imported.
-    generate_messages(
-      DEPENDENCIES
-      std_msgs
-    )
+## Generate services in the 'srv' folder
+## In this function will be all the action messages of this package ( in the action folder ) to be compiled.
+## You can state that it gets all the actions inside the action directory: DIRECTORY action
+## Or just the action messages stated explicitly: FILES my_custom_action.action
+## In your case you only need to do one of two things, as you wish.
+add_service_files(
+  FILES
+  MyCustomServiceMessage.srv
+)
 
-    ## State here all the packages that will be needed by someone that executes something from your package.
-    ## All the packages stated here must be in the package.xml as exec_depend
-    catkin_package(
-      CATKIN_DEPENDS rospy
-    )
+## Here is where the packages needed for the action messages compilation are imported.
+generate_messages(
+  DEPENDENCIES
+  std_msgs
+)
+
+## State here all the packages that will be needed by someone that executes something from your package.
+## All the packages stated here must be in the package.xml as exec_depend
+catkin_package(
+  CATKIN_DEPENDS rospy
+)
 
 
-    include_directories(
-      ${catkin_INCLUDE_DIRS}
-    )
-    ```
+include_directories(
+  ${catkin_INCLUDE_DIRS}
+)
+```
 
 #### Editando o arquivo package.xml
 Adicione todos os pacotes necessários para compilar as mensagens. Neste caso, você só precisa adicionar o **message_generation**. Você terá que importar esses pacotes como <build_depend>. Por outro lado, se você precisa de um pacote para a execução dos programas dentro do seu pacote, você terá que importar esses pacotes como <exec_depend>.
