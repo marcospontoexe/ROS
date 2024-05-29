@@ -301,7 +301,7 @@ Você pode colocar quantas variáveis precisar, de qualquer tipo suportado pelo 
 3. Edite o arquivo "CMakeLists.txt".
 4. Edite o arquivo "package.xml".
 
-#### Editando o arquivo package.xml.
+#### Editando o arquivo CMakeLists.txt.
 Você terá que editar quatro funções dentro do arquivo CMakeLists.txt: 
 
 1. **find_package()**: Todos os pacotes necessários para COMPILAR as mensagens de tópicos, serviços e ações vão aqui. Ele está apenas obtendo seus caminhos e não realmente importando-os para serem usados na compilação. Os mesmos pacotes que você escreve aqui irão para o package.xml, declarando-os como build_depend.
