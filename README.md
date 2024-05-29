@@ -265,7 +265,7 @@ Você pode chamar um serviço manualmente a partir do terminal. Isso é muito ú
 ### Mensagens de um serviço
 Arquivos de mensagem de serviço têm a extensão **.srv** e são definidos dentro de um diretório chamado **srv**.
 
-Para explorar a estrutura de uma mensagem de serviço use o comando comando `rossrv show name_of_the_package/Name_of_Service_message`. Name_of_Service_message é o Nome_do_Arquivo_onde_a_mensagem_do_Serviço_é_definida, mostrado pelo comando (`rosservice info /name_of_your_service`). Na imagens a baixo é mostrado o resutado dos dois comandos.
+Para explorar a estrutura de uma mensagem de serviço use o comando comando `rossrv show name_of_the_package/Name_of_Service_message`. Name_of_Service_message é o Nome do arquivo onde a mensagem do serviço é definida, mostrado pelo comando (`rosservice info /name_of_your_service`). Na imagens a baixo é mostrado o resutado dos dois comandos.
 
 ![estrutura de uma mensagem de serviço](https://github.com/marcospontoexe/ROS/blob/main/imagens/mensagem%20de%20um%20servi%C3%A7o.png)
 
