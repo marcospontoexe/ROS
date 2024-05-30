@@ -387,12 +387,11 @@ Neste caso, você só precisará adicionar estas 3 linhas ao seu arquivo package
   <exec_depend>message_runtime</exec_depend>
   ```
 
-Depois de terminar, compile (catkin_make) seu pacote e faça o sourcement (source devel/setup.bash) das mensagens recém-geradas.
+Depois de terminar, compile (**catkin_make**) seu pacote e faça o sourcement (**source devel/setup.bash**) das mensagens recém-geradas.
 
 Para verificar se você tem o novo serviço de mensagem no seu sistema, pronto para ser utilizado, digite o comando `rossrv list | grep MyCustomServiceMessage`.
 
-### Servidor de serviços
-
+[Veja no pacote "services_quiz"]() uma mensagem de serviço chamada de "BB8CustomServiceMessage.srv" que tem duas variáreis de Resqueste (float64 side, int32 repetitions), e uma variável de Response (bool success). A launche "start_bb8_move_custom_service_server.launch" inicia o serviço **/move_bb8_in_square_custom** através do servidor de serviço "bb8_move_custom_service_server.py". A launch "call_bb8_move_in_square_custom_service_server.launch" inicia o cliente de serviço "bb8_move_custom_service_client.py", que envia a mensagens de Requet para o servidor, fazendo o robo executar um movimento quadrado.
 
 ## Ações
 O ROS também fornece ações. As ações são semelhantes aos serviços, no sentido de que também permitem que você codifique uma funcionalidade para o seu robô e, em seguida, a disponibilize para que qualquer pessoa possa chamá-la. A principal diferença entre ações e serviços é que, ao chamar um serviço, o robô precisa esperar até que o serviço tenha terminado antes de fazer algo mais. Por outro lado, ao chamar uma ação, o seu robô ainda pode continuar fazendo outra coisa enquanto executa a ação.
