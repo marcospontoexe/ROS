@@ -107,6 +107,31 @@ As variáveis mais importantes são;
 **ROS_MASTER_URI**: Contém o URL onde o ROS Core está sendo executado. Normalmente, é o próprio computador (localhost).
 **ROS_PACKAGE_PATH**: Contém os caminhos no seu disco rígido onde o ROS possui pacotes.
 
+## Python POO
+Para mais detalhes sobre orientação a objetos, acesse meu repósitório [POO (Object-Oriented Programming) no Python](https://github.com/marcospontoexe/Python/blob/main/README.md).
+
+[Veja esse pacote, "poo"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/poo), uma classe chamada "MoveBB8", implementada no código "bb8_move_circle_class.py," foi criada para mover o robo bb8 em circulo. Essa classe é importada pelo código "bb8_move_circle_service_server.py", que inicia o serviço "/move_bb8_in_circle", instanciando um objeto da classe MoveBB8 para fazer o robo andar em circulo durante um tempo fornecido pela variável de Resquest "duration". Quando o serviço move_bb8_in_circle for chamado (`rosservice call /move_bb8_in_circle [TAB]+[TAB]`) o robo começa a se mover em circulo por um determinado tempo.  
+
+```
+#! /usr/bin/env python
+
+import rospy
+from std_srvs.srv import Empty, EmptyResponse 
+from bb8_move_circle_class import MoveBB8
+
+def my_callback(request):
+    rospy.loginfo("The Service move_bb8_in_circle has been called")
+    movebb8_object = MoveBB8()
+    movebb8_object.move_bb8()
+    rospy.loginfo("Finished service move_bb8_in_circle")
+    return EmptyResponse() 
+
+rospy.init_node('service_move_bb8_in_circle_server') 
+my_service = rospy.Service('/move_bb8_in_circle', Empty , my_callback)
+rospy.loginfo("Service /move_bb8_in_circle Ready")
+rospy.spin() # keep the service open.
+```
+
 ## Tópicos
 O ROS lida quase que inteiramente com suas comunicações (mensagens) por meio de tópicos. Até mesmo sistemas de comunicação mais complexos, como **serviços** ou **ações**, dependem, em última análise, de tópicos. É por isso que eles são tão importantes! Através dos tópicos do ROS, você será capaz, por exemplo, de se comunicar com seu robô para fazê-lo se mover, ler as leituras dos sensores do seu robô e muito mais.
 
@@ -198,8 +223,8 @@ Basta adicionar estas 3 linhas detro da tag "package" do arquivo package.xml.
 ##### Compilando 
 Agora você precisa compilar as mensagens. Para fazer isso, digite no terminal:
 1. `roscd; cd ..`
-2. `catkin_make`
-3. `source devel/setup.bash`, Isso executa este arquivo bash que configura, entre outras coisas, as novas mensagens geradas criadas através do catkin_make. Se você não fizer isso, pode ocorrer um erro de importação em Python, dizendo que não encontra a mensagem gerada.
+2. `catkin_make --only-pkg-with-deps nome_do_pacote`
+3. `source devel/setup.bash`, Isso executa este arquivo bash que configura, entre outras coisas, as novas mensagens geradas criadas através do catkin_make. Se você não fizer isso, pode ocorrer um erro de importação em Python, dizendo que não encontra a mensagem gerada. **Execute este comando no terminal em que for usar**.
 
 Para verificar se sua mensagem foi criada com sucesso, digite em seu terminal `rosmsg show nome_da_mensagem_criada` (para esse exemplo `rosmsg show Age`). Se a estrutura da mensagem aparecer, significa que sua mensagem foi criada com sucesso e está pronta para ser usada em seus programas ROS.
 
@@ -387,7 +412,7 @@ Neste caso, você só precisará adicionar estas 3 linhas ao seu arquivo package
   <exec_depend>message_runtime</exec_depend>
   ```
 
-Depois de terminar, compile (**catkin_make**) seu pacote e faça o sourcement (**source devel/setup.bash**) das mensagens recém-geradas.
+Depois de terminar, compile (**`catkin_make --only-pkg-with-deps nome_do_pacote`**) seu pacote e faça o sourcement (**`source devel/setup.bash`**) das mensagens recém-geradas.
 
 Para verificar se você tem o novo serviço de mensagem no seu sistema, pronto para ser utilizado, digite o comando `rossrv list | grep MyCustomServiceMessage`.
 
