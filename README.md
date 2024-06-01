@@ -456,7 +456,7 @@ Devido ao fato de que chamar um servidor de ações não interrompe sua thread, 
 Os objetos **SimpleActionClient** têm duas funções que podem ser usadas para saber se a ação que está sendo realizada foi concluída e como:
 1. **wait_for_result():** Esta função é bastante simples. Quando chamada, ela espera até que a ação seja concluída e retorna um valor verdadeiro. Como você pode ver, ela é inútil se você deseja realizar outras tarefas em paralelo, porque o programa ficará parado até que a ação seja concluída.
 2. **get_state():** Esta função é muito mais interessante. Quando chamada, ela retorna um inteiro que indica em qual estado está a ação à qual o objeto SimpleActionClient está conectado.
-  ```
+```
   0 ==> PENDING
   1 ==> ACTIVE
   2 ==> PREEMPTED
