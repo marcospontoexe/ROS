@@ -475,8 +475,11 @@ Isso permite que você crie um laço `while` que verifica se o valor retornado p
 
 [Veja nesse pacote criado (client_action_move_drone_around_pkg)](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/client_action_move_drone_around_pkg), um cliente de ações que faz o quadricóptero se mover em circulo enquanto o servidor de ações foi chamado (para tirar fotos enquanto o robô está se movendo), parando o movimento do quadricóptero quando a última foto for tirada (o servidor de ações tiver terminado). Você deve enviar comandos de movimento enquanto espera até que o resultado seja recebido, criando um loop que envia comandos ao mesmo tempo em que verifica a conclusão. Para poder enviar comandos enquanto a ação está em andamento, você precisa usar a função **get_state()** da **SimpleActionClient**. Para executar esse cliente o servidor deve estar rodando (`roslaunch ardrone_as action_server.launch`).
 
-### Antecipando um objetivo
+### Antecipando um objetivo (Preempting a goal)
+Acontece que você pode cancelar um objetivo previamente enviado para um servidor de ações antes de sua conclusão.
+Cancelar um objetivo enquanto ele está sendo executado é chamado de antecipar um objetivo.
 
+Para antecipar um objetivo, você envia o **cancel_goal** para o servidor através da conexão do cliente: ``.
 
 # NAVEGAÇÃO
 
