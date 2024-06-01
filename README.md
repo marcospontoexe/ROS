@@ -423,6 +423,31 @@ O ROS também fornece ações. As ações são semelhantes aos serviços, no sen
 
 Há outras diferenças, como uma ação permitindo que você forneça feedback enquanto a ação está sendo realizada.
 
+O nó que **fornece a funcionalidade** precisa conter um **servidor de ações**. O servidor de ações permite que outros nós chamem essa funcionalidade de ação.
+
+O nó que **chama a funcionalidade** precisa conter um **cliente de ações**. O cliente de ações permite que um nó se conecte ao servidor de ações de outro nó.
+
+Para descobrir quais ações estão disponíveis em um robô, executa `rostopic list`. O comando retornara 5 tópicos com o mesmo nome base, cada um com os **sub-tópicos cancel, feedback, goal, result e status**. São as mensagens usadas para se **comunicar com o Servidor de Ações**.
+
+Chamar um servidor de ações significa enviar uma mensagem para ele. Da mesma forma que acontece com tópicos e serviços, tudo funciona passando mensagens:
+* A mensagem de um tópico é composta por uma única parte: a informação que o tópico fornece.
+* A mensagem de um serviço possui duas partes: a solicitação e a resposta.
+* A mensagem de um servidor de ações é dividida em três partes: o objetivo (goal), o resultado (result) e o feedback.
+
+A imagem a baixo mostra um exemplo de uma mensagem de um servidor de ações, composta por três partes.
+
+![mensagems de servidor de ações](https://github.com/marcospontoexe/ROS/blob/main/imagens/mensagens%20action.png)
+
+**goal**: Consiste em uma variável chamada "nseconds" do tipo Int32. O tipo Int32 é um tipo de mensagem padrão do ROS, portanto, pode ser encontrado no pacote std_msgs. Por ser um pacote padrão do ROS, não é necessário indicar o pacote onde Int32 pode ser encontrado.
+
+**result**: Consiste em uma variável chamada "allPictures", que é um array do tipo CompressedImage[], encontrado no pacote "sensor_msgs".
+
+**feedback**: Consiste em uma variável chamada "lastImage" do tipo CompressedImage[], encontrado no pacote "sensor_msgs".
+
+Toda vez que você chama uma ação, a mensagem envolvida contém três partes, e cada parte pode conter mais de uma variável.
+
+Todas as mensagens de ação utilizadas são definidas no **diretório action** do pacote correspondente.
+
 # NAVEGAÇÃO
 
 ## Criando um mapa do zero
