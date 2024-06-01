@@ -501,6 +501,24 @@ Cada um corresponde a um tópico e a um tipo de mensagem. Veja a baixo o diagram
 
 ![Diagrama de comunicação entre cliente e servidor actions](https://github.com/marcospontoexe/ROS/blob/main/imagens/action%20comunications.png)
 
+Portanto, sempre que um servidor de ação é chamado, a sequência de etapas é a seguinte:
+
+* Quando um cliente de ação chama um servidor de ação de um nó, o que realmente acontece é que o cliente de ação envia para o servidor de ação o **goal** (objetivo) solicitado através do tópico `/server_action_name/goal`.
+* Quando o servidor de ação começa a executar o objetivo, ele envia ao cliente de ação o **feedback** através do tópico `/server_action_name/feedback`.
+* Finalmente, quando o servidor de ação termina o objetivo, ele envia ao cliente de ação o **result** (resultado) através do tópico `/server_action_name/result`.
+
+Devido à forma como as ações funcionam, na verdade, você pode chamar diretamente o servidor de ação publicando nos tópicos (emulando, assim, o que o cliente de ação em Python está fazendo).
+
+### Axclient
+Até agora, você aprendeu a enviar mensagens para um servidor de ação usando esses dois métodos:
+1. Publicando diretamente no tópico `/goal` do servidor de ação.
+2. Enviando a meta usando código Python.
+
+Mas deixe-me dizer que ainda há um método que você pode usar para enviar metas a um servidor de ação, que é muito mais fácil e rápido do que os dois métodos que você aprendeu, o `axclient`.
+
+O `axclient` é basicamente uma ferramenta de interface gráfica (GUI) fornecida pelo pacote actionlib, que permite interagir com um servidor de ação de maneira muito fácil e visual. Para iniciar o `axclient` é o comando: `rosrun actionlib_tools axclient.py /<name_of_action_server>`.
+
+
 # NAVEGAÇÃO
 
 ## Criando um mapa do zero
