@@ -491,6 +491,16 @@ terminated before handshake header received. 0 bytes were received.
 Please check sender for additional details.
 ```
 
+### Como funciona a comunicação entre cliente e servidor?
+Uma mensagem de ação possui três partes:
+1. O objetivo (goal)
+2. O resultado (result)
+3. O feedback
+
+Cada um corresponde a um tópico e a um tipo de mensagem. Veja a baixo o diagrama de comunicação ActionClient+ActionServer;
+
+![Diagrama de comunicação entre cliente e servidor actions]()
+
 # NAVEGAÇÃO
 
 ## Criando um mapa do zero
