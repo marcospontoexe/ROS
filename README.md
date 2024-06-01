@@ -483,7 +483,7 @@ Para antecipar um objetivo, você envia o **cancel_goal** para o servidor atrav�
 
 [Veja nesse exenplo]() um programa que conta até 2 e, em seguida, cancela o objetivo. Isso aciona o servidor para finalizar o objetivo e, portanto, a função `get_state()` retorna o valor DONE (2).
 
-Existe um problema conhecido no ROS com Ações. Ele emite um aviso quando a conexão é interrompida. Isso geralmente ocorre ao cancelar um objetivo ou ao encerrar um programa que contenha um objeto cliente. O aviso é emitido no lado do servidor:
+Existe um problema conhecido no ROS com Ações. Ele emite um aviso quando a conexão é interrompida. Isso geralmente ocorre ao cancelar um objetivo ou ao encerrar um programa que contenha um objeto cliente. O aviso é emitido no lado do servidor, porém não causa nenhum efeito no programa:
 
 ```
 [WARN] Inbound TCP/IP connection failed: connection from sender 
