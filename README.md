@@ -471,7 +471,9 @@ Os objetos **SimpleActionClient** têm duas funções que podem ser usadas para 
 
 Isso permite que você crie um laço `while` que verifica se o valor retornado por `get_state()` indica sucesso, ainda está processando, foi chamado novamente, foi abortado, etc. Isso permite que você verifique o status do objetivo da ação, enquanto ainda é capaz de realizar outras tarefas nesse ínterim.
 
-[Veja nesse exemplo]() um nó chamado "example_with_waitforresult_action_client_node" que espera a ação terminar para fazer algo, e um nó chamado "example_no_waitforresult_action_client_node" que faz algo enquanto a ação ainda está sendo executada. Para executar esses nós, o cliente servidor deve estar rodando (roslaunch ardrone_as action_server.launch).
+[Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_action_client_getstate_pkg) um nó chamado "example_with_waitforresult_action_client_node" que espera a ação terminar para fazer algo, e um nó chamado "example_no_waitforresult_action_client_node" que faz algo enquanto a ação ainda está sendo executada. Para executar esses nós, o cliente servidor deve estar rodando (roslaunch ardrone_as action_server.launch).
+
+[Veja nesse pacote criado (client_action_move_drone_around_pkg)](), um cliente de ações que faz o quadricóptero se mover em circulo enquanto o servidor de ações foi chamado (para tirar fotos enquanto o robô está se movendo), parando o movimento do quadricóptero quando a última foto for tirada (o servidor de ações tiver terminado). Você deve enviar comandos de movimento enquanto espera até que o resultado seja recebido, criando um loop que envia comandos ao mesmo tempo em que verifica a conclusão. Para poder enviar comandos enquanto a ação está em andamento, você precisa usar a função **get_state()** da **SimpleActionClient**. Para executar esse cliente o servidor deve estar rodando (`roslaunch ardrone_as action_server.launch`).
 
 # NAVEGAÇÃO
 
