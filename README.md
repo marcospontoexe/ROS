@@ -596,7 +596,7 @@ Como existem muitos nós diferentes trabalhando juntos, o número de parâmetros
 * local_costmap_params.yaml
 
 ### Visuzalizando um Path Planning com o Rviz 
-Para ver um path plannig no rviz você precisará de três elementos **Map Display (Costmaps)**, **Path Displays (Plans)** e **2D Tools**.
+Para ver um path plannig no rviz você precisará de três elementos **Map (Costmaps)**, **Path (Plans)** e **2D Tools**.
 1. Execute o nó **move_base**: `roslaunch husky_navigation move_base_demo.launch`.
 2. Em outro termial conabra o **Rviz**: `rosrun rviz rviz`.
 3. Configure o **Visualize Costmaps** no **rviz**: 
