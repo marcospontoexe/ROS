@@ -21,7 +21,7 @@ rospy.init_node('drone_action_client')
 
 # create the connection to the action server
 # O primeiro parâmetro é o nome do servidor de ações ao qual você deseja se conectar.
-# O segundo parâmetro é o tipo de mensagem de ação que ele utiliza. A convenção segue da seguinte forma:
+# O segundo parâmetro é o tipo de mensagem de ação que ele utiliza.
 client = actionlib.SimpleActionClient('/ardrone_action_server', ArdroneAction)
 # waits until the action server is up and running
 client.wait_for_server()
