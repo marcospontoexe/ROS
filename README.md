@@ -430,9 +430,9 @@ O nó que **chama a funcionalidade** precisa conter um **cliente de ações**. O
 Para descobrir quais ações estão disponíveis em um robô, executa `rostopic list`. O comando retornara 5 tópicos com o mesmo nome base, cada um com os **sub-tópicos cancel, feedback, goal, result e status**. São as mensagens usadas para se **comunicar com o Servidor de Ações**.
 
 Chamar um servidor de ações significa enviar uma mensagem para ele. Da mesma forma que acontece com tópicos e serviços, tudo funciona passando mensagens:
-* A mensagem de um tópico é composta por uma única parte: a informação que o tópico fornece.
-* A mensagem de um serviço possui duas partes: a solicitação e a resposta.
-* A mensagem de um servidor de ações é dividida em três partes: o objetivo (goal), o resultado (result) e o feedback.
+* A **mensagem de um tópico** é composta por uma única parte: a informação que o tópico fornece.
+* A **mensagem de um serviço** possui duas partes: a solicitação (Request) e a resposta (Response).
+* A **mensagem de um servidor** de ações é dividida em três partes: o objetivo (goal), o resultado (result) e o feedback.
 
 A imagem a baixo mostra um exemplo de uma mensagem de um servidor de ações, composta por três partes.
 
@@ -468,6 +468,11 @@ Os objetos **SimpleActionClient** têm duas funções que podem ser usadas para 
   8 ==> RECALLED
   9 ==> LOST
 ```
+
+Isso permite que você crie um laço `while` que verifica se o valor retornado por `get_state()` indica sucesso, ainda está processando, foi chamado novamente, foi abortado, etc. Isso permite que você verifique o status do objetivo da ação, enquanto ainda é capaz de realizar outras tarefas nesse ínterim.
+
+[Veja nesse exemplo]() um nó chamado "example_with_waitforresult_action_client_node" que espera a ação terminar para fazer algo, e um nó chamado "example_no_waitforresult_action_client_node" que faz algo enquanto a ação ainda está sendo executada. Para executar esses nós, o cliente servidor deve estar rodando (roslaunch ardrone_as action_server.launch).
+
 # NAVEGAÇÃO
 
 ## Criando um mapa do zero
