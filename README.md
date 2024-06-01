@@ -448,6 +448,26 @@ Toda vez que você chama uma ação, a mensagem envolvida contém três partes, 
 
 Todas as mensagens de ação utilizadas são definidas no **diretório action** do pacote correspondente.
 
+Devido ao fato de que chamar um servidor de ações não interrompe sua thread, os servidores de ações fornecem uma mensagem chamada **feedback**. O feedback é uma mensagem que o servidor de ações gera de tempos em tempos para indicar como está progredindo a ação (informando ao chamador o status da ação solicitada). Essa mensagem é **gerada enquanto a ação está em andamento**.
+
+[Veja como chamar uma ação](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_action_client_example_pkg) com esse cliente de ação que chama o `ardrone_action_server` e o faz tirar fotos por 10 segundos. É preciso ter o `roslaunch ardrone_as action_server.launch` em execução. Se o arquivo de mensagem de ação se chamasse **Ardrone.action**, então o tipo de mensagem de ação que você deve especificar é **ArdroneAction**, e o tipo de mensagem **goal** que você deve especificar é **ArdroneGoal()**.
+
+### Como realizar outras tarefas enquanto a Ação está em progresso
+Os objetos **SimpleActionClient** têm duas funções que podem ser usadas para saber se a ação que está sendo realizada foi concluída e como:
+1. **wait_for_result():** Esta função é bastante simples. Quando chamada, ela espera até que a ação seja concluída e retorna um valor verdadeiro. Como você pode ver, ela é inútil se você deseja realizar outras tarefas em paralelo, porque o programa ficará parado até que a ação seja concluída.
+2. **get_state():** Esta função é muito mais interessante. Quando chamada, ela retorna um inteiro que indica em qual estado está a ação à qual o objeto SimpleActionClient está conectado.
+  ```
+  0 ==> PENDING
+  1 ==> ACTIVE
+  2 ==> PREEMPTED
+  3 ==> SUCCEEDED
+  4 ==> ABORTED
+  5 ==> REJECTED
+  6 ==> PREEMPTING
+  7 ==> RECALLING
+  8 ==> RECALLED
+  9 ==> LOST
+```
 # NAVEGAÇÃO
 
 ## Criando um mapa do zero
