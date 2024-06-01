@@ -479,7 +479,14 @@ Isso permite que você crie um laço `while` que verifica se o valor retornado p
 Acontece que você pode cancelar um objetivo previamente enviado para um servidor de ações antes de sua conclusão.
 Cancelar um objetivo enquanto ele está sendo executado é chamado de antecipar um objetivo.
 
-Para antecipar um objetivo, você envia o **cancel_goal** para o servidor através da conexão do cliente: ``.
+Para antecipar um objetivo, você envia o **cancel_goal** para o servidor através da conexão do cliente: `client.cancel_goal()`.
+
+[Veja nesse exenplo]() um programa que conta até 2 e, em seguida, cancela o objetivo. Isso aciona o servidor para finalizar o objetivo e, portanto, a função `get_state()` retorna o valor DONE (2).
+
+Existe um problema conhecido no ROS com Ações. Ele emite um aviso quando a conexão é interrompida. Isso geralmente ocorre ao cancelar um objetivo ou ao encerrar um programa que contenha um objeto cliente. O aviso é emitido no lado do servidor:
+    ```
+    [WARN] Inbound TCP/IP connection failed: connection from sender terminated before handshake header received. 0 bytes were received. Please check sender for additional details.
+    ```
 
 # NAVEGAÇÃO
 
