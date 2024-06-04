@@ -427,12 +427,12 @@ O nó que **fornece a funcionalidade** precisa conter um **servidor de ações**
 
 O nó que **chama a funcionalidade** precisa conter um **cliente de ações**. O cliente de ações permite que um nó se conecte ao servidor de ações de outro nó.
 
-Para descobrir quais ações estão disponíveis em um robô, executa `rostopic list`. O comando retornara 5 tópicos com o mesmo nome base, cada um com os **sub-tópicos cancel, feedback, goal, result e status**. São as mensagens usadas para se **comunicar com o Servidor de Ações**.
+Para descobrir quais ações estão disponíveis em um robô, executar `rostopic list`. O comando retornara 5 tópicos com o mesmo nome base, cada um com os **sub-tópicos cancel, feedback, goal, result e status**. São as mensagens usadas para se **comunicar com o Servidor de Ações**.
 
 Chamar um servidor de ações significa enviar uma mensagem para ele. Da mesma forma que acontece com tópicos e serviços, tudo funciona passando mensagens:
 * A **mensagem de um tópico** é composta por uma única parte: a informação que o tópico fornece.
 * A **mensagem de um serviço** possui duas partes: a solicitação (Request) e a resposta (Response).
-* A **mensagem de um servidor** de ações é dividida em três partes: o objetivo (goal), o resultado (result) e o feedback.
+* A **mensagem de um servidor** de ações é dividida em três partes: o objetivo (goal), o resultado (result) e o feedback. E cada parte pode conter mais de uma variável.
 
 A imagem a baixo mostra um exemplo de uma mensagem de um servidor de ações, composta por três partes.
 
@@ -443,8 +443,6 @@ A imagem a baixo mostra um exemplo de uma mensagem de um servidor de ações, co
 **result**: Consiste em uma variável chamada "allPictures", que é um array do tipo CompressedImage[], encontrado no pacote "sensor_msgs".
 
 **feedback**: Consiste em uma variável chamada "lastImage" do tipo CompressedImage[], encontrado no pacote "sensor_msgs".
-
-Toda vez que você chama uma ação, a mensagem envolvida contém três partes, e cada parte pode conter mais de uma variável.
 
 Todas as mensagens de ação utilizadas são definidas no **diretório action** do pacote correspondente.
 
