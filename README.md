@@ -547,6 +547,48 @@ package_where_message_is/message_type result_var_name
 package_where_message_is/message_type feedback_var_name
 ```
 
+Se você não precisar de uma parte da mensagem (por exemplo, não precisar fornecer feedback), então você pode deixar essa parte vazia. Mas você deve sempre especificar os separadores de hífens.
+
+3. Modifique o arquivo **CMakeLists.txt**.
+4. Modifique o arquivo **package.xml**.
+
+#### Modificando o arquivo CMakeLists.txt
+Você terá que editar quatro funções dentro do CMakeLists.txt; **find_package()**, **add_action_files()**, **generate_messages()** e **catkin_package()**
+
+1. **find_package()**: Todos os pacotes necessários para COMPILAR as mensagens de tópicos, serviços e ações devem ser listados aqui. No arquivo package.xml, você precisa declará-los como "built".
+```
+find_package(catkin REQUIRED COMPONENTS
+      # your packages are listed here
+      actionlib_msgs
+)
+```
+
+2. **add_action_files()**: Esta função conterá todas as mensagens de ação deste pacote (que estão armazenadas na pasta action) que precisam ser compiladas. Coloque-as abaixo da tag FILES.
+```
+add_action_files(
+      FILES
+      Name.action
+)
+```
+
+3. **generate_messages()**: Os pacotes necessários para a compilação das mensagens de ação são importados aqui. Escreva o mesmo aqui como você escreveu no find_package.
+```
+generate_messages(
+      DEPENDENCIES
+      actionlib_msgs 
+      # Your packages go here
+)
+```
+
+4. **catkin_package()**: Aqui estão todos os pacotes que serão necessários para alguém que execute algo do seu pacote. Todos os pacotes listados aqui devem estar no arquivo package.xml como `<exec_depend>`:
+```
+catkin_package(
+      CATKIN_DEPENDS
+      rospy
+      # Your package dependencies go here
+)
+```
+
 
 # NAVEGAÇÃO
 
