@@ -517,7 +517,9 @@ Até agora, você aprendeu a enviar mensagens para um servidor de ação usando 
 Mas deixe-me dizer que ainda há um método que você pode usar para enviar metas a um servidor de ação, que é muito mais fácil e rápido do que os dois métodos que você aprendeu, o `axclient`.
 
 O `axclient` é basicamente uma ferramenta de interface gráfica (GUI) fornecida pelo pacote actionlib, que permite interagir com um servidor de ação de maneira muito fácil e visual. Para iniciar o `axclient` é o comando: `rosrun actionlib_tools axclient.py /<name_of_action_server>`.
-
+ 
+### O Servidor de ações
+[Veja nesse pacote (my_action_server_example_pkg)](), um Servidor de Ação que será chamado "fibonacci_as", que usará a mensagem de Ação FibonacciAction, e que terá uma função de callback chamada "goal_callback", que será ativada cada vez que um novo **goal** (objetivo) for enviado ao Servidor de Ação. Para enviar uma mensagem de Goal para o servidor, use `rostopic pub /fibonacci_as/goal actionlib_tutorials/FibonacciActionGoal [TAB][TAB]`, ou pelo GUI **axclient** `rosrun actionlib_tools axclient.py /fibonacci_as`.
 
 # NAVEGAÇÃO
 
