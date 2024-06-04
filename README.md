@@ -524,6 +524,28 @@ O `axclient` é basicamente uma ferramenta de interface gráfica (GUI) fornecida
 [Nesse outro servidor de ações (action_server_drone_square_pkg)](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/action_server_drone_square_pkg), a mensagem **Goal** especifica o tempo em que o drone andará em linha reta, fazendo um movimento quadrado. O **feedback** deve publicar o lado atual (como um número) em que o robô está enquanto faz o quadrado. O **Result** deve publicar o número total de segundos que o drone levou para fazer o quadrado.
 
 ### Criando mensagem de ações
+É sempre recomendável que você use as mensagens de ação já fornecidas pelo ROS. Estas podem ser encontradas nos seguintes pacotes do ROS:
+* actionlib.
+  * Test.action
+  * TestRequest.action
+  * TwoInts.action
+* actionlib_tutorials
+  * Fibonacci.action
+  * Averaging.action
+
+No entanto, pode acontecer de você precisar criar seu próprio tipo. Para criar sua própria mensagem de ação personalizada, você deve:
+1. Criar um diretório chamado **action** dentro do seu pacote.
+2. Criar um arquivo com a extensão **.action** dentro do diretório action. O arquivo **.action** deve conter três partes, cada parte separada por três hífens, como no exemplo a baixo:
+```
+#goal
+package_where_message_is/message_type goal_var_name
+---
+#result
+package_where_message_is/message_type result_var_name
+---
+#feedback
+package_where_message_is/message_type feedback_var_name
+```
 
 
 # NAVEGAÇÃO
