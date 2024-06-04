@@ -521,6 +521,11 @@ O `axclient` é basicamente uma ferramenta de interface gráfica (GUI) fornecida
 ### O Servidor de ações
 [Veja nesse pacote (my_action_server_example_pkg)](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_action_server_example_pkg), um Servidor de Ação que será chamado "fibonacci_as", que usará a mensagem de Ação FibonacciAction, e que terá uma função de callback chamada "goal_callback", que será ativada cada vez que um novo **goal** (objetivo) for enviado ao Servidor de Ação. Para enviar uma mensagem de Goal para o servidor, use `rostopic pub /fibonacci_as/goal actionlib_tutorials/FibonacciActionGoal [TAB][TAB]`, ou pelo GUI **axclient** `rosrun actionlib_tools axclient.py /fibonacci_as`.
 
+[Nesse outro servidor de ações (action_server_drone_square_pkg)](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/action_server_drone_square_pkg), a mensagem **Goal** especifica o tempo em que o drone andará em linha reta, fazendo um movimento quadrado. O **feedback** deve publicar o lado atual (como um número) em que o robô está enquanto faz o quadrado. O **Result** deve publicar o número total de segundos que o drone levou para fazer o quadrado.
+
+### Criando mensagem de ações
+
+
 # NAVEGAÇÃO
 
 ## Criando um mapa do zero
