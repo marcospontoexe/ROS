@@ -479,7 +479,7 @@ Cancelar um objetivo enquanto ele está sendo executado é chamado de antecipar 
 
 Para antecipar um objetivo, você envia o **cancel_goal** para o servidor através da conexão do cliente: `client.cancel_goal()`.
 
-[Veja nesse exenplo]() um programa que conta até 2 e, em seguida, cancela o objetivo. Isso aciona o servidor para finalizar o objetivo e, portanto, a função `get_state()` retorna o valor DONE (2).
+[Veja nesse exenplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/cancel_action_pkg) um programa que conta até 2 e, em seguida, cancela o objetivo. Isso aciona o servidor para finalizar o objetivo e, portanto, a função `get_state()` retorna o valor DONE (2).
 
 Existe um problema conhecido no ROS com Ações. Ele emite um aviso quando a conexão é interrompida. Isso geralmente ocorre ao cancelar um objetivo ou ao encerrar um programa que contenha um objeto cliente. O aviso é emitido no lado do servidor, porém não causa nenhum efeito no programa:
 
