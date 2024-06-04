@@ -551,6 +551,7 @@ Se você não precisar de uma parte da mensagem (por exemplo, não precisar forn
 
 3. Modifique o arquivo **CMakeLists.txt**.
 4. Modifique o arquivo **package.xml**.
+5. Compilar: `catkin_make --only-pkg-with-deps nome_do_pacote` e `source devel/setup.bash`.
 
 #### Modificando o arquivo CMakeLists.txt
 Você terá que editar quatro funções dentro do CMakeLists.txt; **find_package()**, **add_action_files()**, **generate_messages()** e **catkin_package()**
@@ -610,6 +611,10 @@ Ao usar Python, é obrigatório adicionar rospy como dependência de execução 
 <build_export_depend>rospy<build_export_depend>
 <exec_depend>rospy<exec_depend>
 ```
+
+Por fim, quando tudo estiver configurado corretamente, você só precisa compilar: `catkin_make --only-pkg-with-deps nome_do_pacote` e `source devel/setup.bash`.
+
+
 
 # NAVEGAÇÃO
 
