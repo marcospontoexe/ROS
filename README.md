@@ -1180,3 +1180,12 @@ A Navigation Stack do ROS é genérica. Isso significa que pode ser utilizada co
 * O robô deve montar um laser planar em algum lugar ao redor do robô. Ele é usado para construir o mapa do ambiente e realizar a localização.
 * Seu desempenho será melhor para bases móveis de formato quadrado e circular.
 
+# Debugando
+Usar o **Print** é a maneira mias fácil de debugar, mas também podemos usar **Logs**. Os logs permitem que você os imprima na tela, mas também os armazene no framework ROS, para que você possa classificá-los, ordená-los, filtrá-los, ou realizar outras ações.
+
+Nos sistemas de logging, sempre há níveis de logging, como mostrado na figura a baixo. 
+
+![níveis de log]()
+
+No caso dos logs do ROS, existem cinco níveis. Cada nível inclui os níveis mais profundos. Então, por exemplo, se você usar o nível Error, todas as mensagens dos níveis Error e Fatal serão exibidas. Se o seu nível for Warning, então todas as mensagens dos níveis Warning, Error e Fatal serão exibidas.
+
