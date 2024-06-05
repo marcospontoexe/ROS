@@ -1185,7 +1185,12 @@ Usar o **Print** é a maneira mias fácil de debugar, mas também podemos usar *
 
 Nos sistemas de logging, sempre há níveis de logging, como mostrado na figura a baixo. 
 
-![níveis de log]()
+![níveis de log](https://github.com/marcospontoexe/ROS/blob/main/imagens/log.png)
 
 No caso dos logs do ROS, existem cinco níveis. Cada nível inclui os níveis mais profundos. Então, por exemplo, se você usar o nível Error, todas as mensagens dos níveis Error e Fatal serão exibidas. Se o seu nível for Warning, então todas as mensagens dos níveis Warning, Error e Fatal serão exibidas.
 
+Um bom lugar para ler todos os logs emitidos por todos os sistemas ROS é no tópico **/rosout**: `rostopic echo /rosout`.
+
+[Veja no pacote "my_log_print_example"]() como configurar o nível de **Log** usando a configuração `log_level=rospy.DEBUG`. Há cinco possíveis parÂmetros parra essa configuração; *DEBUG*, *INFO*, *WARN*, *ERROR* e *FATAL*.
+
+## rqt_console
