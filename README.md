@@ -615,7 +615,7 @@ Adicione todos os pacotes necessários para compilar as mensagens.
 
 5. Por fim, quando tudo estiver configurado corretamente, você só precisa compilar: `catkin_make --only-pkg-with-deps nome_do_pacote` e `source devel/setup.bash`.
 
-[Veja nesse servidor de ações (actions_quiz)]() uma mensagem chamada "CustomActionMsg.action" que pode receber **TAKEOFF** ou **LAND** como mensagem de **Goal**, para fazer o drone levantar voo atraves do tópico "/drone/takeoff", ou posar atraves do tópico "/drone/land". Como **feedback**, ele publica uma vez por segundo qual ação está acontecendo (TAKEOFF ou LAND). Quando a ação terminar, o resultado não retornará nada.
+[Veja nesse servidor de ações (actions_quiz)](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/actions_quiz) uma mensagem chamada "CustomActionMsg.action" que pode receber **TAKEOFF** ou **LAND** como mensagem de **Goal**, para fazer o drone levantar voo atraves do tópico "/drone/takeoff", ou posar atraves do tópico "/drone/land". Como **feedback**, ele publica uma vez por segundo qual ação está acontecendo (TAKEOFF ou LAND). Quando a ação terminar, o resultado não retornará nada.
 
 # NAVEGAÇÃO
 
