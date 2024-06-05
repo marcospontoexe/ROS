@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="actions_quiz" type="drone.py" name="move_drone_node" output="screen" />
+</launch>
