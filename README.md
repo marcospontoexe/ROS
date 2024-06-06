@@ -1191,6 +1191,43 @@ No caso dos logs do ROS, existem cinco níveis. Cada nível inclui os níveis ma
 
 Um bom lugar para ler todos os logs emitidos por todos os sistemas ROS é no tópico **/rosout**: `rostopic echo /rosout`.
 
-[Veja no pacote "my_log_print_example"]() como configurar o nível de **Log** usando a configuração `log_level=rospy.DEBUG`. Há cinco possíveis parÂmetros parra essa configuração; *DEBUG*, *INFO*, *WARN*, *ERROR* e *FATAL*.
+[Veja no pacote "my_log_print_example"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_log_print_example) como configurar o nível de **Log** usando a configuração `log_level=rospy.DEBUG`. Há cinco possíveis parÂmetros parra essa configuração; *DEBUG*, *INFO*, *WARN*, *ERROR* e *FATAL*.
 
 ## rqt_console
+Imagine dez nós publicando dados de imagem, dados de laser, usando ações, serviços e publicando dados de depuração do seu nó de DeepLearning. É realmente difícil obter os dados de logging que você deseja.
+
+A janela do rqt_console é dividida em três subpainéis:
+1. O primeiro painel exibe os logs. Ele contém dados sobre a mensagem, severidade/nível, o nó que gerou a mensagem e outros dados. É aqui onde você extrai todos os seus dados de logs.
+2. O segundo painel permite filtrar as mensagens emitidas no primeiro painel, excluindo-as com base em critérios como: nó, nível de severidade ou se contém uma determinada palavra. Para adicionar um filtro, basta clicar no sinal de adição e selecionar o desejado.
+3. O terceiro painel permite destacar certas mensagens enquanto exibe as outras.
+
+Também é importante saber que clicando na pequena engrenagem branca no canto superior direito, você pode alterar o número de mensagens mostradas. Tente manter esse número o mais baixo possível para evitar impacto de desempenho no seu sistema.
+
+## Plot topic data e Rqt Plot
+Se você precisa saber se a inclinação está correta, se a velocidade está adequada, se as leituras de torque em uma junta do braço estão acima do normal, ou se o laser está apresentando leituras anômalas. Para todos esses tipos de dados, é necessário uma ferramenta gráfica que organize de forma compreensível todos os dados que você está recebendo de forma rápida e em tempo real. É aqui que o rqt_plot se torna útil.
+
+Digite no terminal `rqt_plot` para abrir a interface gráfica do rqt plot.
+
+No campo de entrada de tópico localizado no canto superior esquerdo da janela, você deve digitar a estrutura do tópico que leva aos dados que deseja plotar. Lembre-se de que, para ser plotado, o tópico deve publicar um número. Após escrever o nome do tópico, pressione o SINAL DE MAIS para começar a plotar o tópico.
+
+Para plotar as juntas do robô, precisamos plotar o tópico `/joint_states`, que possui a seguinte estrutura (que você pode obter ao extrair o tipo de mensagem do tópico com o comando `rostopic info`, seguido pelo comando `rosmsg show`):
+```
+std_msgs/Header header
+string[] name
+float64[] position
+float64[] velocity
+float64[] effort                                                                                                        
+```
+
+Então, para plotar a velocidade da primeira junta do robô, precisaríamos digitar `/joint_states/velocity[0]`.
+
+Você pode adicionar quantos gráficos desejar pressionando o botão de "mais".
+
+## Conexão entre os nós com o rqt graph 
+Seu nó está conectado ao lugar correto? Por que você não está recebendo dados de um tópico? Essas perguntas são bastante comuns, como você já pode ter experimentado com sistemas ROS. O rqt_graph pode ajudá-lo a entender isso de uma maneira mais fácil. Ele exibe um gráfico visual dos nós em execução no ROS e suas conexões de tópicos. É importante destacar que ele parece ter problemas com conexões que não são tópicos.
+
+Digite no terminal `rqt_graph` para abrir a interface gráfica do rqt graph.
+
+Na tela do rqt graph você verá todos os nós que estão atualmente em execução, conectados pelos tópicos que utilizam para se comunicar entre si. Existem dois elementos principais que você precisa saber como usar:
+1. O botão de atualização: que você deve pressionar sempre que alterar os nós que estão em execução.
+2. As opções de filtro: são as três caixas ao lado do botão de atualização. O primeiro elemento permite que você selecione entre apenas nós ou tópicos. A segunda caixa permite que você filtre por nomes de nós.
