@@ -1251,3 +1251,36 @@ Reproduzir os dados fará com que o rosbag publique os mesmos tópicos com os me
 
 Para usar arquivos rosbag, você deve garantir que o gerador de dados original (robô real ou simulação) NÃO esteja publicando. Caso contrário, você obterá dados muito estranhos (a colisão entre os dados originais e os gravados). Você também deve ter em mente que, se estiver lendo de um rosbag, o tempo é finito e cíclico, e, portanto, você deve limpar a área do gráfico para visualizar todo o período de tempo.
 
+## RViz
+RVIZ é uma ferramenta que permite visualizar Imagens, PointClouds, Lasers, Transformações Cinemáticas, Modelos de Robôs... A lista é interminável. Você pode até definir seus próprios marcadores. RVIZ é uma **representação do que está sendo publicado nos tópicos**, seja pela simulação ou pelo robô real.
+
+**Painel Central**: Aqui é onde toda a mágica acontece. É aqui que os dados serão exibidos. É um espaço 3D que você pode rotacionar (MANTENDO O BOTÃO ESQUERDO DO MOUSE PRESSIONADO), transladar (MANTENDO O BOTÃO CENTRAL DO MOUSE PRESSIONADO) e dar zoom in/out (MANTENDO O BOTÃO DIREITO DO MOUSE PRESSIONADO).
+
+**Painel de Exibição à Esquerda**: Aqui você gerencia/configura todos os elementos que deseja visualizar no painel central. Você só precisa usar dois elementos:
+* Em Opções Globais, você deve selecionar o Quadro Fixo (Fixed Frame) que se adequa à visualização dos dados. É o quadro de referência a partir do qual todos os dados serão referenciados.
+* O botão Adicionar (Add). Clicando aqui, você obtém todos os tipos de elementos que podem ser representados no RVIZ.
+
+# Instalando o ROS Noetic
+1. Primeiramente, você precisará **configurar seu computador para poder baixar pacotes** do **packages.ros.org**. Para isso, execute o comando no seu terminal local: `sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'`.
+
+2. Em seguida, você irá **baixar a chave do servidor de chaves** usando o seguinte comando: `wget http://packages.ros.org/ros.key -O - | sudo apt-key add -`
+
+3. Agora estamos prontos para instalar o ROS de fato. Primeiro, vamos garantir que nosso índice de **pacotes Debian esteja atualizado**. Para isso, execute o seguinte comando: `sudo apt-get update`
+
+4. Agora você está pronto para começar a **instalar pacotes do ROS no seu sistema**. Para ter todos os pacotes básicos para começar a trabalhar com o ROS, recomendamos que você instale a instalação Desktop Full. Para isso, você pode executar o seguinte comando: `sudo apt-get install ros-noetic-desktop-full`
+
+5. Eventualmente, você precisará **instalar alguns pacotes adicionais**. Para instalar um pacote específico do ROS, você só precisa usar a seguinte estrutura de comando: `sudo apt-get install ros-noetic-<PACKAGE_NAME>`. **Por exemplo** `sudo apt-get install ros-noetic-slam-gmapping`
+
+## Rosdep
+Antes de começar a usar o ROS, no entanto, você precisará inicializar o rosdep. O rosdep permitirá que você instale facilmente dependências do sistema e também é necessário para executar alguns componentes principais do ROS. Para inicializar o rosdep, execute o seguinte comando: 
+1. `sudo rosdep init`
+2. `rosdep update`
+
+## Configuração do ambiente
+Finalmente, também é recomendável adicionar automaticamente as Variáveis de Ambiente do ROS à sua sessão bash toda vez que uma nova shell for iniciada. Para isso, você pode executar o seguinte comando: `source /opt/ros/noetic/setup.bash`
+
+Você precisará executar este comando em cada nova shell que abrir para ter acesso aos comandos do ROS, a menos que adicione esta linha ao seu arquivo .bashrc. Portanto, a menos que deseje executar esse comando toda vez que abrir uma nova shell, você deve adicioná-lo ao seu **.bashrc**. Para isso, você pode executar o seguinte comando: `echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc`
+
+Com o comando acima, você adicionará a linha `source /opt/ros/noetic/setup.bash` ao seu arquivo **.bashrc**. Dessa forma, cada vez que você abrir uma nova shell no seu computador, todas as variáveis de ambiente do ROS serão configuradas automaticamente.
+
+Além disso, esse processo permite que você instale várias distribuições do ROS (por exemplo, Indigo e Noetic) no mesmo computador e alterne entre elas. Então, por exemplo, se você também tivesse o ROS Indigo instalado no seu computador local, poderia alternar entre as duas distribuições usando os comandos abaixo: `source /opt/ros/indigo/setup.bash # To use Indigo` e seguido do comando `source /opt/ros/noetic/setup.bash # To use noetic`
