@@ -1231,3 +1231,26 @@ Digite no terminal `rqt_graph` para abrir a interface gráfica do rqt graph.
 Na tela do rqt graph você verá todos os nós que estão atualmente em execução, conectados pelos tópicos que utilizam para se comunicar entre si. Existem dois elementos principais que você precisa saber como usar:
 1. O botão de atualização: que você deve pressionar sempre que alterar os nós que estão em execução.
 2. As opções de filtro: são as três caixas ao lado do botão de atualização. O primeiro elemento permite que você selecione entre apenas nós ou tópicos. A segunda caixa permite que você filtre por nomes de nós.
+
+## Rosbag
+O rosbag registra (grava) todos os dados transmitidos pelo sistema de tópicos ROS e permite que você os reproduza a qualquer momento por meio de um arquivo simples.
+
+* Para gravar dados dos tópicos desejados:
+
+```sh
+rosbag record -O nome_arquivo_bag.bag nome_topico_para_gravar1 nome_topico_para_gravar2 ... nome_topico_para_gravarN
+```
+
+Para extrair informações gerais sobre os dados gravados:
+
+```sh
+rosbag info nome_arquivo_bag.bag
+```
+
+Para reproduzir os dados gravados:
+
+```sh
+rosbag play nome_arquivo_bag.bag
+```
+
+Reproduzir os dados fará com que o rosbag publique os mesmos tópicos com os mesmos dados, no mesmo tempo em que os dados foram gravados.
