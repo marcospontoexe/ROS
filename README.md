@@ -1235,22 +1235,19 @@ Na tela do rqt graph você verá todos os nós que estão atualmente em execuç�
 ## Rosbag
 O rosbag registra (grava) todos os dados transmitidos pelo sistema de tópicos ROS e permite que você os reproduza a qualquer momento por meio de um arquivo simples.
 
-* Para gravar dados dos tópicos desejados:
+* Para gravar dados dos tópicos desejados, navegue até o diretório onde salvará o arquivo e digite:
+  * Para gravar nós específicos: `rosbag record -O name_bag_file.bag name_topic_to_record1 name_topic_to_record2 ... name_topic_to_recordN`
+  * Para gravar todos os nós: `rosbag record -a`. Depois, você pode reproduzi-los em um sistema com apenas o roscore e obterá todos os tópicos como se tivesse o robô.
 
-```sh
-rosbag record -O nome_arquivo_bag.bag nome_topico_para_gravar1 nome_topico_para_gravar2 ... nome_topico_para_gravarN
-```
 
-Para extrair informações gerais sobre os dados gravados:
+* Para extrair informações gerais sobre os dados gravados:
+`rosbag info nome_arquivo_bag.bag`
 
-```sh
-rosbag info nome_arquivo_bag.bag
-```
-
-Para reproduzir os dados gravados:
-
-```sh
-rosbag play nome_arquivo_bag.bag
-```
+* Para reproduzir os dados gravados, navegue até o diretório onde o arquivo ".bag" está salvo, e digite:
+  * Para executar uma vez: `rosbag play nome_arquivo_bag.bag`
+  * Para executar em loop: `rosbag play -l nome_arquivo_bag.bag`
 
 Reproduzir os dados fará com que o rosbag publique os mesmos tópicos com os mesmos dados, no mesmo tempo em que os dados foram gravados.
+
+Para usar arquivos rosbag, você deve garantir que o gerador de dados original (robô real ou simulação) NÃO esteja publicando. Caso contrário, você obterá dados muito estranhos (a colisão entre os dados originais e os gravados). Você também deve ter em mente que, se estiver lendo de um rosbag, o tempo é finito e cíclico, e, portanto, você deve limpar a área do gráfico para visualizar todo o período de tempo.
+
