@@ -1283,4 +1283,33 @@ Você precisará executar este comando em cada nova shell que abrir para ter ace
 
 Com o comando acima, você adicionará a linha `source /opt/ros/noetic/setup.bash` ao seu arquivo **.bashrc**. Dessa forma, cada vez que você abrir uma nova shell no seu computador, todas as variáveis de ambiente do ROS serão configuradas automaticamente.
 
-Além disso, esse processo permite que você instale várias distribuições do ROS (por exemplo, Indigo e Noetic) no mesmo computador e alterne entre elas. Então, por exemplo, se você também tivesse o ROS Indigo instalado no seu computador local, poderia alternar entre as duas distribuições usando os comandos abaixo: `source /opt/ros/indigo/setup.bash # To use Indigo` e seguido do comando `source /opt/ros/noetic/setup.bash # To use noetic`
+Além disso, esse processo permite que você instale várias distribuições do ROS (por exemplo, Indigo e Noetic) no mesmo computador e alterne entre elas. Então, por exemplo, se você também tivesse o ROS Indigo instalado no seu computador local, poderia alternar entre as duas distribuições usando os comandos abaixo: 
+1. Para usar o Indigo: `source /opt/ros/indigo/setup.bash`
+2. Para usar o Noetic: `source /opt/ros/noetic/setup.bash`
+
+## Dependências para a construção de pacotes
+Existem várias ferramentas que você também precisará para **gerenciar seus espaços de trabalho do ROS**. Para instalar todas essas ferramentas, você pode executar o seguinte comando: `sudo apt-get install python-rosinstall python-rosinstall-generator python-wstool build-essential`
+
+## Teste sua configuração
+**Roscore** é o processo principal que gerencia todos os sistemas do ROS. Portanto, se quisermos fazer qualquer coisa com o ROS, sempre precisamos primeiro iniciar o roscore um terminal, Execute o comando `roscore`.
+
+Você pode executar o comando `roscd` para garantir que seu sistema ROS esteja configurado corretamente. Se tudo correr bem, você deverá ir para o seguinte caminho: `/opt/ros/kinetic$`.
+
+## Como gerenciar espaços de trabalho do ROS no meu computador local
+Primeiro, vamos criar a pasta onde criaremos nosso espaço de trabalho do ROS: 
+1. Criando a pasta: `mkdir -p ~/mynew_ws/src`
+2. ENtrando na pasta: `cd ~/mynew_ws/`
+3. Compilando a pasta: `catkin_make`
+
+Neste exemplo o espaço de trabalho criado se chama "mynew_ws", mas poderia ser chamado, popularmente, de catkin_ws (catkin workspace). Ao compilar o seu espaço de trabalho, ele criará o arquivo **CMakeLists.txt** na sua pasta src. Além disso, se você verificar no diretório atual, agora deverá ter uma pasta **build** e uma pasta **devel**. Dentro da pasta devel, você pode ver que agora existem vários arquivos setup.*sh. 
+
+4. **Sourcing** qualquer um desses arquivos irá sobrescrever este espaço de trabalho sobre o seu ambiente: `source devel/setup.bash`
+
+Para garantir que seu espaço de trabalho esteja corretamente sobreposto pelo script de configuração, você pode **verificar a variável de ambiente ROS_PACKAGE_PATH** com o seguinte comando: `echo $ROS_PACKAGE_PATH`. Se tudo ocorrer bem deverá ser retornado:
+```
+user:~/mynew_ws$ echo $ROS_PACKAGE_PATH
+/home/user/mynew_ws/src:/home/user/catkin_ws/src:/home/simulations/public_sim_ws/src:/opt/ros/noetic/share
+```
+
+
+
