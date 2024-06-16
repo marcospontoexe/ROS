@@ -274,9 +274,9 @@ Para ter informações sobre um serviço digite `rosservice info /name_of_your_s
 * Node: Indica o nó que fornece (criou) esse serviço.
 * URI: O URI onde o serviço pode ser acessado.
 * Type: Refere-se ao tipo de mensagem usada por este serviço. Tem a mesma estrutura que os tópicos. É sempre composto por pacote_onde_a_mensagem_do_serviço_é_definida / Nome_do_Arquivo_onde_a_mensagem_do_Serviço_é_definida.
-* Args: Aqui você pode encontrar os argumentos que este serviço aceita quando é chamado (valor, path, comando). 
+* Args: Aqui você pode encontrar os argumentos que este serviço aceita quando é chamado (valor, path, comando...). 
 
-Você pode chamar um serviço manualmente a partir do terminal. Isso é muito útil para testes e para ter uma ideia básica de como o serviço funciona: `rosservice call /the_service_name TAB+TAB`. Quando você pressiona [TAB]+[TAB] rapidamente, um elemento extra aparece (**"traj_name: ''"**), coloque o nome da função desejada a ser executada pelo serviço dentro das aspas simples.
+Você pode chamar um serviço manualmente a partir do terminal. Isso é muito útil para testes e para ter uma ideia básica de como o serviço funciona: `rosservice call /the_service_name TAB+TAB`. Quando você pressiona [TAB]+[TAB] rapidamente, um elemento extra aparece (**"nome_mensagem: '' "**), coloque o valor da mensagem desejada a ser executada pelo serviço dentro das aspas simples.
 
 [Veja nesse exemplo](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_service_client_example_pkg) como enviar um Request de um serviço do tipo cliente através de uma mensagem de serviço. Para enviar a mensagem de serviço, o serviço deve estar em execução. Execute o serviço com o comando: `roslaunch trajectory_by_name start_service.launch`.
 
