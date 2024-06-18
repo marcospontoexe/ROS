@@ -3,6 +3,17 @@
 import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
+import rospkg
+from wall_following_pkg.srv import FindWall, FindWallRequest # you import the service message python classes generated from Empty.srv.
+
+def service_client():    
+    rospy.wait_for_service('/find_wall') # Wait for the service client /find_wall to be running
+    wall_following_client = rospy.ServiceProxy('/find_wall', FindWall) # Create the connection to the service
+    wall_following_client_request_object = FindWallRequest() # Create an object of type EmptyRequest
+
+    result = wall_following_client(wall_following_client_request_object) # Send through the connection the path to the trajectory file to be executed
+    print(result) # Print the result given by the service called
+
 
 def laser_callback(data):   # Callback para lidar com os dados recebidos do laser
 
@@ -44,16 +55,15 @@ def laser_callback(data):   # Callback para lidar com os dados recebidos do lase
     
 
 def laser_subscriber():    
-    rospy.init_node('wall_following_node', anonymous=True) # Inicializa o nó ROS
-    
+    rospy.init_node('wall_following_node', anonymous=True) # Inicializa o nó ROS    
     # Cria um subscriber para o tópico '/scan' com a mensagem LaserScan
-    rospy.Subscriber('/scan', LaserScan, laser_callback)
-    
+    rospy.Subscriber('/scan', LaserScan, laser_callback)    
     rospy.spin()    # Mantém o programa funcionando até que seja fechado
 
 if __name__ == '__main__':    
     vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10) # Cria um publisher para o tópico '/cmd_vel' com a mensagem Twist    
-    try:        
+    try:              
+        service_client()
         laser_subscriber()  # Inicia o subscriber
     except rospy.ROSInterruptException:
         pass
