@@ -11,6 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
   message_generation
+  actionlib_msgs
+  actionlib
+  geometry_msgs
+  nav_msgs  
 )
 
 ## System dependencies are found with CMake's conventions
@@ -60,16 +64,18 @@ add_service_files(
 )
 
 ## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+   FILES
+   OdomRecord.action
+)
 
 ## Generate added messages and services with any dependencies listed here
 generate_messages(
-   DEPENDENCIES
-   std_msgs
+   DEPENDENCIES   
+   std_msgs   
+   actionlib_msgs   
+   geometry_msgs
+   nav_msgs      
 )
 
 ################################################
@@ -104,7 +110,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES wall_following_pkg
-   CATKIN_DEPENDS rospy std_msgs
+   CATKIN_DEPENDS rospy std_msgs actionlib geometry_msgs actionlib_msgs  nav_msgs
 #  DEPENDS system_lib
 )
 

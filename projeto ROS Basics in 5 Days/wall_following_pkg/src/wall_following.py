@@ -6,6 +6,46 @@ from geometry_msgs.msg import Twist
 import rospkg
 from wall_following_pkg.srv import FindWall, FindWallRequest # you import the service message python classes generated from Empty.srv.
 
+import actionlib
+from wall_following_pkg.msg import OdomRecordAction, OdomRecordGoal
+'''
+class WallFollowingNode:
+    def __init__(self):
+        # Inicializa o nó ROS
+        rospy.init_node('wall_following_node')
+        
+        # Inicializa o cliente de ação para o servidor de gravação de odometria
+        self.odom_client = actionlib.SimpleActionClient('record_odom', OdomRecordAction)
+        
+        # Espera até que o servidor de ação esteja disponível
+        self.odom_client.wait_for_server()
+        
+        # Chama a função para iniciar a gravação de odometria
+        self.start_odom_recording()
+
+    def start_odom_recording(self):
+        # Cria um objetivo vazio e envia ao servidor de ação
+        goal = OdomRecordGoal()
+        self.odom_client.send_goal(goal)
+        rospy.loginfo("Odometry recording started")
+
+    def wall_following_logic(self):
+        # Aqui vai a lógica existente de seguir paredes
+        
+        # Condição para finalizar a volta (substitua pela condição real)
+        if condition_to_finish_lap:  
+            # Cancela o objetivo de gravação de odometria
+            self.odom_client.cancel_goal()
+            
+            # Obtém o resultado do servidor de ação
+            result = self.odom_client.get_result()
+            
+            rospy.loginfo("Odometry recording finished")
+            rospy.loginfo("Odom List: {}".format(result.list_of_odoms))
+            rospy.loginfo("Total Distance: {}".format(result.current_total))
+
+'''
+
 def service_client():    
     rospy.wait_for_service('/find_wall') # Wait for the service client /find_wall to be running
     wall_following_client = rospy.ServiceProxy('/find_wall', FindWall) # Create the connection to the service
@@ -62,7 +102,10 @@ def laser_subscriber():
 
 if __name__ == '__main__':    
     vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10) # Cria um publisher para o tópico '/cmd_vel' com a mensagem Twist    
-    try:              
+    try:   
+        # Cria uma instância do nó de seguir paredes
+        #node = WallFollowingNode()   
+                
         service_client()
         laser_subscriber()  # Inicia o subscriber
     except rospy.ROSInterruptException:
