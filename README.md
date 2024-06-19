@@ -594,23 +594,23 @@ catkin_package(
 Adicione todos os pacotes necessários para compilar as mensagens.
 
 1. Se, por exemplo, uma das variáveis no arquivo .action utiliza uma mensagem definida fora do pacote std_msgs, digamos "nav_msgs/Odometry", você precisará importá-la. Para fazer isso, você teria que adicionar o pacote nav_msgs como `<build_depend>`, adicionando a seguinte linha:
-`<build_depend>nav_msgs<build_depend>`
+`<build_depend>nav_msgs</build_depend>`
 
 2. Por outro lado, se você precisa de um pacote para a execução dos programas dentro do seu pacote, você terá que importar esses pacotes como `<exec_depend>`, adicionando a seguinte linha: **(Não esqueça de adicionar o pacote "actionlib")**
 ```
-<build_export_depend>nav_msgs<build_export_depend>
-<exec_depend>nav_msgs<exec_depend>
+<build_export_depend>nav_msgs</build_export_depend>
+<exec_depend>nav_msgs</exec_depend>
 
-<build_export_depend>actionlib<build_export_depend>
-<exec_depend>actionlib<exec_depend>
+<build_export_depend>actionlib</build_export_depend>
+<exec_depend>actionlib</exec_depend>
 ```
 
 3. Ao compilar mensagens de ação personalizadas, é obrigatório adicionar actionlib_msgs como dependência de compilação (`build_dependency`): `<build_depend>actionlib_msgs</build_depend>`
 
 4. Ao usar Python, é obrigatório adicionar rospy como dependência de execução (`run_dependency`): 
 ```
-<build_export_depend>rospy<build_export_depend>
-<exec_depend>rospy<exec_depend>
+<build_export_depend>rospy</build_export_depend>
+<exec_depend>rospy</exec_depend>
 ```
 
 5. Por fim, quando tudo estiver configurado corretamente, você só precisa compilar: `catkin_make --only-pkg-with-deps nome_do_pacote` e `source devel/setup.bash`.
