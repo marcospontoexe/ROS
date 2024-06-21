@@ -9,28 +9,20 @@ from wall_following_pkg.msg import OdomRecordAction, OdomRecordFeedback, OdomRec
 
 class OdomRecordServer:
     def __init__(self):
-        # Inicializa o servidor de ação
-        self.server = actionlib.SimpleActionServer('record_odom', OdomRecordAction, self.execute, False)
+        self.server = actionlib.SimpleActionServer('record_odom', OdomRecordAction, self.execute, False)  # Inicializa o servidor de ação
+        self.server.start()  # Inicia o servidor de ação (o servidor começa a aceitar metas (goal).)
+        
+        self.odom_list = [] # Lista para armazenar as odometrias
+        self.total_distance = 0.0   # Variável para armazenar a distância total percorrida
+        self.last_position = None   # Variável para armazenar a última posição registrada
         
         # Inscreve-se no tópico de odometria
         self.odom_sub = rospy.Subscriber('/odom', Odometry, self.odom_callback)
-        
-        # Inicializa o servidor
-        self.server.start()
-        
-        # Lista para armazenar as odometrias
-        self.odom_list = []
-        
-        # Variável para armazenar a distância total percorrida
-        self.total_distance = 0.0
-        
-        # Variável para armazenar a última posição registrada
-        self.last_position = None
-
-    def odom_callback(self, msg):
+            
+    def odom_callback(self, msg): # Callback para lidar com mensagens de odometria
         # Callback para lidar com mensagens de odometria
         position = msg.pose.pose.position
-        current_position = Point32(position.x, position.y, 0.0)
+        current_position = Point32(position.x, position.y, 0.0) # Usamos 0.0 porque estamos tratando de 2D
         
         # Se houver uma posição anterior, calcula a distância percorrida
         if self.last_position:
@@ -49,12 +41,16 @@ class OdomRecordServer:
         # Função principal do servidor de ação
         rate = rospy.Rate(1)  # Define a taxa de execução para 1 Hz (uma vez por segundo)
         
+    
+
         # Loop para fornecer feedback e checar se o objetivo foi cancelado
         while not self.server.is_preempt_requested():
             feedback = OdomRecordFeedback()
             feedback.current_total = self.total_distance
-            self.server.publish_feedback(feedback)
+            self.server.publish_feedback(feedback)            
             rate.sleep()
+            if self.total_distance > 6:    # quando realiza uma volta completa
+                break
         
         # Quando o objetivo é concluído, preenche o resultado com a lista de odometrias e define o estado como bem-sucedido
         result = OdomRecordResult()

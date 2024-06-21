@@ -24,7 +24,7 @@ class FindWallServer:
         self.distanciaFront = msg.ranges[360]
 
 
-    def handle_find_wall(self, req):
+    def handle_find_wall(self, req):    #req é a mensagem enviado pelo cliente, neste caso vazia
         if self.laser_data is None:
             rospy.loginfo("No laser data received yet")
             return FindWallResponse(wallfound=False)
