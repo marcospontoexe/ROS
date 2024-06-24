@@ -73,5 +73,8 @@ float32 current_total
 * Quando o robô completar uma volta completa, o servidor de ação deve terminar e retornar a lista das odometrias registradas.
 
 ### Adicione uma chama para o servidor de ações
-Adicione um cliente de serviço de ação ao nó da Seção 1. Chame o servidor de ação antes do laço de controle desse nó, para que o robô comece a gravar a odometria antes de começar a seguir a parede.
+* Adicione um cliente de serviço de ação ao nó da Seção 1.
+* Chame o servidor de ação antes do laço de controle desse nó, para que o robô comece a gravar a odometria antes de começar a seguir a parede.
 
+### Adicione o servidor de ações à Launch
+Adicione o nó do servidor de ação ao arquivo main.launch. Isso deve iniciar o movimento do robô e a gravação da odometria.
