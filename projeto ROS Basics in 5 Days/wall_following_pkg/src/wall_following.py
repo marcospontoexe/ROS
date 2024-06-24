@@ -4,7 +4,7 @@ import rospy
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import rospkg
-from wall_following_pkg.srv import FindWall, FindWallRequest # you import the service message python classes generated from Empty.srv.
+from wall_following_pkg.srv import FindWall, FindWallRequest # you import the service message python classes generated from FindWall.srv.
 import actionlib
 from wall_following_pkg.msg import OdomRecordAction, OdomRecordGoal
 
