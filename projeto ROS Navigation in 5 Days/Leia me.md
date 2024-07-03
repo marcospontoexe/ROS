@@ -23,3 +23,25 @@ Dividimos isso em 7 passos:
 
 Você deve obter uma árvore TF como esta:
 ![frames](https://github.com/marcospontoexe/ROS/blob/main/imagens/frames.png)
+
+## Crie um pacote chamado **my_turtlebot_mapping**.
+
+Crie o pacote, adicionando `rospy` como a única dependência.
+
+## Crie um arquivo launch para o nó gmapping.
+
+Nesta etapa você terá que criar um arquivo launch para o nó slam_gmapping e adicionar os parâmetros que você acha que precisa configurar.
+
+Aqui pode ver uma lista completa de parâmetros que pode configurar para o nó slam_gmapping: [Parâmetros slam_gmapping](https://docs.ros.org/en/hydro/api/gmapping/html/)
+
+## Launch o nó usando o arquivo launch que acabou de criar e crie um mapa do ambiente.
+
+Para mover o robô pelo ambiente, pode usar o teleop do teclado. Além disso, lembre-se de abrir o rviz e adicionar as exibições adequadas para visualizar o mapa que está a gerar. 
+
+## Salve o Mapa.
+
+Crie um diretório no seu pacote chamado maps e guarde os ficheiros do mapa lá. 
+
+## Crie um arquivo launch que inicialize o nó map_server.
+
+Você precisará criar um arquivo de lançamento para fornecer o mapa. Como você sabe, isso é feito através do nó map_server. Inicie este arquivo e verifique se ele está realmente fornecendo o mapa.
