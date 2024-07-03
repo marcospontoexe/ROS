@@ -1,7 +1,5 @@
 # O projeto
-
-Este rosject é composto por quatro seções. Você deve realizar as quatro primeiras seções conforme indicado no
- curso **ROS Navigation in 5 Days**. 
+Este projeto foi desenvolvido para obter a certificação do curso [ROS Navigation in 5 Days](https://app.theconstruct.ai/courses/57), sendo composto por quatro seções.
 
 * SEÇÃO I: Crie um mapa do ambiente.
 * SEÇÃO II: Localize o robô.
