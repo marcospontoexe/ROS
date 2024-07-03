@@ -8,7 +8,7 @@ Este projeto é composto por três partes.
 * **SEÇÃO 2: Serviços**: Nesta seção, você ganhará experiência trabalhando com serviços ROS, que permitem solicitações e respostas pontuais entre nós.
 * **SEÇÃO 3: Ações**: A seção final irá guiá-lo pelo uso de ações ROS, adequadas para tarefas mais complexas que envolvem comunicação contínua e feedback entre nós.
 
-## Tópics
+## Topics
 O objetivo é criar um programa ROS que faça o robô seguir a parede. 
 
 ### Comportamento do seguidor de paredes
@@ -61,7 +61,7 @@ O objetivo desta seção é criar um servidor de ação que registra a odometria
 ### Crie um servidor de ações
 * Crie um novo nó que contenha um servidor de ação chamado **record_odom**. O servidor utiliza uma mensagem **OdomRecord.action** que você também deve criar:
 ```
-OdomRecord.action
+
 ---
 geometry_msgs/Point32[] list_of_odoms
 ---
