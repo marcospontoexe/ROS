@@ -635,7 +635,19 @@ O "mapa" do laser que é construído desaparecerá com o tempo, porque o Rviz s�
 9. Abro o **TeleOp** para navegar com o robô e fazer a leitura do ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 
 ### Criando um arquivo launch para o nó slam_gmapping
-`slam_gmapping` é um invólucro em torno da biblioteca GMapping SLAM. Ele lê varreduras a laser e odometria e constroi um mapa. Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
+Este pacote contém um wrapper ROS para o Gmapping da OpenSlam. O pacote gmapping oferece SLAM (Simultaneous Localization and Mapping) baseado em laser como um nó ROS chamado slam_gmapping. Usando o slam_gmapping, você pode criar um mapa de grade de ocupação 2D a partir de dados de laser e pose (odometria) coletados por um robô móvel.
+
+* Subscribes to (name/type):
+    * `/scan` sensor_msgs/LaserScan : Dados do laser scanner.
+    * `/tf`: Odometria do robô.
+      
+* Publishes to (name/type):
+    * `/tf`/tf/tfMessage: posição relatica no mapa.
+      
+* services:
+      *`~dynamic_map` : retorna o mapa.
+
+Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Uma lista completa dos parâmetros pode ser encontrada [nesse link](https://docs.ros.org/en/hydro/api/gmapping/html/). Vamos verificar alguns dos mais importantes:
 
 #### General Parameters
 * **base_frame** (default: "base_link"): Indica o nome do quadro ligado à base móvel.
