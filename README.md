@@ -635,7 +635,7 @@ O "mapa" do laser que é construído desaparecerá com o tempo, porque o Rviz s�
 9. Abro o **TeleOp** para navegar com o robô e fazer a leitura do ambiente: `roslaunch turtlebot_teleop keyboard_teleop.launch`.
 
 ### Criando um arquivo launch para o nó slam_gmapping
-Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
+`slam_gmapping` é um invólucro em torno da biblioteca GMapping SLAM. Ele lê varreduras a laser e odometria e constroi um mapa. Este nó é altamente configurável e possui muitos parâmetros que podem ser alterados para melhorar o desempenho do mapeamento. Esses parâmetros serão lidos do Servidor de Parâmetros do ROS e podem ser definidos tanto no próprio arquivo launch quanto em arquivos de parâmetros separados (arquivo YAML). Se você não definir alguns parâmetros, ele usará os valores padrão. Vamos verificar alguns dos mais importantes:
 
 #### General Parameters
 * **base_frame** (default: "base_link"): Indica o nome do quadro ligado à base móvel.
