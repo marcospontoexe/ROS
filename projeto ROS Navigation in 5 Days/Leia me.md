@@ -40,7 +40,7 @@ Para mover o robô pelo ambiente, pode usar o teleop do teclado. Além disso, le
 
 ## Salve o Mapa.
 
-Crie um diretório no seu pacote chamado maps e guarde os ficheiros do mapa lá. 
+Crie um diretório no seu pacote chamado maps e guarde os ficheiros do mapa lá. Use `rosrun map_server map_saver -f nome_do_mapa`.
 
 ## Crie um arquivo launch que inicialize o nó map_server.
 
