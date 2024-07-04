@@ -50,3 +50,45 @@ Crie um diretório no seu pacote chamado maps e guarde os ficheiros do mapa lá.
 ## Crie um arquivo launch que inicialize o nó map_server.
 
 Você precisará criar um arquivo de lançamento para fornecer o mapa. Como você sabe, isso é feito através do nó map_server. Inicie este arquivo e verifique se ele está realmente fornecendo o mapa.
+
+# Seção 2: Localização 
+Nesta seção, você irá localizar o robô utilizando o nó `amcl` e criar um arquivo que registre 3 pontos no mapa para uso posterior. Esta seção possui 5 etapas:
+
+1. Crie um pacote chamado **my_turtlebot_localization** que conterá todos os arquivos relacionados à localização.
+2. Crie um arquivo **launch** que inicializará o nó amcl e adicione os parâmetros necessários para configurar adequadamente o nó amcl.
+3. Inicialize o nó e verifique se o robô se localiza corretamente no ambiente.
+4. Crie uma tabela com três pontos diferentes.
+5. Crie um serviço ROS para salvar esses pontos em um arquivo.
+
+## Crie um pacote chamado my_turtlebot_localization
+
+Crie o pacote adicionando rospy como a única dependência.
+
+## Crie um arquivo launch para o nó amcl
+
+Você deverá criar um arquivo de lançamento para o nó amcl e adicionar os parâmetros que achar necessários.
+
+Aqui você pode ver uma lista completa de parâmetros que podem ser configurados no nó amcl: [http://wiki.ros.org/amcl](http://wiki.ros.org/amcl)
+
+Lembre-se de que, antes de definir os parâmetros do nó amcl, será necessário carregar o mapa criado na Seção 1. Para isso, basta incluir o arquivo de lançamento criado na Seção 1 no arquivo de lançamento do nó amcl, a fim de fornecer o mapa para outros nós.
+
+## Inicie o nó e verifique se o robô TurtleBot3 se localiza corretamente no mapa.
+
+Inicie o nó e verifique no rviz se o robô TurtleBot3 se localiza corretamente no mapa.
+
+Para verificar se a localização está funcionando bem, mova o robô pelo ambiente e verifique se a nuvem de partículas continua diminuindo à medida que você move o robô. 
+
+## Crie a tabela de pontos.
+
+Depois de verificar que a localização está funcionando bem, você precisará criar uma tabela com 3 pontos diferentes no ambiente. Para cada ponto, atribua uma etiqueta (com o nome do ponto) junto com suas coordenadas no mapa.
+
+Estes são os 3 pontos que você terá que registrar na tabela:
+1. Buscar o primeiro canto (rótulo: corner1).
+2. Buscar o segundo canto (rótulo: corner2).
+3. Buscar a faixa de pedestres (rótulo: pedestrian).
+
+Você pode acessar as coordenadas de cada posição verificando os tópicos nos quais o nó amcl publica (**/amcl_pose**). Os únicos dados que você realmente precisa salvar são a posição e a orientação. A seguir, você tem uma captura de tela do tópico /amcl_pose:
+
+![amcl_pose]()
+
+Crie um arquivo chamado **spots.yaml** e escreva nele os dados de pose que você obteve dos 3 pontos.
