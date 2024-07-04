@@ -1,0 +1,17 @@
+<launch>
+     <arg name="scan" default="/scan" />
+    
+   <!-- Defining parameters for slam_gmapping node -->
+
+     <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+        
+       <rosparam file="$(find my_turtlebot_mapping)/params/gmapping_params.yaml" command="load" />
+    
+       <!-- simulation remap from="scan" to="/scan"/ -->
+       <!-- real -->
+       <remap from="scan" to="/scan"/>
+        
+     </node>
+    
+</launch>
+
