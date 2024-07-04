@@ -36,7 +36,12 @@ Aqui pode ver uma lista completa de parâmetros que pode configurar para o nó s
 
 ## Launch o nó usando o arquivo launch que acabou de criar e crie um mapa do ambiente.
 
-Para mover o robô pelo ambiente, pode usar o teleop do teclado. Além disso, lembre-se de abrir o rviz e adicionar as exibições adequadas para visualizar o mapa que está a gerar. 
+Para mover o robô pelo ambiente, pode usar o teleop do teclado:
+```
+export TURTLEBOT3_MODEL=burger
+roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+```
+Além disso, lembre-se de abrir o rviz e adicionar as exibições adequadas para visualizar o mapa que está a gerar. 
 
 ## Salve o Mapa.
 
