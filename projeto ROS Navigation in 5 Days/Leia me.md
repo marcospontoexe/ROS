@@ -89,6 +89,20 @@ Estes são os 3 pontos que você terá que registrar na tabela:
 
 Você pode acessar as coordenadas de cada posição verificando os tópicos nos quais o nó amcl publica (**/amcl_pose**). Os únicos dados que você realmente precisa salvar são a posição e a orientação. A seguir, você tem uma captura de tela do tópico /amcl_pose:
 
-![amcl_pose]()
+![amcl_pose](https://github.com/marcospontoexe/ROS/blob/main/imagens/amcl_pose.png)
 
 Crie um arquivo chamado **spots.yaml** e escreva nele os dados de pose que você obteve dos 3 pontos.
+
+## Crie um serviço ROS que salve esses pontos em um arquivo.
+
+Agora, você vai criar um programa ROS que fará o seguinte:
+
+1. Ele lançará um nó chamado **spot_recorder**.
+2. Este nó conterá um **servidor de serviço** chamado **/save_spot** que receberá uma string como entrada.
+3. Quando este serviço for chamado, ele armazenará as coordenadas atuais do robô (valores de posição e orientação) com um rótulo que será a string fornecida no serviço.
+4. Quando for fornecido o comando final na chamada do serviço, o nó escreverá todos os valores armazenados em um arquivo chamado spots.txt.
+5. Por fim, o serviço retornará uma mensagem indicando se o arquivo foi salvo corretamente.
+
+Para alcançar isso, vamos dividir em partes menores.
+
+### 
