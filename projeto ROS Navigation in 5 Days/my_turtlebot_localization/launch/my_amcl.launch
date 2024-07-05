@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- Include another launch file -->
+  <include file="$(find my_turtlebot_mapping)/launch/provide_map.launch"/>
+
+  <arg name="scan" default="/scan" />
+  
+   <node pkg="amcl" type="amcl" name="amcl">
+    <rosparam file="$(find my_turtlebot_localization)/params/amcl_params.yaml" command="load" />
+    <remap from="scan" to="/scan"/>
+  </node>
+
+</launch>
