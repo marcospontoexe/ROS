@@ -756,8 +756,8 @@ Para ver a posição do robô, você também pode escolher adicionar as exibiç�
 7. Salce as configurações do rviz.
 
 ### Criando um arquivo launch para o nó amcl
-Este nó é altamente personalizável e podemos configurar muitos parâmetros para melhorar seu desempenho. Esses parâmetros podem ser definidos diretamente no arquivo launch ou em um arquivo de parâmetros separado (arquivo YAML). 
-
+Este nó é altamente personalizável e podemos configurar muitos parâmetros para melhorar seu desempenho. Esses parâmetros podem ser definidos diretamente no arquivo launch ou em um arquivo de parâmetros separado (arquivo YAML). Veja nesse [link](http://wiki.ros.org/amcl) os parÂmetros configuráveis para nó amcl.
+ 
 #### General Parameters
 * **odom_model_type** (default: "diff"): Ele coloca o modelo de odometria em uso. Pode ser "diff," "omni," "diff-corrected" ou "omni-corrected."
 * **odom_frame_id** (default: "odom"): Indica o frame associado à odometria.
