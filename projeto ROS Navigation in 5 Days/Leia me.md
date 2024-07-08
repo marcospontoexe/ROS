@@ -133,4 +133,5 @@ Dentro do diretório src do seu pacote, crie um arquivo chamado **spots_to_file.
 Crie um arquivo de lançamento para o nó que você acabou de criar. Você também pode lançar esse nó no mesmo arquivo de lançamento que você criou para lançar o nó slam_gmapping. A escolha é sua.
 
 ### Teste
-Usando o teleop do teclado, mova o robô para os 3 diferentes. Em cada um desses pontos, faça uma chamada de serviço para o serviço que você acabou de criar. Na chamada de serviço, forneça a string com o nome que você deseja dar a cada ponto. Por exemplo: `rosservice call /record_spot "label: corner1"`
+Usando o teleop do teclado, mova o robô para os 3 diferentes. Em cada um desses pontos, faça uma chamada de serviço para o serviço que você acabou de criar. Na chamada de serviço, forneça a string com o nome que você deseja dar a cada ponto. Por exemplo: `rosservice call /record_spot "label: corner1"`.
+Quando terminar, faça uma última chamada de serviço, fornecendo **"end"** como a string para criar o arquivo.
