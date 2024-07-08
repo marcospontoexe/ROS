@@ -105,4 +105,32 @@ Agora, você vai criar um programa ROS que fará o seguinte:
 
 Para alcançar isso, vamos dividir em partes menores.
 
-### 
+### Mensagem de Serviço
+Primeiramente, você terá que determinar o tipo de dados que precisa para sua mensagem de serviço.
+
+1. Determine quais dados de entrada você precisa (request).
+2. Determine quais dados você quer que o serviço retorne (response).
+Em seguida, veja se já existe uma mensagem construída no sistema que atenda às suas necessidades. Se não houver, então você terá que criar sua própria mensagem personalizada com os dados desejados.
+
+Se for o caso, faça o seguinte. Dentro do pacote que você acabou de criar, crie um novo diretório chamado **srv**. Dentro deste diretório, crie um arquivo chamado **MyServiceMessage.srv** que conterá a definição da sua mensagem de serviço.
+
+Este arquivo pode ser algo assim:
+```
+# request
+string label
+---
+#response
+bool navigation_successfull
+string message
+```
+
+Agora, você terá que modificar os arquivos **package.xml** e **CMakeLists.txt** do seu pacote para compilar a nova mensagem.
+
+### Código de Serviço
+Dentro do diretório src do seu pacote, crie um arquivo chamado **spots_to_file.py**. Dentro desse arquivo, escreva o código necessário para o seu serviço.
+
+### Arquivo de Lançamento
+Crie um arquivo de lançamento para o nó que você acabou de criar. Você também pode lançar esse nó no mesmo arquivo de lançamento que você criou para lançar o nó slam_gmapping. A escolha é sua.
+
+### Teste
+Usando o teleop do teclado, mova o robô para os 3 diferentes. Em cada um desses pontos, faça uma chamada de serviço para o serviço que você acabou de criar. Na chamada de serviço, forneça a string com o nome que você deseja dar a cada ponto. Por exemplo: `rosservice call /record_spot "label: corner1"`
