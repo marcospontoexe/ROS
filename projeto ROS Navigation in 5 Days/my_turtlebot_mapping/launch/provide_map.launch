@@ -1,9 +1,0 @@
-<!-- Arquivo: start_provide_map.launch -->
-<launch>
-    <!-- Definindo o caminho para o arquivo do mapa -->
-    <arg name="map_file" default="$(find my_turtlebot_mapping)/maps/mapa.yaml" />
-
-    <!-- Iniciando o nó map_server -->
-    <!-- O nó map_server é iniciado com o argumento $(arg map_file), que especifica o arquivo do mapa a ser carregado pelo nó map_server. -->
-    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
-</launch>
