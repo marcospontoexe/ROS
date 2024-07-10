@@ -133,5 +133,24 @@ Dentro do diretório src do seu pacote, crie um arquivo chamado **spots_to_file.
 Crie um arquivo de lançamento para o nó que você acabou de criar. Você também pode lançar esse nó no mesmo arquivo de lançamento que você criou para lançar o nó slam_gmapping. A escolha é sua.
 
 ### Teste
-Usando o teleop do teclado, mova o robô para os 3 diferentes. Em cada um desses pontos, faça uma chamada de serviço para o serviço que você acabou de criar. Na chamada de serviço, forneça a string com o nome que você deseja dar a cada ponto. Por exemplo: `rosservice call /record_spot "label: corner1"`.
+Usando o teleop do teclado, mova o robô para os 3 diferentes. Em cada um desses pontos, faça uma chamada de serviço para o serviço que você acabou de criar. Na chamada de serviço, forneça a string com o nome que você deseja dar a cada ponto. Por exemplo: `rosservice call /save_spot "label: corner1"`.
 Quando terminar, faça uma última chamada de serviço, fornecendo **"end"** como a string para criar o arquivo.
+
+# Seção 3: Path Planning System
+Nesta seção, você criará um sistema de planejamento de trajetória usando o nó **move_base** para navegar autonomamente. Esta seção tem 5 ações para você realizar:
+
+## 1. Crie um pacote chamado **my_turtlebot_path_planning** que conterá todos os arquivos relacionados ao Planejamento de Trajetória.
+
+## 2. Crie um arquivo de lançamento que iniciará o nó `move_base`.
+Você terá que criar um arquivo de lançamento para o nó `move_base` e adicionar os parâmetros e os arquivos de parâmetros necessários.
+
+## 3. Crie os arquivos de parâmetros necessários para configurar corretamente o nó `move_base`.
+Crie o arquivo **move_base_params.yaml**.
+
+## 4. Crie os arquivos de parâmetros necessários para configurar corretamente os costmaps globais e locais.
+Crie os arquivos **costmap_common_params.yaml**, **global_costmap_params.yaml** e **local_costmap_params.yaml**.
+
+## 5. Crie os arquivos de parâmetros necessários para configurar corretamente os planejadores globais e locais.
+Crie os arquivos **navfn_global_planner_params.yaml** e **dwa_local_planner_params.yaml**.
+
+
