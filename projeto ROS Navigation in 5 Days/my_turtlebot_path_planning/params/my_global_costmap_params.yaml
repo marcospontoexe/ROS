@@ -1,0 +1,7 @@
+global_frame: map
+rolling_window: false
+robot_base_frame: base_link
+
+plugins:
+  - {name: static,                  type: "costmap_2d::StaticLayer"}
+  - {name: inflation,               type: "costmap_2d::InflationLayer"}

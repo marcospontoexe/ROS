@@ -1,0 +1,123 @@
+base_local_planner: "dwa_local_planner/DWAPlannerROS" # Sets the dwa local planner
+#base_local_planner: "base_local_planner/TrajectoryPlannerROS" # Sets the Trajectory Rollout algorithm from base local planner
+#base_local_planner: "eband_local_planner/EBandPlannerROS" # Sets the eband local planner
+#base_local_planner: "teb_local_planner/TebLocalPlannerROS" # Sets the teb local planner
+
+DWAPlannerROS:
+  #--------Robot configuration parameters---------------
+
+  # Aceleração máxima linear em metros por segundo ao quadrado
+  acc_lim_x: 2.5
+
+  # Aceleração máxima de rotação em radianos por segundo ao quadrado
+  acc_lim_theta: 3.2
+
+  acc_lim_y: 0
+
+  # Velocidade máxima linear em metros por segundo
+  max_vel_x: 0.5
+  
+  # Velocidade mínima linear em metros por segundo (pode ser negativa para marcha à ré)
+  min_vel_x: 0.0
+
+  max_vel_y: 0
+
+  min_vel_y: 0
+
+  max_vel_trans: 0.5
+
+  min_vel_trans: 0.1
+  
+  # Velocidade máxima de rotação em radianos por segundo
+  max_vel_theta: 1.0
+  
+  # Velocidade mínima de rotação em radianos por segundo
+  min_vel_theta: 0.2
+  #------------------------ 
+  
+
+  #-----Goal Tolerance Parameters---------
+  # Tolerância de orientação para considerar o objetivo atingido em radianos
+  yaw_goal_tolerance: 0.1
+
+  # Tolerância de distância para considerar o objetivo atingido em metros
+  xy_goal_tolerance: 0.2
+
+  latch_xy_goal_tolerance: false
+  #----------------------------------------------
+
+  # Largura do robô em metros (incluindo margem de segurança)
+  robot_radius: 0.3
+
+  # Distância máxima do caminho previsto que pode ser calculada
+  path_distance_bias: 32.0
+
+  # Peso do obstáculo no cálculo do custo do caminho
+  goal_distance_bias: 20.0
+
+  occdist_scale: 0.02
+
+  # Frequência de atualização do planejador local em Hz
+  planner_frequency: 5.0
+
+  # Frequência de atualização do controlador em Hz
+  controller_frequency: 10.0
+
+  # Janela de tempo para a previsão do movimento em segundos
+  sim_time: 1.5
+
+  # Resolução do grid usado para a previsão do movimento
+  vx_samples: 20
+  vy_samples: 0
+  vtheta_samples: 20
+  vth_samples: 40
+
+  
+
+  
+
+  # Parâmetros de segurança e prevenção de colisões
+  scaling_speed: 0.25
+  max_scaling_factor: 0.2
+
+  # Se deve usar o obstáculo inflado para a verificação de colisão
+  use_dwa: true
+
+  # Tolerância de custo para parar o robô ao se aproximar de um obstáculo
+  obstacle_cost: 0.6
+
+  # Peso do caminho em termos de custo
+  path_cost_weight: 32.0
+
+  # Peso da distância ao objetivo em termos de custo
+  goal_cost_weight: 24.0
+
+  # Parâmetro de velocidade de rotação mínima
+  min_rot_vel: 0.4
+
+  # Parâmetro de velocidade de rotação máxima
+  max_rot_vel: 1.0
+
+  # Tempo de paragem
+  stop_time_buffer: 0.2
+
+  # Aceleração de travagem
+  acc_lim_trans: 1.0
+
+  # Intervalo de tempo para a previsão do movimento em segundos
+  forward_point_distance: 0.325
+
+  # Frequência de reconfiguração dinâmica
+  oscillation_reset_dist: 0.05
+
+  # Debugging
+    publish_traj_pc : true
+    publish_cost_grid_pc: true
+
+
+
+
+
+
+
+

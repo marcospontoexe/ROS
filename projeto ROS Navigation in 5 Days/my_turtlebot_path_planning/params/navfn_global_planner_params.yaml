@@ -1,0 +1,39 @@
+#
+#Documentation:
+#http://wiki.ros.org/global_planner
+#
+base_global_planner: "navfn/NavfnROS" # Sets the Navfn Planner
+#base_global_planner: "carrot_planner/CarrotPlanner" # Sets the CarrotPlanner
+#base_global_planner: "global_planner/GlobalPlanner" # Sets the GlobalPlanner
+
+NavfnROS:                                  
+  old_navfn_behavior: false                     # Exactly mirror behavior of navfn, use defaults for other boolean parameters, default false
+  use_quadratic: true                           # Use the quadratic approximation of the potential. Otherwise, use a simpler calculation, default true
+  use_dijkstra: true                            # Use dijkstra's algorithm. Otherwise, A*, default true
+  use_grid_path: false                          # Create a path that follows the grid boundaries. Otherwise, use a gradient descent method, default false
+  
+  allow_unknown: false                           #Specifies whether or not to allow the planner to create plans that traverse unknown space. 
+                                                #NOTE: if you are using a layered costmap_2d costmap with a voxel or obstacle layer, 
+                                                #you must also set the track_unknown_space param for that layer to be true, 
+                                                #or it will convert all your unknown space to free space (which planner will then happily go right through). 
+                                                #(bool, default: true)
+                                                
+  planner_window_x: 0.0                         # Especifica o tamanho em x de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande (default 0.0)
+  planner_window_y: 0.0                         # Especifica o tamanho em y de uma janela opcional para restringir o planejador. Isso pode ser útil para restringir o NavFn a trabalhar em uma pequena janela de um costmap grande. (default 0.0)
+  default_tolerance: 0.1                        #  Uma tolerância no ponto de destino para o planejador. O NavFn tentará criar um plano que esteja o mais próximo possível do objetivo especificado, mas não mais distante do que a tolerância padrão. (double, default: 0.0)
+  
+  publish_scale: 100                            # Scale by which the published potential gets multiplied, default 100
+  planner_costmap_publish_frequency: 0.0        # default 0.0
+  
+  lethal_cost: 253                              # Lethal Cost (dynamic reconfigure) (int, default: 253)
+  neutral_cost: 50                              # Neutral Cost (dynamic reconfigure) (int, default: 50)
+  cost_factor: 3.0                              # Factor to multiply each cost from costmap by (dynamic reconfigure) (double, default: 3.0)
+  publish_potential: true                       # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
+
+  visualize_potential: false                    #Specifies whether or not to visualize the potential area computed via a PointCloud2 (bool, default: false).
+
+  orientation_mode: 0                           #How to set the orientation of each point: 
+                                                #(None=0, Forward=1, Interpolate=2, ForwardThenInterpolate=3, Backward=4, Leftward=5, Rightward=6) (dynamic reconfigure)
+                                                #(int, default: 0)
+
+  orientation_window_size: 1                    #What window to use to determine the orientation based on the position derivative specified by the orientation mode (dynamic reconfigure) (int, default: 1).
