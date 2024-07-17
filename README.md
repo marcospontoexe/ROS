@@ -1206,6 +1206,7 @@ Um bom lugar para ler todos os logs emitidos por todos os sistemas ROS é no tó
 [Veja no pacote "my_log_print_example"](https://github.com/marcospontoexe/ROS/tree/main/Pacotes/exemplos/my_log_print_example) como configurar o nível de **Log** usando a configuração `log_level=rospy.DEBUG`. Há cinco possíveis parÂmetros parra essa configuração; *DEBUG*, *INFO*, *WARN*, *ERROR* e *FATAL*.
 
 ## rqt_console
+Para abri o rqt console digite no terminal: `rqt_console`.
 Imagine dez nós publicando dados de imagem, dados de laser, usando ações, serviços e publicando dados de depuração do seu nó de DeepLearning. É realmente difícil obter os dados de logging que você deseja.
 
 A janela do rqt_console é dividida em três subpainéis:
