@@ -1210,6 +1210,8 @@ Para abri o rqt console digite no terminal: `rqt_console`.
 Imagine dez nós publicando dados de imagem, dados de laser, usando ações, serviços e publicando dados de depuração do seu nó de DeepLearning. É realmente difícil obter os dados de logging que você deseja.
 
 A janela do rqt_console é dividida em três subpainéis:
+![janela rqt console](https://github.com/marcospontoexe/ROS/blob/main/imagens/rqt%20console.jpg)
+
 1. O primeiro painel exibe os logs. Ele contém dados sobre a mensagem, severidade/nível, o nó que gerou a mensagem e outros dados. É aqui onde você extrai todos os seus dados de logs.
 2. O segundo painel permite filtrar as mensagens emitidas no primeiro painel, excluindo-as com base em critérios como: nó, nível de severidade ou se contém uma determinada palavra. Para adicionar um filtro, basta clicar no sinal de adição e selecionar o desejado.
 3. O terceiro painel permite destacar certas mensagens enquanto exibe as outras.
