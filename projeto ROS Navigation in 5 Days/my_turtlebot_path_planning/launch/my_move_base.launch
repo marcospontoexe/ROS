@@ -1,10 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-    <!-- executa outra launch, para fornecer o mapa atraves do "map_server" -->
-    <include file="$(find my_turtlebot_mapping)/launch/provide_map.launch"/>
-
-    <!-- executa outra launch, para iniciar o "AMCL" -->
+    <!-- executa outra launch, para fornecer o mapa atraves do "map_server" e para iniciar o "AMCL" -->
     <include file="$(find my_turtlebot_localization)/launch/my_amcl.launch"/>
     
 

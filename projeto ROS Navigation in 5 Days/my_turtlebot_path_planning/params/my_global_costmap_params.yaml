@@ -1,7 +1,9 @@
 global_frame: map
-rolling_window: false
+rolling_window: false #Ao definir o parâmetro rolling_window como false, inicializaremos o costmap obtendo os dados de um mapa estático
 robot_base_frame: base_link
 
 plugins:
   - {name: static,                  type: "costmap_2d::StaticLayer"}
+  - {name: obstacles_laser,         type: "costmap_2d::VoxelLayer"}
   - {name: inflation,               type: "costmap_2d::InflationLayer"}
+

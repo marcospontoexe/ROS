@@ -1,8 +1,10 @@
-global_frame: odom 
-rolling_window: true
+global_frame: odom    # No costmap local, este parâmetro deve ser definido como "/odom".
+rolling_window: true  #  No costmap local, este parâmetro deve ser definido como "true". Construído a partir das leituras dos sensores do robô
 update_frequency: 5.0
-width: 10.0
+width: 10.0     # A largura do costmap. (default: 10)
+heigth: 10.0    # A altura do costmap. (default: 10)
 
 plugins:
+#  - {name: static,                  type: "costmap_2d::ObstacleLayer"}
   - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
   - {name: inflation,                 type: "costmap_2d::InflationLayer"}

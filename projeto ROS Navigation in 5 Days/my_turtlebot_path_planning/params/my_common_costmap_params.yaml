@@ -1,4 +1,5 @@
 footprint: [[-0.5, -0.33], [-0.5, 0.33], [0.5, 0.33], [0.5, -0.33]]
+#robot_radius:      #Caso o robô seja circular, especificaremos este parâmetro em vez do contorno.
 footprint_padding: 0.01
 
 robot_base_frame: base_link
@@ -9,13 +10,29 @@ transform_tolerance: 0.5
 resolution: 0.05
 
 #layer definitions
+
+# é responsável por fornecer o mapa estático aos costmaps que o requerem (costmap global).
 static:
     map_topic: /map
     subscribe_to_updates: true
 
+#A camada de obstáculos é responsável pelas operações de marcação e limpeza.
 obstacles_laser:
     observation_sources: laser
     laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, obstacle_range: 5.5}
+    #topic (padrão: source_name): O tópico no qual os dados do sensor chegam para esta fonte.
+    #data_type (padrão: "PointCloud"): O tipo de dados associado ao tópico; atualmente, apenas "PointCloud", "PointCloud2" e "LaserScan" são suportados.
+    #clearing (padrão: false): Se esta observação deve ser usada para limpar o espaço livre.
+    #marking (padrão: true): Se esta observação deve ser usada para marcar obstáculos.
+    #inf_is_valid (padrão: false): Permite valores Inf em mensagens de observação "LaserScan". Os valores Inf são convertidos para a máxima distância do laser.
+    #max_obstacle_height (padrão: 2.0): A altura máxima de qualquer obstáculo a ser inserido no costmap, em metros. Este parâmetro deve ser definido ligeiramente maior que a altura do seu robô.
+    #obstacle_range (padrão: 2.5): A distância máxima padrão do robô na qual um obstáculo será inserido no costmap, em metros. Isso pode ser substituído com base em cada sensor.
+    #raytrace_range (padrão: 3.0): A faixa padrão em metros para traçar raios para fora do mapa usando dados do sensor. Isso pode ser substituído com base em cada sensor.
 
+# é responsável por realizar a inflação em cada célula com um obstáculo:
 inflation:
     inflation_radius: 0.55
+    #cost_scaling_factor (default: 10.0):   #Um fator de escala a ser aplicado aos valores de custo durante a inflação.
+
+
+
