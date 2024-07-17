@@ -966,7 +966,7 @@ global_frame: map
 rolling_window: false
 
 plugins:
-  - {name: static, type: "costmap_2d::StaticLayer"}
+  - {name: static, type: "costmap_2d::VoxelLayer"}
   - {name: inflation, type: "costmap_2d::InflationLayer"}
 ```
 
