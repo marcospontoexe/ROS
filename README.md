@@ -1223,6 +1223,8 @@ Se você precisa saber se a inclinação está correta, se a velocidade está ad
 
 Digite no terminal `rqt_plot` para abrir a interface gráfica do rqt plot.
 
+![tela do rqt_plot](https://github.com/marcospontoexe/ROS/blob/main/imagens/rqt_plot.jpg)
+
 No campo de entrada de tópico localizado no canto superior esquerdo da janela, você deve digitar a estrutura do tópico que leva aos dados que deseja plotar. Lembre-se de que, para ser plotado, o tópico deve publicar um número. Após escrever o nome do tópico, pressione o SINAL DE MAIS para começar a plotar o tópico.
 
 Para plotar as juntas do robô, precisamos plotar o tópico `/joint_states`, que possui a seguinte estrutura (que você pode obter ao extrair o tipo de mensagem do tópico com o comando `rostopic info`, seguido pelo comando `rosmsg show`):
@@ -1242,6 +1244,8 @@ Você pode adicionar quantos gráficos desejar pressionando o botão de "mais".
 Seu nó está conectado ao lugar correto? Por que você não está recebendo dados de um tópico? Essas perguntas são bastante comuns, como você já pode ter experimentado com sistemas ROS. O rqt_graph pode ajudá-lo a entender isso de uma maneira mais fácil. Ele exibe um gráfico visual dos nós em execução no ROS e suas conexões de tópicos. É importante destacar que ele parece ter problemas com conexões que não são tópicos.
 
 Digite no terminal `rqt_graph` para abrir a interface gráfica do rqt graph.
+
+![tela do rqt graph](https://github.com/marcospontoexe/ROS/blob/main/imagens/rqt_graph.jpg)
 
 Na tela do rqt graph você verá todos os nós que estão atualmente em execução, conectados pelos tópicos que utilizam para se comunicar entre si. Existem dois elementos principais que você precisa saber como usar:
 1. O botão de atualização: que você deve pressionar sempre que alterar os nós que estão em execução.
