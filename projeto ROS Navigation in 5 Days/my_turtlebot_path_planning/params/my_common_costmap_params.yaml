@@ -31,7 +31,7 @@ obstacles_laser:
 
 # é responsável por realizar a inflação em cada célula com um obstáculo:
 inflation:
-    inflation_radius: 0.55
+    inflation_radius: 0.05
     #cost_scaling_factor (default: 10.0):   #Um fator de escala a ser aplicado aos valores de custo durante a inflação.
 
 
