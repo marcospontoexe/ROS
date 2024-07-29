@@ -14,7 +14,9 @@ def client_record_odom():
     odom_client = actionlib.SimpleActionClient('record_odom', OdomRecordAction)
     
     # Espera até que o servidor de ação esteja disponível
-    odom_client.wait_for_server()    
+    odom_client.wait_for_server()
+
+    
     
     # Inicia a gravação de odometria quando envia um goal
     goal = OdomRecordGoal()  # Cria um objetivo vazio e envia ao servidor de ação
@@ -50,17 +52,19 @@ def laser_callback(data):   # Callback para lidar com os dados recebidos do lase
 
     l = data.ranges
     distanciaFront = data.ranges[360]
-    distanciaRight = data.ranges[180]    
+    distanciaRight = data.ranges[180]
+    
 
     '''
     min_distance = min(l)
     min_index = l.index(min_distance)
-    print ("A menor distância é: ", min_distance)
-    print(f"Feixe com menor distância: {min_index}")
+    print ("O menos distância é: ", min_distance)
+    print(f"Feixe com maior distância: {min_index}")
     '''
     
     # Twist para enviar comandos de velocidade
-    vel_msg = Twist()   
+    vel_msg = Twist()
+   
     
     if distanciaFront < 0.5:    # obstáculo a frente (virar pa à esquerda)
         print(f"Virando à esquerda")
@@ -88,10 +92,10 @@ def laser_subscriber():
     rospy.Subscriber('/scan', LaserScan, laser_callback)    
     rospy.spin()    # Mantém o programa funcionando até que seja fechado
 
-if __name__ == '__main__':       
+if __name__ == '__main__':    
+    vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10) # Cria um publisher para o tópico '/cmd_vel' com a mensagem Twist    
     try:       
-        rospy.init_node('wall_following_node', anonymous=True) # Inicializa o nó ROS     
-        vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10) # Cria um publisher para o tópico '/cmd_vel' com a mensagem Twist        
+        rospy.init_node('wall_following_node', anonymous=True) # Inicializa o nó ROS            
         service_client()
         client_record_odom()
           

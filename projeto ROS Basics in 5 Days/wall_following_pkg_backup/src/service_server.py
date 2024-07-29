@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from wall_following_pkg.srv import FindWall, FindWallResponse # you import the service message python classes generated from FindWall.srv.
+from wall_following_pkg.srv import FindWall, FindWallResponse # you import the service message python classes generated from Empty.srv.
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
 
@@ -38,7 +38,7 @@ class FindWallServer:
         twist = Twist() 
         if min_index > 360:
             while min_index > 360:  # até que a menor distância seja o índice 360 do laser (frente do robô)
-                twist.angular.z = 0.5 # vira para à esquerda 
+                twist.angular.z = 0.5 
                 self.cmd_pub.publish(twist)
                 rospy.sleep(0.1)                
                 min_distance = min(self.laser_data)
@@ -47,7 +47,7 @@ class FindWallServer:
                 print(f"índice da menor distância: {min_index}")
         else:
             while min_index < 360:  # até que a menor distância seja o índice 360 do laser (frente do robô)
-                twist.angular.z = -0.5 # vira para à direita
+                twist.angular.z = -0.5 
                 self.cmd_pub.publish(twist)
                 rospy.sleep(0.1)                
                 min_distance = min(self.laser_data)
@@ -87,7 +87,7 @@ class FindWallServer:
         distaAtual =  self.distanciaTrig
         # Step 4: Rotate until ray number 270 is pointing to the wall
         while min_index > 270:       
-            twist.angular.z = 0.5  # vira para à esquerda                  
+            twist.angular.z = 0.5                    
             self.cmd_pub.publish(twist)
             rospy.sleep(0.1)
             min_distance = min(self.laser_data)

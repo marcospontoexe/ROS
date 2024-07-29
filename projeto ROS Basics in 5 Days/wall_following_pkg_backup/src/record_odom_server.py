@@ -39,8 +39,10 @@ class OdomRecordServer:
 
     def execute(self, goal):
         # Função principal do servidor de ação
-        rate = rospy.Rate(1)  # Define a taxa de execução para 1 Hz (uma vez por segundo)      
+        rate = rospy.Rate(1)  # Define a taxa de execução para 1 Hz (uma vez por segundo)
+        
     
+
         # Loop para fornecer feedback e checar se o objetivo foi cancelado
         while not self.server.is_preempt_requested():
             feedback = OdomRecordFeedback()
