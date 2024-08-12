@@ -4,8 +4,8 @@ footprint_padding: 0.01
 
 robot_base_frame: base_link
 update_frequency: 4.0
-publish_frequency: 3.0
-transform_tolerance: 0.5
+publish_frequency: 4.0 #3.0 
+transform_tolerance: 0.25 #0.5 # define quanto tempo adicional (em segundos) o sistema deve esperar ao procurar uma transformação válida
 
 resolution: 0.05
 
@@ -31,7 +31,7 @@ obstacles_laser:
 
 # é responsável por realizar a inflação em cada célula com um obstáculo:
 inflation:
-    inflation_radius: 0.05
+    inflation_radius: 0.01
     #cost_scaling_factor (default: 10.0):   #Um fator de escala a ser aplicado aos valores de custo durante a inflação.
 
 

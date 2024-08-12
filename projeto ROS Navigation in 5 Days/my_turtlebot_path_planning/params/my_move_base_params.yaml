@@ -1,4 +1,4 @@
-controller_frequency: 1.0
+controller_frequency: 4.0   # especifica quantas vezes por segundo o move_base deve executar os cálculos para determinar e enviar comandos de velocidade ao robô para seguir uma trajetória planejada
 recovery_behaviour_enabled: true
 
 

@@ -7,164 +7,182 @@ DWAPlannerROS:
   #--------Robot configuration parameters---------------
 
   # Aceleração máxima linear em metros por segundo ao quadrado
-  acc_lim_x: 2.5
+  acc_lim_x: 0.133 # em trÊs segundos sai de 0 para 0,4 m/s2
 
   # Aceleração máxima de rotação em radianos por segundo ao quadrado
-  acc_lim_theta: 3.2
+  acc_lim_theta: 0.126  # aceleração angular necessária para que o robô rotacione 90 graus em 5 segundos
 
-  acc_lim_y: 0
+  acc_lim_y: 0  #aceleração lateral máxima
 
   # Velocidade máxima linear em metros por segundo
-  max_vel_x: 0.5
+  max_vel_x: 0.4
   
   # Velocidade mínima linear em metros por segundo (pode ser negativa para marcha à ré)
-  min_vel_x: 0.0
+  min_vel_x: 0.1  # melhor para manobrar de forma mais suave e precisa em ambientes estreitos
 
   max_vel_y: 0
 
   min_vel_y: 0
 
-  max_vel_trans: 0.5
+  #  Usado quando o planejamento deve considerar a velocidade máxima em qualquer direção de movimento linear, o que pode incluir movimentos diagonais ou em outras direções além do eixo x.
+  max_vel_trans: 0.3
 
   min_vel_trans: 0.1
   
   # Velocidade máxima de rotação em radianos por segundo
-  max_vel_theta: 1.0
+  max_vel_theta: 0.628  # para o robô completar uma volta de 360 graus em 10 segundos
   
   # Velocidade mínima de rotação em radianos por segundo
-  min_vel_theta: 0.2
+  min_vel_theta: 0.1
   #------------------------ 
   
 
   #-----Goal Tolerance Parameters---------
-  # Tolerância de orientação para considerar o objetivo atingido em radianos
+  #  (double, padrão: 0.05): A tolerância, em radianos, para o controlador de orientação/rotação ao alcançar seu objetivo.
+  # Especificamente, ele determina o quanto o robô pode estar desviado em radianos do ângulo desejado do objetivo para ser considerado "chegado" ao objetivo
   yaw_goal_tolerance: 0.1
 
-  # Tolerância de distância para considerar o objetivo atingido em metros
-  xy_goal_tolerance: 0.2
+  #  (double, default: 0.10): A tolerância, em metros, para o controlador na distância x e y ao alcançar um objetivo.
+  xy_goal_tolerance: 0.1
 
-  latch_xy_goal_tolerance: false
+  # Especificamente, ele determina se a tolerância para o objetivo deve ser "preservada" (ou "latch") após o robô ter alcançado a posição desejada
+  # true: uma vez que o robô esteja dentro da área de tolerância do objetivo, ele não continuará a tentar ajustar sua posição dentro dessa área.
+  latch_xy_goal_tolerance: true
   #----------------------------------------------
 
-  # Largura do robô em metros (incluindo margem de segurança)
+  # especifica o raio do robô para fins de planejamento. representa a distância mínima que o robô precisa manter dos obstáculos para evitar colisões, considerando o tamanho real do robô.
   robot_radius: 0.3
 
-  # Distância máxima do caminho previsto que pode ser calculada
-  path_distance_bias: 32.0
+  # (default: 32.0): O peso para quanto o controlador deve permanecer próximo ao caminho que lhe foi dado
+  path_distance_bias: 32 
 
-  # Peso do obstáculo no cálculo do custo do caminho
-  goal_distance_bias: 20.0
+  #  (default: 24.0): O peso para quanto o controlador deve tentar alcançar seu objetivo local; também controla a velocidade. 
+  goal_distance_bias: 20
 
-  occdist_scale: 0.02
+  #  (default: 0.01) O peso para quanto o controlador deve tentar evitar obstáculos.  varia entre 0.01 e 1.0
+  occdist_scale: 0.01 # Quando occdist_scale é alto, o planner penaliza mais fortemente as trajetórias que passam perto dos obstáculos. Isso faz com que o robô evite mais agressivamente áreas onde os obstáculos estão próximos, aumentando a segurança ao evitar colisões.
 
-  # Frequência de atualização do planejador local em Hz
-  planner_frequency: 5.0
+  #  define a frequência, em Hertz (Hz), com que o dwa_local_planner calcula a nova trajetória do robô
+  planner_frequency: 4.0  #2.0
 
-  # Frequência de atualização do controlador em Hz
-  controller_frequency: 10.0
+  # especifica a taxa, em Hertz (Hz), com a qual o controlador de movimento calcula e aplica os comandos para o robô
+  controller_frequency: 4.0
 
-  # Janela de tempo para a previsão do movimento em segundos
-  sim_time: 1.5
+  # (default: 1.7): A quantidade de tempo para simular antecipadamente trajetórias em segundos. Quanto maior o parâmetro, mais longo será o plano local calculado. No entanto, também aumentará os recursos computacionais utilizados.
+  sim_time: 1.7 
 
-  # Resolução do grid usado para a previsão do movimento
+  # (default: 3): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em x
   vx_samples: 20
+
   vy_samples: 0
+
+  # (default: 20): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em theta
   vtheta_samples: 20
-  vth_samples: 40
+
+  # usado para definir o número de amostras de velocidade angular
+  vth_samples: 20
 
   
-  # Parâmetros de segurança e prevenção de colisões
+  # É uma taxa proporcional para limitar as velocidades máximas (1.0 = 100% da velocidade máxima)
   scaling_speed: 0.25
+  # Se o max_scaling_factor for menor que 1.0, a velocidade máxima efetiva será reduzida. Se for 1.0 ou maior, a velocidade máxima efetiva será igual ou maior do que a velocidade máxima especificada, sem redução adicional.
   max_scaling_factor: 0.2
 
-  # Se deve usar o obstáculo inflado para a verificação de colisão
+  # indica se o planejador deve utilizar o método DWA para gerar trajetórias e calcular comandos de movimento para o robô
   use_dwa: true
 
-  # Tolerância de custo para parar o robô ao se aproximar de um obstáculo
-  obstacle_cost: 0.6
+  #  (default: 1.0)influencia o cálculo do custo de uma trajetória com base na distância aos obstáculos.
+  # Um valor maior de obstacle_cost aumenta a penalização para trajetórias que se aproximam de obstáculos, incentivando o robô a escolher trajetórias que evitam áreas próximas aos obstáculos.
+  obstacle_cost: 10.0
 
-  # Peso do caminho em termos de custo
-  path_cost_weight: 32.0
+  # (default: 1.0)Um valor menor faz com que o custo do caminho tenha menos influência, permitindo maior flexibilidade na escolha das trajetórias, possivelmente em troca de um ajuste maior ao custo de obstáculos ou outros fatores.
+  path_cost_weight: 1.0
 
-  # Peso da distância ao objetivo em termos de custo
-  goal_cost_weight: 24.0
+  #  (default: 1.0) Um valor menor faz com que o custo do objetivo tenha menos influência, permitindo que o robô considere mais outros fatores, como a distância a obstáculos ou a aderência ao caminho.
+  goal_cost_weight: 0.8
 
-  # Parâmetro de velocidade de rotação mínima
-  min_vel_theta: 0.4
+  #  é um valor de tempo (em segundos) que define quanto tempo antes do robô alcançar o objetivo ele deve começar a desacelerar para garantir uma parada segura.
+  stop_time_buffer: 3.0
 
-  # Parâmetro de velocidade de rotação máxima
-  max_vel_theta: 1.0
+  # define o limite máximo de aceleração para o movimento translacional do robô.
+  acc_lim_trans: 0.133
 
-  # Tempo de paragem
-  stop_time_buffer: 0.2
-
-  # Aceleração de travagem
-  acc_lim_trans: 1.0
-
-  # Intervalo de tempo para a previsão do movimento em segundos
+  # define a distância à frente do robô que é usada para calcular o custo associado ao posicionamento do robô em relação ao objetivo
+  # Com um valor menor, o planejador avalia o custo em um ponto mais próximo ao robô. Isso pode permitir ajustes mais rápidos e mais responsivos, mas pode ser menos eficaz em alinhar a trajetória com o objetivo final se o objetivo estiver a uma distância maior.
   forward_point_distance: 0.325
 
-  # Frequência de reconfiguração dinâmica
-  oscillation_reset_dist: 0.05
+  # é a distância (em metros) que o robô deve se mover em qualquer direção para que o planejador de movimento considere que o robô está fazendo progresso e, assim, reinicie o contador de oscilação.
+  # Esse parâmetro é usado para detectar e evitar comportamentos de oscilação, onde o robô pode ficar preso em um ciclo de movimentos repetitivos sem fazer progresso real em direção ao objetivo.
+  # Se o robô não se mover além da oscillation_reset_dist durante um período de tempo, isso pode indicar um comportamento de oscilação.
+  oscillation_reset_dist: 0.1
 
-  # Debugging
+  #----Debugging-------
+  # usado para determinar se o planejador deve publicar a nuvem de pontos (point cloud) das trajetórias que estão sendo consideradas durante o planejamento.
+  # O planejador não publica a nuvem de pontos das trajetórias. Isso reduz a carga de processamento e o uso de largura de banda, mas elimina a capacidade de visualizar as trajetórias para depuração.
   publish_traj_pc : true
+
+  # ontrola se o planejador deve publicar uma nuvem de pontos representando a grade de custos (cost grid) que ele usa para avaliar as trajetórias.
+  # Pode aumentar a carga de processamento e o uso de largura de banda no sistema de comunicação ROS, especialmente em ambientes complexos com muitas células na grade de custos.
   publish_cost_grid_pc: true
 
-  # Parâmetros de Recuperação por Rotação
-  sim_granularity: 0.02   #A distância, em radianos, entre verificações de obstáculos ao verificar se uma rotação no lugar é segura. (Padrão é 1 grau).
-  angular_sim_granularity: 0.02
+  # (default: 0.025): O tamanho do passo, em metros, a ser utilizado entre pontos em uma trajetória dada.
+  # Trajetórias são avaliadas em intervalos determinados pela sim_granularity. Quanto menor a granularidade, mais pontos serão avaliados ao longo de uma trajetória, resultando em uma simulação mais detalhada.
+  sim_granularity: 0.025   
+
+  # Trajetórias são avaliadas em intervalos determinados pela angular_sim_granularity. Quanto menor a granularidade angular, mais pontos serão avaliados ao longo de uma curva, resultando em uma simulação mais detalhada.
+  angular_sim_granularity: 0.1
+
 
 # usado apenas se o parÂmetro "base_local_planner" for igual a "base_local_planner/TrajectoryPlannerROS"
-TrajectoryPlannerROS:
-  # Robot Configuration Parameters
-  acc_lim_x: 2.5
-  acc_lim_theta:  3.2
+# TrajectoryPlannerROS:
+#   # Robot Configuration Parameters
+#   acc_lim_x: 2.5
+#   acc_lim_theta:  3.2
 
-  max_vel_x: 1.0
-  min_vel_x: 0.0
+#   max_vel_x: 0.5
+#   min_vel_x: 0.0
 
-  max_vel_theta: 1.0
-  min_vel_theta: -1.0
-  min_in_place_vel_theta: 0.2
+#   max_vel_theta: 1.0
+#   min_vel_theta: -1.0
+#   min_in_place_vel_theta: 0.2
 
-  holonomic_robot: false
-  escape_vel: -0.1
+#   holonomic_robot: false
+#   escape_vel: -0.1
 
-  # Goal Tolerance Parameters
-  yaw_goal_tolerance: 0.1
-  xy_goal_tolerance: 0.2
-  latch_xy_goal_tolerance: false
+#   # Goal Tolerance Parameters
+#   yaw_goal_tolerance: 0.1
+#   xy_goal_tolerance: 0.2
+#   latch_xy_goal_tolerance: false
 
-  # Forward Simulation Parameters
-  sim_time: 2.0
+#   # Forward Simulation Parameters
+#   sim_time: 2.0
 
-  # Parâmetros de Recuperação por Rotação
-  sim_granularity: 0.02   #A distância, em radianos, entre verificações de obstáculos ao verificar se uma rotação no lugar é segura. (Padrão é 1 grau).
-  angular_sim_granularity: 0.02
+#   # Parâmetros de Recuperação por Rotação
+#   sim_granularity: 0.02   #A distância, em radianos, entre verificações de obstáculos ao verificar se uma rotação no lugar é segura. (Padrão é 1 grau).
+#   angular_sim_granularity: 0.02
 
 
-  vx_samples: 6
-  vtheta_samples: 20
-  controller_frequency: 20.0
+#   vx_samples: 6
+#   vtheta_samples: 20
+#   controller_frequency: 20.0
 
-  # Trajectory scoring parameters
-  meter_scoring: true # Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells. Cells are assumed by default (false).
-  occdist_scale:  0.1 #The weighting for how much the controller should attempt to avoid obstacles. default 0.01
-  pdist_scale: 0.75  #     The weighting for how much the controller should stay close to the path it was given . default 0.6
-  gdist_scale: 1.0 #     The weighting for how much the controller should attempt to reach its local goal, also controls speed  default 0.8
+#   # Trajectory scoring parameters
+#   meter_scoring: true # Whether the gdist_scale and pdist_scale parameters should assume that goal_distance and path_distance are expressed in units of meters or cells. Cells are assumed by default (false).
+#   occdist_scale:  0.1 #The weighting for how much the controller should attempt to avoid obstacles. default 0.01
+#   pdist_scale: 0.75  #     The weighting for how much the controller should stay close to the path it was given . default 0.6
+#   gdist_scale: 1.0 #     The weighting for how much the controller should attempt to reach its local goal, also controls speed  default 0.8
 
-  heading_lookahead: 0.325  #How far to look ahead in meters when scoring different in-place-rotation trajectories
-  heading_scoring: false  #Whether to score based on the robot's heading to the path or its distance from the path. default false
-  heading_scoring_timestep: 0.8   #How far to look ahead in time in seconds along the simulated trajectory when using heading scoring (double, default: 0.8)
-  dwa: true #Whether to use the Dynamic Window Approach (DWA)_ or whether to use Trajectory Rollout
-  simple_attractor: false
-  publish_cost_grid_pc: true  
+#   heading_lookahead: 0.325  #How far to look ahead in meters when scoring different in-place-rotation trajectories
+#   heading_scoring: false  #Whether to score based on the robot's heading to the path or its distance from the path. default false
+#   heading_scoring_timestep: 0.8   #How far to look ahead in time in seconds along the simulated trajectory when using heading scoring (double, default: 0.8)
+#   dwa: true #Whether to use the Dynamic Window Approach (DWA)_ or whether to use Trajectory Rollout
+#   simple_attractor: false
+#   publish_cost_grid_pc: true  
 
-  # Oscillation Prevention Parameters
-  oscillation_reset_dist: 0.25 #How far the robot must travel in meters before oscillation flags are reset (double, default: 0.05)
-  escape_reset_dist: 0.1
-  escape_reset_theta: 0.1
+#   # Oscillation Prevention Parameters
+#   oscillation_reset_dist: 0.25 #How far the robot must travel in meters before oscillation flags are reset (double, default: 0.05)
+#   escape_reset_dist: 0.1
+#   escape_reset_theta: 0.1
 
 
 

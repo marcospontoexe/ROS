@@ -2,7 +2,7 @@
 #map_frame: [string] # o frame_id TF onde a pose do robô no mapa é publicada
 base_frame: base_footprint #[string] o frame_id TF a ser usado para a pose da base do robô
 odom_frame: odom #[string] o frame_id TF a partir do qual a odometria é lida
-map_update_interval: 5.0  #[double] intervalo de tempo em segundos entre duas atualizações consecutivas do mapa
+map_update_interval: 0.25 #0.1  #[double](default: 5.0) determina o tempo, em segundos, para atualização do mapa de custo com novas informações dos sensores, como dados de obstáculos.
 
 #Laser Parameters:
 maxUrange: 11.0 #[double] alcance máximo do scanner a laser usado para construção do mapa (padrão: mesmo que maxRange)

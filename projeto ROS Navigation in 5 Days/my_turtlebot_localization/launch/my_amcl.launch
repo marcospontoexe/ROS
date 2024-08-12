@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
 
-  <!-- Include another launch file -->
+  <!-- executa outra launch, para fornecer o mapa atraves do "map_server" -->
   <include file="$(find my_turtlebot_mapping)/launch/provide_map.launch"/>
 
   <arg name="scan" default="/scan" />

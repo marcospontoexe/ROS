@@ -15,8 +15,8 @@ update_min_d: 0.25 #(default: 0.2): Define a distância linear (em metros) que o
 update_min_a: 0.2 #(default: π/6.0): Define a distância angular (em radianos) que o robô precisa mover para realizar uma atualização do filtro.
 resample_interval: 1  #(default: 2): Define o número de atualizações do filtro necessárias antes da reamostragem.
 # Increase tolerance because the computer can get quite busy 
-transform_tolerance: 1.0  #(default: 0.1): Tempo (em segundos) com o qual a transformação publicada deve ser pós-datada, para indicar que essa transformação é válida no futuro.
-gui_publish_rate: 10.0  #(default: -1.0): Taxa máxima (em Hz) na qual as varreduras e caminhos são publicados para visualização. Se esse valor for -1.0, essa função está desativada.
+transform_tolerance: 0.25 #0.5 #(default: 0.1): Tempo (em segundos) com o qual a transformação publicada deve ser pós-datada, para indicar que essa transformação é válida no futuro.
+gui_publish_rate: 4.0  #(default: -1.0): Taxa máxima (em Hz) na qual as varreduras e caminhos são publicados para visualização. Se esse valor for -1.0, essa função está desativada.
  
 
 #Laser Parameters
