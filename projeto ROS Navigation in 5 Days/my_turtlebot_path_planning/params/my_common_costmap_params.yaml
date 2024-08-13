@@ -18,7 +18,7 @@ static:
 
 #A camada de obstáculos é responsável pelas operações de marcação e limpeza.
 obstacles_laser:
-    observation_sources: laser
+    observation_sources: scan
     laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, obstacle_range: 5.5}
     #topic (padrão: source_name): O tópico no qual os dados do sensor chegam para esta fonte.
     #data_type (padrão: "PointCloud"): O tipo de dados associado ao tópico; atualmente, apenas "PointCloud", "PointCloud2" e "LaserScan" são suportados.
