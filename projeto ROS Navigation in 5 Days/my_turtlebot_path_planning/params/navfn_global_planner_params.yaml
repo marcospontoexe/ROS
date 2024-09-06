@@ -10,7 +10,7 @@ NavfnROS:
   old_navfn_behavior: false                     # Exactly mirror behavior of navfn, use defaults for other boolean parameters, default false
   use_quadratic: true                           # Use the quadratic approximation of the potential. Otherwise, use a simpler calculation, default true
   use_dijkstra: true                            # Use dijkstra's algorithm. Otherwise, A*, default true
-  use_grid_path: false                          # Create a path that follows the grid boundaries. Otherwise, use a gradient descent method, default false
+  use_grid_path: false                          # Crie um caminho que siga os limites da grade. Caso contrário, use um método de descida de gradiente, default false
   
   allow_unknown: false                           #Specifies whether or not to allow the planner to create plans that traverse unknown space. 
                                                 #NOTE: if you are using a layered costmap_2d costmap with a voxel or obstacle layer, 
@@ -25,9 +25,10 @@ NavfnROS:
   publish_scale: 100                            # Scale by which the published potential gets multiplied, default 100
   planner_costmap_publish_frequency: 0.0        # default 0.0
   
-  lethal_cost: 253                              # Lethal Cost (dynamic reconfigure) (int, default: 253)
-  neutral_cost: 50                              # Neutral Cost (dynamic reconfigure) (int, default: 50)
-  cost_factor: 3.0                              # Factor to multiply each cost from costmap by (dynamic reconfigure) (double, default: 3.0)
+  # cost = COST NEUTRAL + COST FACTOR * costmap cost value
+  lethal_cost: 253                              # Lethal Cost (dynamic reconfigure) (int, default: 253)  
+  neutral_cost: 66                              # Neutral Cost (dynamic reconfigure) (int, default: 50)
+  cost_factor: 0.55                              # Factor to multiply each cost from costmap by (dynamic reconfigure) (double, default: 3.0)
   publish_potential: true                       # Publish Potential Costmap (this is not like the navfn pointcloud2 potential), default true
 
   visualize_potential: false                    #Specifies whether or not to visualize the potential area computed via a PointCloud2 (bool, default: false).

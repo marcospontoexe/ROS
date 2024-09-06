@@ -9,8 +9,8 @@ global_frame_id: map  #(default: "map"): Indica o nome do frame de coordenadas p
 #Esses parâmetros permitem configurar a forma como o filtro de partículas opera.
 min_particles: 500  #(default: 100): Define o número mínimo de partículas permitidas para o filtro.
 max_particles: 2000 #(default: 5000): Define o número máximo de partículas permitidas para o filtro.
-kld_err: 0.05 #(default: 0.01): Define o erro máximo permitido entre a distribuição verdadeira e a distribuição estimada.
-kld_z: 0.99
+kld_err: 0.10 #0.05 (default: 0.01): Define o erro máximo permitido entre a distribuição verdadeira e a distribuição estimada.
+kld_z: 0.5 #0.99
 update_min_d: 0.25 #(default: 0.2): Define a distância linear (em metros) que o robô precisa mover para realizar uma atualização do filtro.
 update_min_a: 0.2 #(default: π/6.0): Define a distância angular (em radianos) que o robô precisa mover para realizar uma atualização do filtro.
 resample_interval: 1  #(default: 2): Define o número de atualizações do filtro necessárias antes da reamostragem.
@@ -24,19 +24,19 @@ gui_publish_rate: 4.0  #(default: -1.0): Taxa máxima (em Hz) na qual as varredu
 laser_min_range: -1   #(default: -1.0): Alcance mínimo da varredura a ser considerado; -1,0 fará com que o alcance mínimo relatado pelo laser seja usado.
 laser_max_range: 12.0 #(default: -1.0): Alcance máximo da varredura a ser considerado; -1,0 fará com que o alcance máximo relatado pelo laser seja usado.
 laser_max_beams: 60   #(default: 30): Quantos feixes uniformemente espaçados em cada varredura serão usados ao atualizar o filtro.
-laser_z_hit: 0.5  #(default: 0.95): Peso da mistura para a parte z_hit do modelo.
+laser_z_hit: 0.9  # 0.5 (default: 0.95): Peso da mistura para a parte z_hit do modelo.
 laser_z_short: 0.05 #(default: 0.1): Peso da mistura para a parte z_short do modelo.
 laser_z_max: 0.05   #(default: 0.05): Peso da mistura para a parte z_max do modelo.
 laser_z_rand: 0.5  #(default: 0.05): Peso da mistura para a parte z_rand do modelo. 
-laser_sigma_hit: 0.2
+laser_sigma_hit: 0.1 #0.2
 laser_lambda_short: 0.1
 laser_model_type: likelihood_field #value="beam"/>  
-laser_likelihood_max_dist: 2.0 
+laser_likelihood_max_dist: 4.0  #2.0
 
-odom_alpha1: 0.2
-odom_alpha2: 0.2
-odom_alpha3: 0.2
-odom_alpha4: 0.2
+odom_alpha1: 0.008  #0.2
+odom_alpha2: 0.040  #0.2
+odom_alpha3: 0.004  #0.2
+odom_alpha4: 0.025  #0.2
 odom_alpha5: 0.1
  
 recovery_alpha_slow: 0.0

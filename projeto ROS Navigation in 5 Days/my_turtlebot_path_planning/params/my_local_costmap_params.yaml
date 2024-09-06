@@ -4,6 +4,8 @@ rolling_window: true  #  No costmap local, este parâmetro deve ser definido com
 # width: 1.0     # A largura do costmap. (default: 10)
 # heigth: 1.0    # A altura do costmap. (default: 10)
 
+#Com baixa resolução (>= 0,05), em passagens estreitas, a região do obstáculo pode se sobrepor, e assim o planejador local pode não conseguir encontrar um caminho
+resolution: 0.05
 
 plugins:
 #  - {name: static,                  type: "costmap_2d::ObstacleLayer"}

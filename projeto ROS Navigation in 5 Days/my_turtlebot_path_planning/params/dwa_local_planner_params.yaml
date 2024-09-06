@@ -25,6 +25,7 @@ DWAPlannerROS:
   min_vel_y: 0
 
   #  Usado quando o planejamento deve considerar a velocidade máxima em qualquer direção de movimento linear, o que pode incluir movimentos diagonais ou em outras direções além do eixo x.
+  # Quando o robo está se movendo em linha reta.
   max_vel_trans: 0.3
 
   min_vel_trans: 0.1
@@ -46,30 +47,36 @@ DWAPlannerROS:
   xy_goal_tolerance: 0.1
 
   # Especificamente, ele determina se a tolerância para o objetivo deve ser "preservada" (ou "latch") após o robô ter alcançado a posição desejada
-  # true: uma vez que o robô esteja dentro da área de tolerância do objetivo, ele não continuará a tentar ajustar sua posição dentro dessa área.
+  # true: se o robô alcançar a localização xy do objetivo, ele simplesmente girará no lugar, mesmo que acabe saindo da tolerância do objetivo enquanto faz isso.
   latch_xy_goal_tolerance: true
   #----------------------------------------------
 
   # especifica o raio do robô para fins de planejamento. representa a distância mínima que o robô precisa manter dos obstáculos para evitar colisões, considerando o tamanho real do robô.
-  robot_radius: 0.3
+  robot_radius: 0.1
 
-  # (default: 32.0): O peso para quanto o controlador deve permanecer próximo ao caminho que lhe foi dado
+  # (default: 32.0): O peso para quanto o controlador deve permanecer próximo ao caminho que lhe foi dado. 
+  # Um valor alto fará com que o planejador local prefira trajetórias no caminho global.
+  # (distância (m) até o caminho a partir do ponto final da trajetória)
   path_distance_bias: 32 
 
   #  (default: 24.0): O peso para quanto o controlador deve tentar alcançar seu objetivo local; também controla a velocidade. 
+  # (distância (m) até o objetivo local a partir do ponto final da trajetória).
+  # Aumentar esse parâmetro permite que o robô se apegue menos ao caminho global.
   goal_distance_bias: 20
 
   #  (default: 0.01) O peso para quanto o controlador deve tentar evitar obstáculos.  varia entre 0.01 e 1.0
-  occdist_scale: 0.01 # Quando occdist_scale é alto, o planner penaliza mais fortemente as trajetórias que passam perto dos obstáculos. Isso faz com que o robô evite mais agressivamente áreas onde os obstáculos estão próximos, aumentando a segurança ao evitar colisões.
+  # (custo máximo de obstáculo ao longo da trajetória em custo de obstáculo (0-254))
+  # Um valor alto para esse parâmetro resulta em um robô indeciso que fica preso no lugar.
+  occdist_scale: 0.02 # Quando occdist_scale é alto, o planner penaliza mais fortemente as trajetórias que passam perto dos obstáculos. Isso faz com que o robô evite mais agressivamente áreas onde os obstáculos estão próximos, aumentando a segurança ao evitar colisões.
 
   #  define a frequência, em Hertz (Hz), com que o dwa_local_planner calcula a nova trajetória do robô
-  planner_frequency: 4.0  #2.0
+  planner_frequency: 10.0  #2.0
 
   # especifica a taxa, em Hertz (Hz), com a qual o controlador de movimento calcula e aplica os comandos para o robô
-  controller_frequency: 4.0
+  controller_frequency: 10.0
 
   # (default: 1.7): A quantidade de tempo para simular antecipadamente trajetórias em segundos. Quanto maior o parâmetro, mais longo será o plano local calculado. No entanto, também aumentará os recursos computacionais utilizados.
-  sim_time: 1.7 
+  sim_time: 4.0
 
   # (default: 3): O número de amostras a serem utilizadas ao explorar o espaço de velocidade em x
   vx_samples: 20
@@ -80,7 +87,7 @@ DWAPlannerROS:
   vtheta_samples: 20
 
   # usado para definir o número de amostras de velocidade angular
-  vth_samples: 20
+  vth_samples: 40
 
   
   # É uma taxa proporcional para limitar as velocidades máximas (1.0 = 100% da velocidade máxima)
@@ -111,10 +118,11 @@ DWAPlannerROS:
   # Com um valor menor, o planejador avalia o custo em um ponto mais próximo ao robô. Isso pode permitir ajustes mais rápidos e mais responsivos, mas pode ser menos eficaz em alinhar a trajetória com o objetivo final se o objetivo estiver a uma distância maior.
   forward_point_distance: 0.325
 
-  # é a distância (em metros) que o robô deve se mover em qualquer direção para que o planejador de movimento considere que o robô está fazendo progresso e, assim, reinicie o contador de oscilação.
+
   # Esse parâmetro é usado para detectar e evitar comportamentos de oscilação, onde o robô pode ficar preso em um ciclo de movimentos repetitivos sem fazer progresso real em direção ao objetivo.
   # Se o robô não se mover além da oscillation_reset_dist durante um período de tempo, isso pode indicar um comportamento de oscilação.
-  oscillation_reset_dist: 0.1
+  # Se o robô continuar oscilando, a pilha de navegação permitirá que o robô tente seus comportamentos de recuperação.
+  oscillation_reset_dist: 0.1 #  (double, default: 0.05) Até que distância o robô deve percorrer em metros antes que as flags de oscilação sejam redefinidas.
 
   #----Debugging-------
   # usado para determinar se o planejador deve publicar a nuvem de pontos (point cloud) das trajetórias que estão sendo consideradas durante o planejamento.
@@ -127,6 +135,7 @@ DWAPlannerROS:
 
   # (default: 0.025): O tamanho do passo, em metros, a ser utilizado entre pontos em uma trajetória dada.
   # Trajetórias são avaliadas em intervalos determinados pela sim_granularity. Quanto menor a granularidade, mais pontos serão avaliados ao longo de uma trajetória, resultando em uma simulação mais detalhada.
+  # Um valor mais baixo significa uma frequência mais alta, o que exige mais poder de processamento.
   sim_granularity: 0.025   
 
   # Trajetórias são avaliadas em intervalos determinados pela angular_sim_granularity. Quanto menor a granularidade angular, mais pontos serão avaliados ao longo de uma curva, resultando em uma simulação mais detalhada.
