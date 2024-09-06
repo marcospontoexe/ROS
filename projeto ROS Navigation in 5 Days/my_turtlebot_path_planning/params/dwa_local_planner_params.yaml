@@ -10,8 +10,11 @@ DWAPlannerROS:
   acc_lim_x: 0.133 # em trÊs segundos sai de 0 para 0,4 m/s2
 
   # Aceleração máxima de rotação em radianos por segundo ao quadrado
-  acc_lim_theta: 0.126  # aceleração angular necessária para que o robô rotacione 90 graus em 5 segundos
+  acc_lim_theta: 0.126 #0.126 aceleração angular necessária para que o robô rotacione 90 graus em 5 segundos
 
+  # define o limite máximo de aceleração para o movimento translacional do robô.
+  acc_lim_trans: 0.133
+  
   acc_lim_y: 0  #aceleração lateral máxima
 
   # Velocidade máxima linear em metros por segundo
@@ -31,7 +34,7 @@ DWAPlannerROS:
   min_vel_trans: 0.1
   
   # Velocidade máxima de rotação em radianos por segundo
-  max_vel_theta: 0.628  # para o robô completar uma volta de 360 graus em 10 segundos
+  max_vel_theta: 0.628  #0.628 para o robô completar uma volta de 360 graus em 10 segundos
   
   # Velocidade mínima de rotação em radianos por segundo
   min_vel_theta: 0.1
@@ -110,9 +113,6 @@ DWAPlannerROS:
 
   #  é um valor de tempo (em segundos) que define quanto tempo antes do robô alcançar o objetivo ele deve começar a desacelerar para garantir uma parada segura.
   stop_time_buffer: 3.0
-
-  # define o limite máximo de aceleração para o movimento translacional do robô.
-  acc_lim_trans: 0.133
 
   # define a distância à frente do robô que é usada para calcular o custo associado ao posicionamento do robô em relação ao objetivo
   # Com um valor menor, o planejador avalia o custo em um ponto mais próximo ao robô. Isso pode permitir ajustes mais rápidos e mais responsivos, mas pode ser menos eficaz em alinhar a trajetória com o objetivo final se o objetivo estiver a uma distância maior.
