@@ -93,9 +93,9 @@ DWAPlannerROS:
   vth_samples: 40
 
   
-  # É uma taxa proporcional para limitar as velocidades máximas (1.0 = 100% da velocidade máxima)
+  # absolute velocity at which to start scaling the robot's footprinthow much to scale the robot's footprint when at speed.
   scaling_speed: 0.25
-  # Se o max_scaling_factor for menor que 1.0, a velocidade máxima efetiva será reduzida. Se for 1.0 ou maior, a velocidade máxima efetiva será igual ou maior do que a velocidade máxima especificada, sem redução adicional.
+  # how much to scale the robot's footprint when at speed.
   max_scaling_factor: 0.2
 
   # indica se o planejador deve utilizar o método DWA para gerar trajetórias e calcular comandos de movimento para o robô
