@@ -7,6 +7,12 @@ rolling_window: true  #  No costmap local, este parâmetro deve ser definido com
 #Com baixa resolução (>= 0,05), em passagens estreitas, a região do obstáculo pode se sobrepor, e assim o planejador local pode não conseguir encontrar um caminho
 resolution: 0.05
 
+# é responsável por realizar a inflação em cada célula com um obstáculo:
+inflation:
+    inflation_radius: 1.75  #1.75  controla a distância do ponto de custo zero em relação ao obstáculo
+    cost_scaling_factor: 2.58 #2.58 (default: 10.0) é inversamente proporcional ao custo de uma célula. Definir um valor mais alto fará com que a curva de decaimento seja mais íngreme.
+
+
 plugins:
 #  - {name: static,                  type: "costmap_2d::ObstacleLayer"}
   - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}

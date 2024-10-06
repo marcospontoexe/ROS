@@ -29,10 +29,5 @@ obstacles_laser:
     #obstacle_range (padrão: 2.5): A distância máxima padrão do robô na qual um obstáculo será inserido no costmap, em metros. Isso pode ser substituído com base em cada sensor.
     #raytrace_range (padrão: 3.0): A faixa padrão em metros para traçar raios para fora do mapa usando dados do sensor. Isso pode ser substituído com base em cada sensor.
 
-# é responsável por realizar a inflação em cada célula com um obstáculo:
-inflation:
-    inflation_radius: 0.1  #1.75  controla a distância do ponto de custo zero em relação ao obstáculo
-    cost_scaling_factor: 20.0  #2.58 (default: 10.0) é inversamente proporcional ao custo de uma célula. Definir um valor mais alto fará com que a curva de decaimento seja mais íngreme.
-
 
 

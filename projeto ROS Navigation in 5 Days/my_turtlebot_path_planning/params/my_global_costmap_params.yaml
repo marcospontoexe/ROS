@@ -4,6 +4,12 @@ rolling_window: false #Ao definir o parâmetro rolling_window como false, inicia
 width: 5.0     # A largura do costmap. (default: 10)
 heigth: 5.0    # A altura do costmap. (default: 10)
 
+# é responsável por realizar a inflação em cada célula com um obstáculo:
+inflation:
+    inflation_radius: 0.1  #1.75  controla a distância do ponto de custo zero em relação ao obstáculo
+    cost_scaling_factor: 10.0  #2.58 (default: 10.0) é inversamente proporcional ao custo de uma célula. Definir um valor mais alto fará com que a curva de decaimento seja mais íngreme.
+
+
 #static_map: true
 resolution: 0.05 #é suficiente mantê-la igual à resolução do mapa fornecido à pilha de navegação
 plugins:
