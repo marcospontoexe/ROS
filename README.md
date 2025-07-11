@@ -1329,6 +1329,51 @@ Para garantir que seu espaço de trabalho esteja corretamente sobreposto pelo sc
 user:~/mynew_ws$ echo $ROS_PACKAGE_PATH
 /home/user/mynew_ws/src:/home/user/catkin_ws/src:/home/simulations/public_sim_ws/src:/opt/ros/noetic/share
 ```
+# C++
+Programas em C++ podem ser um pouco complicados de executar. Primeiramente, para um programa escrito em C++, o nome do arquivo precisa ser algo como **nome.cpp**, onde a extensão .cpp especifica a linguagem de programação que estamos usando.
+
+Em segundo lugar, precisamos de um compilador para compilar o código (que seria **g++**), e também de um nome para o código compilado, por exemplo **nome_compilado**, sem extensão.
+
+Por exemplo: `g++ -std=c++11 name.cpp -o name_compiled`.
+
+Com este comando, estamos dizendo ao compilador **g++** para usar sua versão **c++11**, pegar o código em **name.cpp** e compilá-lo em um arquivo executável chamado **name_compiled**.
+
+Para ver o código funcionando, precisamos apenas chamar o arquivo executável digitando: `./name_compiled`.
+
+## Pacotes compilados
+Ao compilar o espaço de trabaçhp (work space) ROS, com os comandos:
+* `cd ~/catkin_ws`
+* `catkin_make`
+* `source devel/setup.bash`
+
+os programas internos (pasta src) são compilados automaticamente.
+Para executar um código_qualquer pertecente a um pacote_qualquer, execute o comando: `rosrun pacote_qualquer código_qualquer`.
+
+## INCLUDE
+A diretiva **#include** é uma diretiva do pré-processador que informa ao compilador para incluir o conteúdo do arquivo de cabeçalho especificado no arquivo de código-fonte.
+
+Observe que, ao incluir arquivos de cabeçalho, usamos a sintaxe **" " (aspas)** ou **< > (colchetes angulares)**. 
+* Usar **< >** informa ao pré-processador para pesquisar o local usual para cabeçalhos de sistema a fim de encontrar o cabeçalho necessário.
+*  usar **" "** informa ao pré-processador para pesquisar primeiro o diretório onde o arquivo atual está localizado antes de pesquisar o caminho usual para cabeçalhos de sistema.
+
+## namespace std
+Esta linha significa que podemos usar o código no **namespace std** sem digitar **std::** antes dele. Por exemplo, podemos escrever **cout** em vez de **std::cout**. 
+
+##  return 0
+Em um programa C++, return 0; é usado para **indicar a conclusão bem-sucedida do programa**.
+
+Lembre-se de que a função principal de um programa é definida como **int main()**, o que significa que se espera que ela retorne um valor inteiro. O valor inteiro retornado pela função principal é chamado de status de saída ou código de retorno do programa. **return 0**; indica **sucesso** e **return 1; ou outros números para falhas**.
+
+## Listas
+Em C++, listas são sequências ordenadas de variáveis ​​do mesmo tipo. Para inicializá-las, precisamos especificar de que tipo são as variáveis ​​dentro delas. Por exemplo, para uma lista de string: `list<string> vocals_list( {"a","e","i","o","u"} );`
+
+Aqui está um exemplo de impressão de uma lista:
+
+'''c++
+for (int val : numbers_list)             // Loop
+    cout << val << "  ";                 // Print function
 
 
-
+for (string val : vocals_list)           // Loop
+    cout << val << "  ";                 // Print function
+'''
