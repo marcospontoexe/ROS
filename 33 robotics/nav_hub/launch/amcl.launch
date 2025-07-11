@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="scan_topic" default="scan" />
+
+  <node pkg="amcl" type="amcl" name="amcl">
+    <rosparam file="$(find nav_hub)/params/amcl.yaml" command="load" />
+    <remap from="scan" to="$(arg scan_topic)"/>    
+  </node>
+
+</launch>
+

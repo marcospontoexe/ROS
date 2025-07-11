@@ -1,0 +1,103 @@
+base_local_planner: "dwa_local_planner/DWAPlannerROS" # Sets the dwa local planner
+#base_local_planner: "base_local_planner/TrajectoryPlannerROS" # Sets the Trajectory Rollout algorithm from base local planner
+#base_local_planner: "eband_local_planner/EBandPlannerROS" # Sets the eband local planner
+#base_local_planner: "teb_local_planner/TebLocalPlannerROS" # Sets the teb local planner
+
+DWAPlannerROS:
+  # obstacle_cost_weight: 500.0  # Ajuste conforme necessário
+
+  # Robot Configuration Parameters - Kobuki
+  max_vel_x: 0.5 #0.4
+  min_vel_x: 0.0
+
+  max_vel_y: 0.0 # diff drive robot
+  min_vel_y: 0.0 # diff drive robot
+
+  max_vel_theta: 0.5 #0.40
+  min_vel_theta: 0.05 #-0.40
+
+
+  max_vel_trans: 0.5 # choose slightly less than the base's capability
+  min_vel_trans: 0.0
+
+  # se a velocidade for menor que "trans_stopped_vel" e "theta_stopped_vel", é considerado que o robo está parado, usada quando chega no objetivo final
+  trans_stopped_vel: 0.007
+  theta_stopped_vel: 0.04
+  # Warning!
+  #   do not set min_trans_vel to 0.0 otherwise dwa will always think translational velocities
+  #   are non-negligible and small in place rotational velocities will be created.
+
+  acc_lim_x: 0.2 #1.0 # maximum is theoretically 2.0, but we
+  acc_lim_theta: 0.5 #2.0
+  acc_lim_y: 0.0 # diff drive robot
+  acc_lim_trans: 0.2
+
+  # Goal Tolerance Parameters
+  yaw_goal_tolerance: 0.05 # 0.05  (double, default: 0.05): A tolerância, em radianos, para o controlador de yaw/rotação ao alcançar seu objetivo.
+  xy_goal_tolerance: 0.30 # 0.10 (double, default: 0.10): A tolerância, em metros, para o controlador na distância x e y ao alcançar um objetivo.
+  latch_xy_goal_tolerance: false # (bool, default: false) true -> Se o robô atingir a tolerância de "xy_goal_tolerance", entende que chegou no objetivo final, e então ajusta a orientação final. 
+  #false -> Ao atingir a tolerância de "xy_goal_tolerance", ajusta a orientação final. Caso saia da tolerância de "xy_goal_tolerance" ao rotacionar, se ajusta até ficar dentro da tolerancia de xy_goal_tolerance.
+
+  # robot_radius: 0.1 # especifica o raio do robô para fins de planejamento. representa a distância mínima que o robô precisa manter dos obstáculos para evitar colisões, considerando o tamanho real do robô.
+
+  # Forward Simulation Parameters
+  sim_time: 6 #4       # tempo de simulação de cada amostra de trajetória local. Quanto maior o tempo maior é a trajetória simulada.
+
+  # esses parametros definem a quantidade de trajetórias locais geradas
+  vx_samples: 9 #15 (default: 3): O número de trajetórias a serem criadas no espaço de velocidade em x. Se é 3, cria 3 trejetórias com velocidades diferentes
+  vy_samples: 1 # diff drive robot, there is only one sample
+  vth_samples: 40 # (default: 20): O número dde trajetórias a serem criadas no espaço de velocidade em theta. Se é 3, cria 3 trejetórias com angulos diferentes
+
+  # esses parâmetros definem a resolução linear e angular
+  sim_granularity: 0.05 #0.01  (default: 0.025): Esse valor define de quantos em quantos metros será criado um ponto que compoem a trajetória local, em cada ponto  é calculado o custos (colisão,  distância até o objetivo, distância até a trajetória global, orientação, etc.)
+  angular_sim_granularity: 0.17 #  0.5  É o passo angular (em radianos) usado durante a criação de trajetórias definido por "vth_samples".
+  
+  controller_frequency: 2.0 # É a frequência (em Hz) com que o move_base chama o planner local (por exemplo, o DWAPlannerROS) para calcular e publicar novos comandos de velocidade (cmd_vel) para o robô
+
+  # Trajectory Scoring Parameters
+  path_distance_bias: 0.1  # 20   32.0   (default: 32.0): O peso para quanto o centro do robo e o nariz devem permanecer próximo ao caminho global.
+  # valor alto: Da mais prioridade para trajetórias que fiquem próximas da rota global
+  # valor baixo: da maior liberdade em usar rotas que se distanciem da rota global
+
+  goal_distance_bias: 0.1 # 100  24.0   (default: 24.0): O peso para quanto o centro do robo e o nariz fiquem perto do objetivo final, ao chegaram no final da trajetória calculada (local).
+  # valor alto: da mais prioridade para trajetórias, que quando o robo chegar no final dessa trajetória, tenha menor distancia até o destino final.
+
+  occdist_scale: 0.1 # 0.2   (default: 0.01): O peso para quanto o controlador deve tentar evitar obstáculos.
+  #valor alto: rotas que passam proximos de obstáculos são descartadas
+  #valor baixo: usa rotas q passam perto de obstáculos
+
+  forward_point_distance: 0.0 #0.325 #Nâo deixar em 0!!! Se não o robô perde a coragem de girar. O centro do robo é deslocado essa distancia, criando um nariz do robo, usado nos calculos com "path_distance_bias" e "goal_distance_bias".
+  stop_time_buffer: 1 # (double, default: 0.2) O robô só vai considerar trajetórias válidas se conseguir parar completamente dentro desse tempo (segundos) antes de atingir um obstáculo. Quanto tempo antes de bater em algo vamos forçar que o robô pare.
+  
+  scaling_speed: 0.4 # 0.25   Ao chegar nessa velocidade o footprint do robo começa a inflar, chegando até "max_scaling_factor"
+  max_scaling_factor: 0.1 # 0.2   porcentagem máxima a ser usada para inflar o footprint.
+
+  # Trajetórias com movimentos oscilatórios são rejeitadas
+  oscillation_reset_dist: 0.01 # 0.05   Distancia linear necessária para não ser considerado um movimento de oscilação (vai e vem sem sair do lugar)
+  oscillation_reset_angle: 0.02    # Distancia angular necessária para não ser considerado um movimento de oscilação (vai e vem sem sair do lugar)
+
+  #TESTE
+  # Distance (in meters) that the robot looks ahead when considering the goal orientation
+  #heading_lookahead: 0.5
+
+  # Whether to consider the heading score in the DWA algorithm
+  # heading_scoring: true
+
+  # Time step used for scoring the robot's heading in the DWA algorithm
+  #heading_scoring_timestep: 0.1
+
+  # Whether the planner treats the goal as a simple attractor point or a pose to be reached precisely
+  #simple_attractor: false
+  #TESTE
+
+  # Debugging
+  publish_traj_pc: true
+  publish_cost_grid_pc: true
+  global_frame_id: odom
+
+  # Differential-drive robot configuration - necessary?
+  #  holonomic_robot: false
+
+  prune_plan: true    # pode a rota global da janela dinâmica
+  twirling_scale: 0.0       # O peso para penalizar quaisquer alterações angular no rumo da trajetória do robô
+  use_dwa: true

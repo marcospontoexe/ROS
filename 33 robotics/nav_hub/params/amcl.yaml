@@ -1,0 +1,76 @@
+# General Parameters
+use_map_topic: true #(default: false): Quando é true o AMCL subscreve no tópico /nav_msgs/OccupancyGrid para obter os dados do mapa, ou inves de usar uma chamada de serviço.
+odom_frame_id: odom #(default: "odom"): Indica o frame associado à odometria.
+base_frame_id: base_link #(default: "base_link"): Indica o frame associado à base do robô.
+global_frame_id: map #(default: "map"): Indica o nome do frame de coordenadas publicado pelo sistema de localização.
+save_pose_rate: -1.0 # (double, default: 0.5 Hz)    Maximum rate (Hz) at which to store the last estimated pose and covariance to the parameter server, in the variables ~initial_pose_* and ~initial_cov_*. This saved pose will be used on subsequent runs to initialize the filter. -1.0 to disable.
+
+#Filter Parameters
+#Esses parâmetros permitem configurar a forma como o filtro de partículas opera.
+min_particles: 100 #(default: 100): Define o número mínimo de partículas permitidas para o filtro.
+max_particles: 1000 #(default: 5000): Define o número máximo de partículas permitidas para o filtro.
+kld_err: 0.01 #0.05 (default: 0.01): Define o erro máximo permitido entre a distribuição verdadeira e a distribuição estimada. define a tolerância do algoritmo quanto à incerteza na estimativa.
+kld_z: 0.99 #0.99  # (double, default: 0.99) Upper standard normal quantile for (1 - p), where p is the probability that the error on the estimated distrubition will be less than kld_err.
+update_min_d: 0.01 #(default: 0.2): Define a distância linear (em metros) que o robô precisa mover para realizar uma atualização do filtro.
+update_min_a: 0.017 #(default: π/6.0): Define a distância angular (em radianos) que o robô precisa mover para realizar uma atualização do filtro.
+resample_interval: 1.0 #(default: 2): Define o número de atualizações do filtro necessárias antes da reamostragem.
+# Increase tolerance because the computer can get quite busy
+transform_tolerance: 0.6 #0.8 #(default: 0.1): Tempo (em segundos) com o qual a transformação publicada deve ser pós-datada, para indicar que essa transformação é válida no futuro.
+gui_publish_rate: 20.0 #(default: -1.0): Taxa máxima (em Hz) na qual as varreduras e caminhos são publicados para visualização. Se esse valor for -1.0, essa função está desativada.
+
+#Laser Parameters
+#Esses parâmetros permitem configurar a forma como o nó amcl interage com o laser.
+laser_min_range: -1 #(default: -1.0): Alcance mínimo da varredura a ser considerado; -1,0 fará com que o alcance mínimo relatado pelo laser seja usado.
+laser_max_range: 10.0 #(default: -1.0): Alcance máximo da varredura a ser considerado; -1,0 fará com que o alcance máximo relatado pelo laser seja usado.
+laser_max_beams: 250 # 60 (default: 30): Quantos feixes uniformemente espaçados em cada varredura serão usados ao atualizar o filtro.
+#The beam model uses all 4: z_hit, z_short, z_max, and z_rand. The likelihood_field model uses only 2: z_hit and z_rand. 
+laser_z_hit: 1 # 0.5 (default: 0.95)   0.95 -> confia muito nas leituras que batem com o mapa. 0.7 -> confia moderadamente, permite alguma variação no mapa.
+laser_z_short: 0.1 #(default: 0.1): Peso da mistura para a parte z_short do modelo. Representa a probabilidade de o feixe de laser ser curto demais para alcançar o objeto
+laser_z_max: 0.05 #(default: 0.05): Peso da mistura para a parte z_max do modelo. Representa a probabilidade de que o laser tenha atingido seu alcance máximo sem detectar nenhum obstáculo.
+laser_z_rand: 0.7 #(default: 0.05): Peso da mistura para a parte z_rand do modelo. Representa a probabilidade de o feixe de laser atingir algo inesperado ou aleatório.
+laser_sigma_hit: 0.1 #0.2 # double, default: 0.2 meters)    Desvio padrão do erro aceito nas leituras, em metros. (a 12 metros com angulo de 10 graus: hipotenusa de +- 18,5 cm)
+#quanto maior o valor, maior é a incerteza das particulas, espalhando um pouco mais ao redor do loclaa correto
+
+laser_lambda_short: 0.1 # double, default: 0.1)    Representa o parâmetro de decaimento exponencial para o caso laser_z_short. Um valor maior indica um decaimento mais rápido da probabilidade para leituras curtas.
+#laser_model_type: scan_matching
+# laser_model_type: beam_model
+laser_model_type: likelihood_field_prob # (string, default: "likelihood_field")    Which model to use, either beam, likelihood_field, or likelihood_field_prob (same as likelihood_field but incorporates the beamskip feature, if enabled).
+# laser_model_type: likelihood_field # (string, default: "likelihood_field")    Which model to use, either beam, likelihood_field, or likelihood_field_prob (same as likelihood_field but incorporates the beamskip feature, if enabled).
+laser_likelihood_max_dist: 10.0 #2.0 #(double, default: 2.0 meters)    Se um ponto do escaneamento estiver a uma distância maior que essa, ele não é utilizado no cálculo da probabilidade.
+
+odom_model_type: diff #(default: "diff"): Ele coloca o modelo de odometria em uso. Pode ser "diff," "omni," "diff-corrected" ou "omni-corrected."
+#Os paramentros ODOM_ALPHA são usados para modelar a incerteza na odometria
+# Valores mais altos:
+#     Podem ser usados para lidar com leituras de odometria ruidosas ou imprecisas.
+#     Podem tornar o algoritmo AMCL mais robusto a erros nos dados de odometria.
+
+# Valores mais baixos:
+#     Podem ser usados quando a odometria é muito precisa.
+#     Podem levar a uma localização mais precisa, mas podem ser menos robustos a ruído.
+
+# Localização pobre: Se o robô estiver perdendo o rastreamento de sua posição, tente aumentar os valores de odom_alpha para considerar mais incerteza na odometria.
+# Deriva excessiva: Se a posição estimada do robô estiver desviando ao longo do tempo, tente diminuir os valores de odom_alpha para reduzir o impacto do ruído da odometria.
+odom_alpha1: 1 #  4  (double, default: 0.2)    Representa o ruído na estimativa da rotação causada por um movimento rotacional. Um valor mais alto indica maior incerteza na rotação devido à rotação.
+odom_alpha2: 0.7 # 1 (double, default: 0.2)    Representa o ruído na estimativa da rotação causada por um movimento translacional. Um valor mais alto indica maior incerteza na rotação devido à translação.
+odom_alpha3: 0.2 #0.2  (double, default: 0.2)    Representa o ruído na estimativa da translação causada por um movimento translacional. Um valor mais alto indica maior incerteza na translação devido à translação.
+odom_alpha4: 0.2 # 0.4 (double, default: 0.2)    Representa o ruído na estimativa da translação causada por um movimento rotacional. Um valor mais alto indica maior incerteza na translação devido à rotação.
+#odom_alpha5: 0.1   #usado apenas quando odom_model_type é "omni"
+
+# odom_alpha1: 0.008  #0.2  (double, default: 0.2)    Representa o ruído na estimativa da translação causada por um movimento rotacional. Um valor mais alto indica maior incerteza na translação devido à rotação.
+# odom_alpha2: 0.04  #0.2  (double, default: 0.2)    Representa o ruído na estimativa da rotação causada por um movimento translacional. Um valor mais alto indica maior incerteza na rotação devido à translação.
+# odom_alpha3: 0.004  #0.2  (double, default: 0.2)    Representa o ruído na estimativa da translação causada por um movimento translacional. Um valor mais alto indica maior incerteza na translação devido à translação.
+# odom_alpha4: 0.025  #0.2  (double, default: 0.2)    Representa o ruído na estimativa da rotação causada por um movimento rotacional. Um valor mais alto indica maior incerteza na rotação devido à rotação.
+
+recovery_alpha_slow: 0.0 #  A good value might be 0.001. (double, default: 0.0 (disabled)) controla a taxa de reamostragem durante a fase de recuperação. Um valor mais alto indica uma taxa de reamostragem mais rápida, o que pode acelerar a convergência, mas também aumentar o risco de perder informações relevantes.
+recovery_alpha_fast: 0.0 #  A good value might be 0.1. (double, default: 0.0 (disabled)) utilizado para rapidamente redistribuir as partículas em uma região mais ampla do espaço de estados.
+
+# para ambiente dinamico
+do_beamskip: false #(default: false): Quando o parâmetro do_beamskip está ativado, o AMCL avalia cada feixe do laser e verifica se ele está de acordo com a maioria das partículas. Feixes que divergem significativamente da maioria são considerados outliers e podem ser ignorados.
+beam_skip_distance: 0.1 # (double, default: 0.5) e a diferença entre a leitura do laser e a previsão do modelo for maior que essa distância, o feixe é considerado um outlier e pode ser ignorado.
+beam_skip_threshold: 0.05 # (double, default: 0.3) define a porcentagem mínimo de feixes inconsistentes necessários para que o AMCL ignore leituras ruins do LiDAR., caso contrário usa todos os feixes
+
+tf_broadcast: true #(default: false): publica o transformação de frame do 'odom' para 'map'
+force_update_after_initialpose: true #(default: false):  determina se o AMCL deve forçar uma atualização da nuvem de partículas imediatamente após o recebimento de uma pose inicial enviada para o tópico /initialpose
+force_update_after_set_map: true #(default: false): controla se o algoritmo deve forçar uma atualização completa das partículas após receber um novo mapa global no tópico /map.
+first_map_only: true #(default: false):  true ➜ Usar somente o primeiro mapa recebido (ignora mapas subsequentes). false ➜ Continuar atualizando o mapa conforme novas mensagens chegam no tópico /map.
+

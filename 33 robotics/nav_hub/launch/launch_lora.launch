@@ -1,0 +1,11 @@
+<launch>
+    <node name="serial_node"        pkg="rosserial_python"      type="serial_node.py"   output="screen"    respawn="true"   respawn_delay="1.0">
+    <!-- <param name="port"              type="string"               value="/dev/esp"/> -->
+    <param name="port"              value="/dev/esp"/>
+    <!-- <param name="baud" value="9600"/> -->
+    <param name="baud" value="57600"/>
+    <!-- <param name="baud" value="115200"/> -->
+    </node>
+</launch>
+
+

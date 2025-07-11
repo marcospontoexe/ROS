@@ -1,0 +1,11 @@
+[Unit]
+Description=Log quando o sistema é iniciado
+
+[Service]
+UMask=000
+Environment="PYTHONPATH=/home/ubuntu/.local/lib/python3.8/site-packages"
+ExecStart=/home/ubuntu/Desktop/log_boot.sh
+
+[Install]
+WantedBy=multi-user.target
+

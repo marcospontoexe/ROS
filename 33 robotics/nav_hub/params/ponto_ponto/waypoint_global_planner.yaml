@@ -1,0 +1,7 @@
+base_global_planner: "waypoint_global_planner/WaypointGlobalPlanner"
+
+WaypointGlobalPlanner:
+  epsilon: 0.5   # limite de distância entre dois pontos para considerar como ponto final
+  waypoints_per_meter: 20  # número de pontos por metro para a interpolação do caminho
+
+  # prune_plan: true  #Quando ativado, o DWA Planner remove (ou "poda") os pontos da rota global que o robô já percorreu.

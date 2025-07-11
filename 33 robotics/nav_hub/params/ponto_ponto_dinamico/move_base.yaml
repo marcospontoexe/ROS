@@ -1,0 +1,41 @@
+controller_frequency: 4.0   # 10# especifica quantas vezes por segundo o move_base deve executar os cálculos para determinar e enviar comandos de velocidade ao robô para seguir uma trajetória planejada
+recovery_behaviour_enabled: false
+
+#Parâmetros do rotate_recovery
+# rotate_recovery:
+#   max_rotational_vel: 0.4    # Aumente esse valor para maior velocidade
+#   min_rotational_vel: 0.2    # Valor mínimo para rotação lenta
+#   acc_lim_th: 0.6          # Aceleração angular
+#   min_in_place_rotational_vel: 0.1
+
+# recovery_behaviors:
+#   - name: 'clear_costmap'
+#     type: 'clear_costmap_recovery/ClearCostmapRecovery'
+  # - name: 'rotate_recovery'
+  #   type: 'rotate_recovery/RotateRecovery'
+  # - name: 'custom_recovery'   # faz o robo andar 50 cm para trás
+  #   type: 'custom_recovery_behavior/CustomRecoveryBehavior'
+
+
+planner_frequency: 0.0  # (double, default: 0.0) The rate in Hz at which to run the global planning loop. If the frequency is set to 0.0, the global planner will only run when a new goal is received or the local planner reports that its path is blocked. 
+
+max_planning_retries: -1.0  #(int32_t, default: -1) Quantas vezes permitir novas tentativas de planejamento antes de executar comportamentos de recuperação. Um valor de -1,0 corresponde a tentativas infinitas.
+
+#tempo (em segundos) o global planner continuará tentando planejar um novo caminho antes de desistir completamente e acionar os comportamentos de recuperação
+planner_patience: 100.0 # 25.0   #(double, default: 5.0)  How long the planner will wait in seconds in an attempt to find a valid plan before space-clearing operations are performed. 
+
+#tempo (em segundos) o local planner continuará tentando seguir o caminho atual antes de desistir e solicitar um novo planejamento global.
+controller_patience: 100.0   # 10.0 #(double, default: 15.0)  How long the controller will wait in seconds without receiving a valid control before space-clearing operations are performed. 
+
+#A distância do robô em metros além da qual os obstáculos serão eliminados do mapa de custos ao tentar liberar espaço no mapa. Observe que este parâmetro só é usado quando os comportamentos de recuperação padrão são usados ​​para move_base.
+conservative_reset_dist: 4.0  # (double, default: 3.0)  determina a distância máxima a partir do robô onde os obstáculos serão removidos do mapa de custo durante uma redefinição conservadora.
+clearing_rotation_allowed: false    # rotação enquanto limpa o mapa
+
+oscillation_timeout: 60.0  # (double, default: 0.0) How long in seconds to allow for oscillation before executing recovery behaviors. A value of 0.0 corresponds to an infinite timeout.
+oscillation_distance: 0.01  # (double, default: 0.5) How far in meters the robot must move to be considered not to be oscillating. Moving this far resets the timer counting up to the
+
+shutdown_costmaps: false  #(bool, default: false)    se true Os mapas de custo locais e globais são desativados automaticamente quando o Move Base não está em uso ou está ocioso.
+make_plan_clear_costmap: true #controla se o global costmap deve ser limpo antes de tentar gerar um novo plano global. 
+make_plan_add_unreachable_goal: true  # true: Quando o planejador global não consegue criar uma rota válida até o objetivo final (por exemplo, devido a obstáculos ou falta de conectividade no mapa), o Move Base ainda adiciona o objetivo inalcançável como parte do plano. 
+
+# prune_plan: false  #Quando ativado, o DWA Planner remove (ou "poda") os pontos da rota global que o robô já percorreu.

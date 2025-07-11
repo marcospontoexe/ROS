@@ -1,0 +1,23 @@
+global_frame: odom
+robot_base_frame: base_link
+update_frequency: 4.0 #0.5 (default: 5.0): A frequência em Hz para atualização do mapa.
+publish_frequency: 1.0
+transform_tolerance: 0.2
+
+#static_map: false #added new
+rolling_window: true
+
+# robot_radius: 0.0 #define uma área de protecão em volta dos objetos na qual o robo não occnsegue entrar
+
+inflation:
+    inflate_unknown: true   
+    inflation_radius: 0.1 #1.95DentalMedSul #1.95 #0.2  #1.75  0,14   2.0
+    cost_scaling_factor: 0.1 #2.58DentalMedSul #2.58 #6.5  #1.58  11,72 0.58
+
+plugins:
+  - {name: static,                    type: "costmap_2d::StaticLayer"}
+  - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+  #- {name: obstacles_laser,           type: "costmap_2d::VoxelLayer"}
+  #- {name: costmap_prohibition_layer, type: "costmap_prohibition_layer_namespace::CostmapProhibitionLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}
+  #- {name: social_layers,              type: "social_navigation_layers::ProxemicLayer"}

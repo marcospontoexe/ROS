@@ -1,0 +1,42 @@
+global_frame: map
+robot_base_frame: base_link
+#static_map: true #added new
+#rolling_window: false
+
+transform_tolerance: 0.2
+
+# #teste
+# # Cost factor for heuristic calculations during path planning
+# epsilon: 1.0
+# # Distance between points used for path cost calculation (in meters)
+# p_calc_dist: 0.1
+# # Type of orientation filtering applied to the global plan
+# orientation_filter: interpolate
+
+# # Maximum allowed deviation from the goal orientation for orientation filtering (in radians)
+# orientation_filter_tolerance: 0.1
+# #teste
+
+# robot_radius: 0.0 #define uma área de protecão em volta dos objetos na qual o robo não occnsegue entrar
+
+# track_unknown_space: true
+# unknown_cost_value: 255  # Áreas desconhecidas como letais
+# lethal_cost_threshold: 254  # Define até onde o custo é letal
+
+# width: 10.0
+# hight: 10.0
+
+inflation:
+  inflate_unknown: true 
+  inflation_radius:  0.2 #0.32 #0.14 #1.75 #1.8
+  cost_scaling_factor: 0.1 #10.5 #11.75 #2.58
+
+
+
+plugins:
+  - {name: static,                    type: "costmap_2d::StaticLayer"}
+  - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}
+  # - {name: prohibition_layer,         type: "costmap_prohibition_layer::ProhibitionLayer"}
+  #- {name: costmap_prohibition_layer, type: "costmap_prohibition_layer_namespace::CostmapProhibitionLayer"}
+  

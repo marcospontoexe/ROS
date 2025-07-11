@@ -1,0 +1,19 @@
+string hour
+float64 battery_voltage
+float64 battery_percentage
+float64 position_x
+float64 position_y
+float64 orientation_w
+float64 linear_x
+float64 linear_y
+float64 angular_z
+float64 temperature_cpu
+float64 cpu_usage
+float64 distance
+string state
+float64 goal_x
+float64 goal_y
+float64 scan_min
+float64 cycles
+string errors
+

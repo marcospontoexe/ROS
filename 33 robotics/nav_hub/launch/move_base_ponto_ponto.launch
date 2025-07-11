@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <node pkg="move_base" type="move_base" name="move_base" output="screen" respawn="true" respawn_delay="1">
+
+    <!-- <rosparam file="$(find nav_hub)/params/neo_local_planner.yaml" command="load" /> -->
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/local_planner.yaml" command="load" />
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/waypoint_global_planner.yaml" command="load"/>
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/move_base.yaml" command="load" />
+
+    <!-- observation sources located in costmap_common.yaml -->
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/common_costmap.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/common_costmap.yaml" command="load" ns="local_costmap" />
+
+    <!-- local costmap, needs size -->
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/local_costmap.yaml" command="load" ns="local_costmap" />
+    <param name="local_costmap/width" value= "6.0"/>
+    <param name="local_costmap/height" value="6.0"/>
+
+    <!-- static global costmap, static map provides size -->
+    <rosparam file="$(find nav_hub)/params/ponto_ponto/global_costmap.yaml" command="load" ns="global_costmap"/>
+
+    <remap from="/cmd_vel" to="/cmd_vel_stop_obstacle"/>
+    <!-- <remap from="/move_base/WaypointGlobalPlanner/global_plan" to="/new_global_plan" /> -->
+    <!-- <remap from="/move_base/DWAPlannerROS/global_plan" to="/new_dwa_global_plan" />
+    <remap from="/move_base/DWAPlannerROS/local_plan" to="/new_dwa_local_plan" /> -->
+  </node>
+
+</launch>

@@ -1,0 +1,11 @@
+<launch>
+
+  <!-- Run the map server -->
+  <arg name="map_file" default="$(find nav_hub)/maps/botanic_map_alterado.yaml"/>
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/botanic_map_lowres_editado.yaml"/> -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/fiep_terreo_31.yaml"/> -->
+
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  
+</launch>

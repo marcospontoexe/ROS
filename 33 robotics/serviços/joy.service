@@ -1,0 +1,30 @@
+[Unit]
+Description=Bluetooth Connection Monitor
+After=network-online.target systemd-udevd.service roscore.service
+BindsTo=roscore.service
+AssertPathExists=/opt/ros
+
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 5
+ExecStartPre=/usr/bin/env bash -c 'source /opt/ros/noetic/setup.bash && source /home/ubuntu/catkin_ws/devel/setup.bash'
+Environment="ROS_MASTER_URI=http://10.42.0.1:11311"
+Environment="ROS_IP=10.42.0.1"
+Environment="PATH=/opt/ros/noetic/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="PYTHONPATH=/opt/ros/noetic/lib/python3/dist-packages"
+Environment="LD_LIBRARY_PATH=/opt/ros/noetic/lib"
+Environment="DISPLAY=:0"
+Environment="PYTHONUNBUFFERED=1"
+Environment="TERM=xterm-256color"
+WorkingDirectory=/home/ubuntu/Desktop
+ExecStart=/home/ubuntu/Desktop/bluetooth_connection.sh
+User=ubuntu
+Restart=on-failure
+StandardOutput=journal+console
+StandardError=journal+console
+
+[Install]
+WantedBy=multi-user.target
+
+#usar o comando 'journalctl -u joy -f | colout INFO green | colout ERROR red bold | colout WARN yellow'  para vizualizar as mensagens no terminal
+# instalar a biblioteca 'pip install colout' ou 'sudo apt install colout'

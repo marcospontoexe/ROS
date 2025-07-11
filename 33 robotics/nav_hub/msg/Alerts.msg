@@ -1,0 +1,9 @@
+string hour
+string obstructed
+string interrumpted_robot
+string object_too_close
+string critical_battery
+string high_cpu_usage
+string lidar_stopped_working
+string high_temperature
+string general_problem

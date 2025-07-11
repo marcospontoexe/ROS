@@ -1,0 +1,16 @@
+<launch>
+    <node name="serial_node_arduino"        pkg="rosserial_python"      type="serial_node.py"    output="screen"    respawn="true"   respawn_delay="1.0">
+    <param name="port"  type="string"       value="/dev/arduino"/>
+    <param name="baud" value="57600"/>
+    <!-- <param name="baud"  type="int"          value="57600"/> -->
+    </node>
+
+    <!-- nó para desligamento seguro -->
+    <node pkg="nav_hub" type="desligando.py" name="powerOff_node" output="screen"/>
+
+    <!-- nó para atualizar o led rgb com o nível da bateria bateria -->
+    <!-- <node pkg="nav_hub" type="ledBateria.py" name="battery_monitor_node" output="screen"/> -->
+
+    <!-- nó para atualizar a fita led (usado apenas para debug, usar apenas quando o nó fitaled não estiver rodando) -->
+    <!-- <node pkg="nav_hub" type="fitaLedEndereco.py" name="fitaLedEndereco_node" output="screen"/> -->
+</launch>

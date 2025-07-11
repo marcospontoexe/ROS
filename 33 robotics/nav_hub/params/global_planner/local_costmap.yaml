@@ -1,0 +1,46 @@
+global_frame: odom
+robot_base_frame: base_link
+update_frequency: 4.0 #0.5 (default: 5.0): A frequência em Hz para atualização do mapa.
+publish_frequency: 1.0
+transform_tolerance: 0.2
+#static_map: false #added new
+rolling_window: true
+# robot_radius: 0.0
+
+
+
+
+inflation:
+  inflate_unknown: false   
+  inflation_radius: 0.1 #1.95DentalMedSul #1.95 #0.2  #1.75  0,14   2.0
+  cost_scaling_factor: 0.1 #2.58DentalMedSul #2.58 #6.5  #1.58  11,72 0.58
+  track_unknown_space: true
+  combination_method: 1
+  # unknown_cost_value: 254
+  # lethal_cost_threshold: 250
+  # obstacle_range: 1.5
+  # raytrace_range: 2.5
+  
+obstacles_laser:
+  combination_method: 1
+  # raytrace_range: 0.1
+  track_unknown_space: true
+  # unknown_cost_value: 254       # altera o valor dass células desconhecidas de -1 para o valor de unknown_cost_value, transformando áreas cinzas em obstáculos para o dwa planner
+  # lethal_cost_threshold: 250   # 50
+
+static:
+  combination_method: 1
+  track_unknown_space: true
+  unknown_cost_value: 254    # altera o valor dass células desconhecidas de -1 para o valor de unknown_cost_value, transformando áreas cinzas em obstáculos para o dwa planner
+  lethal_cost_threshold: 128
+  # obstacle_range: 1.5
+  # raytrace_range: 2.5
+    
+
+plugins:
+  - {name: static,                    type: "costmap_2d::StaticLayer"}
+  - {name: obstacles_laser,           type: "costmap_2d::ObstacleLayer"}
+  # - {name: obstacles_laser,           type: "costmap_2d::VoxelLayer"}
+  #- {name: costmap_prohibition_layer, type: "costmap_prohibition_layer_namespace::CostmapProhibitionLayer"}
+  - {name: inflation,                 type: "costmap_2d::InflationLayer"}
+  #- {name: social_layers,              type: "social_navigation_layers::ProxemicLayer"}

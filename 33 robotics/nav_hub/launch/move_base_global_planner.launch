@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="no_static_map" default="false"/>
+  
+  <node pkg="move_base" type="move_base" name="move_base" output="screen" respawn="true" respawn_delay="1">
+    <!--remap from="/cmd_vel" to="/nav_vel"/-->
+
+    <rosparam file="$(find nav_hub)/params/global_planner/local_planner.yaml" command="load" />
+    <rosparam file="$(find nav_hub)/params/global_planner/global_planner.yaml" command="load" />
+    <rosparam file="$(find nav_hub)/params/global_planner/move_base.yaml" command="load" />
+    <param name="recovery_behavior_enabled" value="false"/>
+    <param name="recovery_behaviour_enabled" value="false"/>
+
+    <!-- <rosparam file="$(find nav_hub)/params/waypoint_global_planner.yaml" command="load"/> -->
+ <!-- observation sources located in costmap_common.yaml -->
+    <rosparam file="$(find nav_hub)/params/global_planner/common_costmap.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find nav_hub)/params/global_planner/common_costmap.yaml" command="load" ns="local_costmap" />
+
+    <rosparam file="$(find nav_hub)/params/global_planner/global_costmap.yaml" command="load" ns="global_costmap" unless="$(arg no_static_map)"/>
+
+    <!-- local costmap, needs size -->
+    <rosparam file="$(find nav_hub)/params/global_planner/local_costmap.yaml" command="load" ns="local_costmap" />
+    <param name="local_costmap/width" value="8.0"/>
+    <param name="local_costmap/height" value="8.0"/>
+
+
+    <!-- <remap from="/cmd_vel" to="/soft_cmd_vel"/> -->
+    <!-- <remap from="/move_base/DWAPlannerROS/global_plan" to="/new_dwa_global_plan" /> -->
+
+  </node>
+
+</launch>

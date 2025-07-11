@@ -1,0 +1,31 @@
+<launch>
+  <node pkg="nav_hub" type="controlaSom.py" name="controlaSom_node" output="screen"/> 
+  
+  <!-- para fita led endereçavel -->
+  <!-- <node pkg="nav_hub" type="fitaLed_V2.0.py" name="fitaLed_node" output="screen"/>    -->
+
+  <!-- para fita led não endereçavel -->
+  <node pkg="nav_hub" type="fitaLed_V1.1.py" name="fitaLed_node" output="screen"/> 
+
+  <!-- node para manter o robo parado enquanto um obstáculo obstrui o caminho -->
+  <!-- o tópico /cmd_vel deve ser remapeado para o tópico /cmd_vel_stop_obstacle, dentro da launch do movebase -->
+  <node pkg="nav_hub" type="stop_obstacle_WayPoint.py" name="stop_obstacle_WayPoint_node" output="screen"/>
+
+  <!-- nó para cancelar e republicar a rota caso o robo fique parado por um determinado tempo, evitando que o move_base aborte a missãp -->
+  <node pkg="nav_hub" type="recall_clicked_point.py" name="recall_cliked_point_node" output="screen"/> 
+  
+  
+  <!--- Navegação ponto a ponto linear -->
+  <node pkg="nav_hub" type="main_ponto_ponto_linear.py" name="main_ponto_ponto_linear_node" output="screen"/>
+  <node pkg="nav_hub" type="botoeira_ponto_ponto_linear.py" name="botoeira_ponto_ponto_linear_node" output="screen"/>
+
+  <!--- Navegação ponto a ponto mesh -->
+  <!-- <node pkg="nav_hub" type="main_ponto_ponto_mesh.py" name="main_ponto_ponto_mesh_node" output="screen"/>
+  <node pkg="nav_hub" type="botoeira_ponto_ponto_mesh.py" name="botoeira_ponto_ponto_mesh_node" output="screen"/> -->
+
+  <!--- Navegação ponto a ponto linear (pubbly)-->
+  <!-- <node pkg="nav_hub" type="main_ponto_ponto_linear_demo.py" name="main_ponto_ponto_linear_demo_node" output="screen"/>
+  <node pkg="nav_hub" type="botoeira_ponto_ponto_linear_demo.py" name="botoeira_ponto_ponto_linear_demo_node" output="screen"/> -->
+  
+
+</launch>

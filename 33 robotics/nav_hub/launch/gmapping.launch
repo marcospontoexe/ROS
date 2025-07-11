@@ -1,0 +1,53 @@
+<launch>
+  <arg name="scan_topic"  default="scan" />
+  <arg name="base_frame"  default="base_link"/>
+  <arg name="odom_frame"  default="odom"/>
+
+  <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
+    <param name="base_frame" value="$(arg base_frame)"/>
+    <param name="odom_frame" value="$(arg odom_frame)"/>
+
+    <!-- Parâmetros do Mapeamento -->
+    <param name="throttle_scans" value="1.0"/>  <!-- (int, default: 1 (significa que todas as varreduras do LIDAR serão usadas no mapeamento.)) controla quantas varreduras (scans) do LIDAR serão processadas pelo algoritmo de mapeamento. -->
+    <param name="tf_delay" value="0.01"/>     <!-- (padrão: 0.05) Define um atraso (em segundos) na publicação de transformações de TF. -->
+    <param name="transform_publish_period" value="0.01"/>      <!-- (float, default: 0.05)  controla o intervalo de tempo (em segundos) entre as publicações da transformação TF que liga os frames do mapa (map) e da odometria (odom). -->
+    <param name="occ_thresh" value="0.25"/>    <!-- (float, default: 0.25)  define um limite de ocupação para determinar se uma célula do mapa gerado pelo Gmapping deve ser considerada ocupada ou livre. Cada célula do mapa tem um valor de probabilidade de estar ocupada, que varia de 0 a 1. Baixo (0.1 ou menor):	Mais células serão consideradas ocupadas, podendo gerar falsos positivos  -->
+    <!-- se lstep, astep e map_update_interval forem atendidos o mapa é atualizado  -->
+    <param name="delta" value="0.036"/>     <!-- 0.036 (float, default: 0.05)    Resolução do mapa (em metros por bloco de grade de ocupação)  -->
+    <param name="map_update_interval" value="5"/>   <!--  (float, default: 5.0)  Quanto tempo (em segundos) em que o mapa interno é atualizado. O mapa é atualizado internamente, mas não necessariamente publicado -->
+    <param name="maxUrange" value="12.0"/>   <!-- (float, default: 80.0)   O alcance máximo utilizável do laser. Um feixe é cortado para esse valor. -->
+    <param name="maxRange" value="16.0"/>    <!-- O alcance máximo do laser.  set maxUrange < maximum range of the real sensor <= maxRange. -->
+    <param name="linearUpdate" value="1"/>  <!-- (float, default: 1.0) distância mínima que o robô precisa percorrer antes que o Gmapping processe uma nova varredura (scan) e atualiza o mapa. -->
+    <param name="angularUpdate" value="0.5"/>  <!-- (float, default: 0.5) rotação mínima que o robô precisa percorrer antes que o Gmapping processe uma nova varredura (scan) e atualiza o mapa.  -->
+    <param name="temporalUpdate" value="-1"/> <!-- (float, default: -1.0)  intervalo de tempo mínimo (em segundos) entre cada atualização do mapa, independentemente do movimento do robô.  Um valor menor que zero desativará as atualizações baseadas em tempo. -->
+    <param name="kernelSize" value="1"/>  <!-- (int, default: 1)  define o tamanho do kernel da convolução usado para suavizar as atualizações no mapa. (Valor baixo (1 ou 2) → Maior precisão nos detalhes do mapa, mas pode gerar ruídos e inconsistências./ Valor alto (5 ou mais) → Suaviza o mapa, reduzindo ruídos, mas pode apagar detalhes importantes.) -->
+    <param name="xmin" value="-10.0"/>    <!-- (float, default: -100.0)  Initial map size (in metres) -->
+    <param name="ymin" value="-10.0"/>   <!-- (float, default: -100.0)  Initial map size (in metres) -->
+    <param name="xmax" value="10.0"/> <!-- (float, default: 100.0)  Initial map size (in metres) -->
+    <param name="ymax" value="10.0"/> <!-- (float, default: 100.0)  Initial map size (in metres) -->
+
+   <!-- Parâmetros de localização do robo -->
+    <param name="iterations" value="10"/>   <!-- (int, default: 5) controla quantas vezes o algoritmo tentará refinar essa correspondência (scan matching) em cada ciclo de atualização (para localização do robo). (10-20	Máxima precisão) -->
+    <param name="lstep" value="0.05"/>     <!-- (float, default: 0.05)  define a distância mínima (em metros) que o robô deve percorrer antes de realizar um scan matching.  -->
+    <param name="astep" value="0.05"/>    <!-- (float, default: 0.05)  ângulo mínimo, em radianos, que o robô precisa girar antes antes de realizar um scan matching. -->  
+    <param name="sigma" value="0.05"/>  <!-- (float, default: 0.05)  está relacionado à incerteza dos deslocamentos do robô. Afeta o grau de incerteza na movimentação das partículas do filtro de partículas (valor baixo: assume que a odometria é precisa e limita a dispersão das partículas / valor alto: dispersa mais as particulas, permite maior tolerância a erros na odometria, mas pode gerar mapas mais imprecisos) -->
+    <param name="lsigma" value="0.05"/>    <!-- (float, default: 0.075)  define o quanto as medições do LIDAR podem variar antes de serem consideradas ruins ou boas para o mapeamento. (Valores Pequenos (lsigma baixo) → O algoritmo confia muito nos dados do LIDAR. Pequenas variações nas medições podem ser consideradas inconsistências, aumentando o risco de falhas no scan matching./ Valores Grandes (lsigma alto) → O algoritmo permite maior variação nas medições, tornando-se mais tolerante a ruídos e erros do sensor. No entanto, isso pode reduzir a precisão do mapa.) -->
+    <param name="ogain" value="3"/> <!-- 20.0 (float, default: 3.0)  é um fator que controla a influência da otimização da posição do robô no algoritmo de scan matching. (Valores Grandes (ogain alto, ex: 5.0 - 10.0): O algoritmo dá mais peso ao scan matching e corrige a pose com mais força, Pode ajudar em robôs com odometria ruim) -->
+    <param name="lskip" value="0"/> <!-- (int, default: 0)  controla quantos feixes (raios) do LIDAR serão ignorados ao calcular a correspondência do scan (scan matching). (0 -> Nenhum feixe é ignorado) -->
+    <param name="minimumScore" value="0"/>    <!-- (float, default: 0.0)  Pontuação mínima para considerar o resultado da varredura como boa. Pode evitar estimativas de poses saltitantes em grandes espaços abertos ao usar scanners a laser com alcance limitado (por exemplo, 5 m). As pontuações vão até 600+, tente 50, por exemplo, ao ter problemas com estimativas de saltos. -->
+    <param name="srr" value="0.1"/>    <!-- (float, default: 0.1)  representa a incerteza no erro translacional do robô devido à sua translação -->
+    <param name="srt" value="0.2"/>  <!-- (float, default: 0.2)  representa a incerteza no erro translacional do robô devido à sua rotação -->
+    <param name="str" value="0.1"/>  <!-- (float, default: 0.1)  representa a incerteza no erro rotacional do robô devido à sua translação -->
+    <param name="stt" value="0.2"/>  <!-- (float, default: 0.2)  representa a incerteza no erro rotacional do robô devido à sua rotação -->
+    <param name="resampleThreshold" value="1.0"/>    <!-- (float, default: 0.5) controla quando o filtro de partículas deve ser reamostrado para manter uma boa distribuição das hipóteses do mapa. resampleThreshold alto força reamostragens mais frequentes, enquanto um resampleThreshold baixo permite que o filtro de partículas funcione mais tempo sem reamostrar(levando a uma perda na localização do robô).  -->
+    <param name="particles" value="30"/>  <!-- (int, default: 30)  número de partículas que o algoritmo de filtro de partículas usa para representar a localização do robô em um espaço 2D. -->
+    <param name="llsamplerange" value="0.01"/>    <!-- (float, default: 0.01)  define a faixa de deslocamento máximo (em metros) que as partículas podem sofrer em X e Y durante o ajuste de likelihood. -->
+    <param name="llsamplestep" value="0.01"/>    <!-- (float, default: 0.01) define o passo da amostragem (em metros) dentro da faixa de deslocamento especificada por llsamplerange. -->
+    <param name="lasamplerange" value="0.005"/> <!-- (float, default: 0.005)  define a faixa de deslocamento angular máximo (em radianos) que as partículas podem sofrer durante o ajuste de likelihood. -->
+    <param name="lasamplestep" value="0.01"/>  <!-- (float, default: 0.01) define o passo da amostragem (em radianos) dentro da faixa de deslocamento angular especificada por lasamplerange. -->
+    
+    <!-- <param name="tf_broadcast" value="true"/>     habilita a vizualização da nuvem de particuals no rviz -->
+    
+    <remap from="scan" to="$(arg scan_topic)"/>
+  </node>
+</launch>

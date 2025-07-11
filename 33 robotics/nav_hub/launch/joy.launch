@@ -1,0 +1,17 @@
+<launch>
+  <node name="joy_node" pkg="joy" type="joy_node" output="screen">
+      <param name="dev" value="/dev/input/js0"/>
+            <!-- <param name="dev" value="/dev/input/js0"/> -->
+            <param name="deadzone" value="0.01"/>
+      <!-- <param name="autorepeat_rate" value="5"/>    -->
+     
+  </node>
+
+  <!-- Usado para iniciar a comunicação com as botoeiras lora -->
+  <!-- <include file="$(find nav_hub)/launch/launch_lora.launch" /> -->
+
+  <!-- para fita led não endereçavel -->
+  <node pkg="nav_hub" type="fitaLed_V1.1.py" name="fitaLed_node" output="screen"/> 
+
+  <node pkg="nav_hub" type="teleop_joy.py" name="teleop_joy_node" output="screen"/>
+</launch>

@@ -1,0 +1,26 @@
+ <launch>
+  <node pkg="nav_hub" type="controlaSom.py" name="controlaSom_node" output="screen"/> 
+
+  <!-- para fita led endereçavel -->
+  <!-- <node pkg="nav_hub" type="fitaLed_V2.0.py" name="fitaLed_node" output="screen"/>    -->
+
+  <!-- para fita led não endereçavel -->
+  <node pkg="nav_hub" type="fitaLed_V1.1.py" name="fitaLed_node" output="screen"/>  
+
+    <node pkg="nav_hub" type="move_back.py" name="move_back_node" output="screen"/> 
+  <!-- <node pkg="nav_hub" type="softVel.spy" name="soft_cmd_vel" output="screen"/>  -->
+
+  <!--- Navegação global planner mesh dinâmica-->
+  <!-- <node pkg="nav_hub" type="main_global_planner_mesh_dinamica.py" name="main_global_planner_mesh_dinamica_node" output="screen"/> 
+  <node pkg="nav_hub" type="botoeira_global_planner_mesh_dinamica.py" name="botoeira_global_planner_mesh_dinamica_node" output="screen"/> -->
+
+  <!--- Navegação global planner linear dinâmica-->
+  <node pkg="nav_hub" type="main_global_planner_linear_dinamica.py" name="main_global_planner_linear_dinamica_node" output="screen"/> 
+  <node pkg="nav_hub" type="botoeira_global_planner_linear_dinamica.py" name="botoeira_global_planner_linear_dinamica_node" output="screen"/>
+
+
+  <!--- Navegação global planner linear dinâmica  (Pubbly)-->
+  <!-- <node pkg="nav_hub" type="main_global_planner_linear_dinamica_demo.py" name="main_global_planner_linear_dinamica_demo_node" output="screen"/> 
+  <node pkg="nav_hub" type="botoeira_global_planner_linear_dinamica_demo.py" name="botoeira_global_planner_linear_dinamica_demo_node" output="screen"/> -->
+
+</launch>

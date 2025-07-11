@@ -1,0 +1,41 @@
+<launch>
+  <!-- Run lidar (inicia a publicação do scan)-->
+  <include file="$(find nav_hub)/launch/keyence_launch_V1.1.launch" />
+
+  <!-- Run the map server -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/botanic_map_alterado.yaml"/> -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/botanic_map_lowres_editado.yaml"/> -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/fiep_terreo_31.yaml"/> -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/park_demo.yaml"/> -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/metalKraft.yaml"/>   -->
+  <arg name="map_file" default="$(find nav_hub)/maps/aceleradora.yaml"/>  
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/danka.yaml"/>   -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/mapa_demo.yaml"/>   -->
+  <!-- <arg name="map_file" default="$(find nav_hub)/maps/hercules.yaml"/>   -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" /> 
+
+  <!-- Run AMCL (necessita publicações pelo tópico scan, e também o mapa global para funcionar) -->
+  <!-- transforma o frame 'odom' para 'map'-->
+  <include file="$(find nav_hub)/launch/amcl.launch"/>
+
+  <!-- localization slam toolbox -->
+  <!-- Realiza somente localização (sem criar novos mapas, Navegação em mapas prontos). -->
+  <!-- <include file="$(find slam_toolbox)/launch/localization.launch" /> -->
+
+  <!--- Run TF Listener -->
+  <!-- transforma o frame odom para base_link -->
+  <node pkg="nav_hub" type="tf_listener.py" name="tf_listener_node" output="screen"/>
+
+  <!-- Usado para iniciar a comunicação com as botoeiras lora -->
+  <include file="$(find nav_hub)/launch/launch_lora.launch" />
+
+  <!--- Run arduino, usado para iniciar a comunicação rosserial com o raduino, e desligamento seguro -->
+  <!-- <include file="$(find nav_hub)/launch/launch_arduino.launch"/> -->
+
+  <!--- Run Move Base (O move_base precisa amcl para rodar)-->
+  <!-- aguarda o AMCL fazer a tf map para odom-->
+  <node pkg="nav_hub" type="wait_for_tf_ponto_ponto.py" name="wait_for_tf_ponto_ponto_node" output="screen"/>
+
+
+
+</launch>

@@ -1,0 +1,107 @@
+footprint: [[0.16, -0.25], [0.16, 0.25], [-0.40, 0.25], [-0.40, -0.25]]
+# footprint: [[0.65, -0.36], [0.65, 0.36], [-0.39, 0.36], [-0.39, -0.36]]  #GEMU
+# footprint: [[0.40, -0.35], [0.40, 0.35], [-0.6, 0.35], [-0.6, -0.35]]  #GEMU
+# footprint: [[0.4,-0.35],[0.4,0.35],[-0.6,0.35],[-0.7,-0.35]]        #gemu com botoeira na traseira direita
+
+track_unknown_space: true #true, áreas cinzas do mapa são consideradas areas desconhecidas (-1 na mensagem OccupancyGrid)
+
+footprint_padding: 0.0
+#footprint_padding: 0.0 #REMOVED THISSS
+robot_radius: 0.0
+
+robot_base_frame: base_link
+update_frequency: 1.0 #0.5  (default: 5.0): A frequência em Hz para atualização do mapa.
+publish_frequency: 1 #1.0
+#static_map: true
+
+
+resolution: 0.05 #0.036
+
+#deve ser a mesma do arquivo .yaml fornecido para o map_server
+# origin_x: -36.504
+# origin_y: -45.720
+# origin_x: 0
+# origin_y: 0
+
+# obstacle_range: 4.0  #2.5
+# raytrace_range: 5.0  #5.0
+
+# track_unknown_space: true  # Ativa o uso de espaço desconhecido
+# unknown_cost_value: 255    # Define áreas desconhecidas como intransitáveis
+# lethal_cost_threshold: 253 # Define limite de custo para áreas intransitáveis
+
+
+#layer definitions
+static:
+    map_topic: /map
+    subscribe_to_updates: true  # se true, faz com que o commom costmap escute o tópico /map_updates, para atualizar o mapa estático (mapa global) 
+
+
+obstacles_laser:
+    observation_sources: laser
+    laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: false, track_unknown_space: true}
+    # track_unknown_space: true #(bool, default: false) If false, each pixel has one of 2 states: lethal obstacle or free. If true, each pixel has one of 3 states: lethal obstacle, free, or unknown. 
+    #topic (padrão: source_name): O tópico no qual os dados do sensor chegam para esta fonte.xel has one of 3 states: lethal obstacle, free, or unknown. 
+    #topic (padrão: source_name): O tópico no qual os dados do sensor chegam para esta fonte.
+    #data_type (padrão: "PointCloud"): O tipo de dados associado ao tópico; atualmente, apenas "PointCloud", "PointCloud2" e "LaserScan" são suportados.
+    #clearing (padrão: false): Se esta observação deve ser usada para limpar o espaço livre.
+    #marking (padrão: true): Se esta observação deve ser usada para marcar obstáculos.
+    #inf_is_valid (padrão: false): Permite valores Inf em mensagens de observação "LaserScan". Os valores Inf são convertidos para a máxima distância do laser.
+    #max_obstacle_height (padrão: 2.0): A altura máxima de qualquer obstáculo a ser inserido no costmap, em metros. Este parâmetro deve ser definido ligeiramente maior que a altura do seu robô.
+    observation_persistence: 0.0 # (double, default: 0.0)  Define por quanto tempo uma observação (ex: obstáculo detectado pelo sensor) permanece válida antes de ser descartada. Se for 0.0 o dado do sensor é descartado imediatamente após o próximo ciclo.
+    obstacle_range: 3.5 # 4.0 (padrão: 2.5): A distância máxima padrão do robô na qual um obstáculo será inserido no costmap, em metros. 
+    raytrace_range: 4.0 # 5.0 (padrão: 3.0): define a distância máxima que os raios de sensor irão percorrer para detectar ausencia de obstáculos e limpar o mapa, em metros.
+    # raytrace_range não pode ser maior q a metade do costmap local, se não torna áreas desconhecidas que estão foram do mapa local em áreas conhecidas
+    
+    footprint_clearing_enabled: false  #controla se o espaço ocupado pelo footprint deve ser automaticamente limpo no mapa de custo enquanto o robô se move.
+    # combination_method: 1 #para determinar como as diferentes camadas de custo são combinadas para gerar o mapa de custo final 
+    #1 (Maximização) O valor final do custo em cada célula do mapa é o maior valor entre todas as camadas. Esse é o comportamento padrão e assegura que os obstáculos críticos ou áreas de alto custo de qualquer camada sejam preservados no mapa combinado.
+    #0 (Soma) Os custos das células de todas as camadas são somados para produzir o custo final. Isso pode criar mapas mais sensíveis, com áreas de risco cumulativo.
+    #99 (nothing) refere-se à ausência de qualquer operação de fusão entre as camadas do mapa de custo. Isso significa que o custo da camada superior não será influenciado pelos valores da camada inferior.
+
+# inflation:
+#     inflate_unknown: true   
+#     inflation_radius: 0.2
+#     cost_scaling_factor: 2.58
+
+# costmap_prohibition_layer:
+#    prohibition_areas: [
+        
+#             [[23.992, 4.006], #PROHIBITION ACELERADORAS FIEP
+#             [31.601, 4.254], 
+#             [32.153, 10.287],
+#             [23.743, 10.270]],
+            
+#             [[16.897, 24.185],
+#             [16.250, 33.325],
+#             [0.155, 32.206],
+#             [0.277, 24.944]],
+            
+#             #[[23.992, 4.006], PROHIBITION CORREDOR FIEP
+#             #[13.544, 3.929], 
+#             #[13.544, 3.432],
+#             #[20.571, 3.432]]
+
+#             # [[25.856, 3.899], #PROHIBITION EVENTO
+#             # [34.198, 2.580],
+#             # [40.202, 8.334],
+#             # [33.247, 15.989],
+#             # [30.220, 4.798]],
+
+#             #[[27.066, 3.472],
+#             #[27.016, 17.767],
+#             #[24.905, 17.570],
+#             #[24.424, 3.251]]
+#     ]          
+
+#social_layers:
+#   enabled:               true
+#   cutoff:                126.0    #  double, default: 10.0 - Smallest value to publish on costmap adjustments
+#   amplitude:             254.0    #  double, default: 77.0 - Amplitude of adjustments at peak
+#  covariance:            1.35    #  double, default: 0.25 - Covariance of adjustments
+#   factor:                5.0     #  double, default: 5.0 -  Factor with which to scale the velocity
+#   keep_time:             0.75    #  double, default: 0.75
+
+
+
+
