@@ -1369,11 +1369,11 @@ Em C++, listas são sequências ordenadas de variáveis ​​do mesmo tipo. Par
 
 Aqui está um exemplo de impressão de uma lista:
 
-'''c++
+```c++
 for (int val : numbers_list)             // Loop
     cout << val << "  ";                 // Print function
 
 
 for (string val : vocals_list)           // Loop
     cout << val << "  ";                 // Print function
-'''
+```
