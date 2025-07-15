@@ -1514,3 +1514,18 @@ float *RosbotClass::get_laser_full() {
 ```
 
 Esta função, chamada get_laser_full(), retorna um ponteiro (veja o operador asterisco antes do nome da classe RosbotClass). O que ela faz é pegar os valores de um vetor ROS chamado laser_range e atribuir a eles um ponteiro, retornando esse ponteiro.
+
+outro exemplo: 
+
+```c++
+double *getVel() {
+  // a function that gets the current linear and angular velocities of the robot.
+  double *velocities = new double[2];
+  velocities[0] = robot_interface->linear_velocity;
+  velocities[1] = robot_interface->angular_velocity;
+  return velocities;  // retorna o ponteiro
+}
+```
+
+A função **getVel()** cria um ponteiro para um array de duas posições, cada posição recebe o valor de uma variável.
+
