@@ -1470,7 +1470,7 @@ int main(){
 ## Ponteiro
 Para descobrir o endereço de memória da variável **myvariable** podemos usar o operador **&** antes da variável: `cout << "myvariable's address is" << &myvariable << endl;`
 
-O tipo de variável que pode armazenar o endereço de uma variável é chamado de ponteiro. **Ponteiros** podem ser declarados com o operador *****, especificando o tipo de variável para a qual apontarão: `int* mypointer;`.
+O tipo de variável que pode armazenar o endereço de uma variável é chamado de ponteiro. **Ponteiros** podem ser declarados com o operador **`*`**, especificando o tipo de variável para a qual apontarão: `int* mypointer;`.
 
 Se quisermos que este ponteiro armazene o endereço da nossa variável anterior myvariable, precisamos apenas dar a ela o valor do seu endereço: `mypointer = &myvariable;`.
 
